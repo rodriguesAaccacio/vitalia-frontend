@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../../../api.js'; 
+
 document.addEventListener("DOMContentLoaded", async () => {
     // Usa a variável mágica do api.js
     const API_URL = API_BASE_URL; 

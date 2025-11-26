@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../../api.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Recupera a pontuação salva no arquivo de perguntas
     const mostRecentScore = localStorage.getItem("mostRecentScore");

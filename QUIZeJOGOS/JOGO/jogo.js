@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../../api.js';
+
 if (!sessionStorage.getItem("usuarioId")) {
   alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
   

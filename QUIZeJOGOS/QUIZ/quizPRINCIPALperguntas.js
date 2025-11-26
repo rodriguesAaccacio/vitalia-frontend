@@ -1,11 +1,12 @@
+import { API_BASE_URL } from '../../api.js';
+
 // ===================================================================
 // LÓGICA DO QUIZ (SEM REDIRECIONAMENTO)
 // ===================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Definição da URL da API (Pega do api.js)
-    const API_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : "http://localhost:3333";
-
+    const API_URL = API_BASE_URL;
     // Elementos da DOM
     const telas = {
         inicio: document.getElementById('tela-inicio'),
