@@ -100,7 +100,7 @@ restartBtn.addEventListener('click', restartGame);
 mainMenuBtn.addEventListener('click', goToMainMenu);
 retryBtn.addEventListener('click', restartGame);
 goToMenuBtn.addEventListener('click', goToMainMenu);
-nextLevelBtn.addEventListener('click', () => window.location.href = 'fase5.html');
+nextLevelBtn.addEventListener('click', nextLevel);
 levelSelectFromComplete.addEventListener('click', showLevelSelect);
 menuFromComplete.addEventListener('click', goToMainMenu);
 muteBtn.addEventListener('click', toggleMute);

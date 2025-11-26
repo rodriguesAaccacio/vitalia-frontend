@@ -97,8 +97,12 @@ restartBtn.addEventListener('click', restartGame);
 mainMenuBtn.addEventListener('click', goToMainMenu);
 retryBtn.addEventListener('click', restartGame);
 goToMenuBtn.addEventListener('click', goToMainMenu);
-nextLevelBtn.addEventListener('click', () => window.location.href = 'fase2.html');
-menuFromComplete.addEventListener('click', goToMainMenu);
+nextLevelBtn.addEventListener('click', () => {
+    // Redundância de segurança: Salva de novo antes de ir
+    localStorage.setItem("accumulatedScore", player.score.toString());
+    localStorage.setItem("lives", player.lives.toString());
+    window.location.href = 'fase2.html';
+});menuFromComplete.addEventListener('click', goToMainMenu);
 levelSelectFromComplete.addEventListener('click', showLevelSelect);
 muteBtn.addEventListener('click', toggleMute);
 menuBtn.addEventListener('click', showLevelSelect);
@@ -160,17 +164,14 @@ buttons.forEach(btn => {
 }
 
 // Chamar essa função quando carregar o menu de seleção
-window.addEventListener("load", updateLevelButtons);
-
-// Chamar saveProgress() smp que uma fase for concluída
-/*
+window.addEventListener("load", updateLevelButtons);  
 function showLevelComplete() {
-levelScore.textContent = player.score;
-  levelCompleteScreen.style.display = 'flex';
-    saveProgress(currentLevel);
-    }
-    */
-
+    levelScore.textContent = player.score;
+    levelCompleteScreen.style.display = 'flex';
+    
+    localStorage.setItem("accumulatedScore", player.score.toString()); 
+    localStorage.setItem("lives", player.lives.toString()); // Salve a vida também
+}
 
 
 // Inicializa o jogo
