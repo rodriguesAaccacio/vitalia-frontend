@@ -20,7 +20,7 @@ function getApiUrl() {
     // Mas para garantir, observe como a Vercel vai gerar o link.
     // Por padrão, se você subir o backend, o link base já aponta pra raiz.
     // Vamos deixar o placeholder:
-    return "https://LINK-DO-SEU-BACKEND-NA-VERCEL.vercel.app/api"; 
+    return "https://vitalia-backend-psi.vercel.app/api"; 
 }
 
 const API_BASE_URL = getApiUrl();

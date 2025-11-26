@@ -1,8 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
-const btnCadastrar = document.getElementById("btnCadastrar");
+// Importe a URL do arquivo api.js
+import { API_BASE_URL } from '../api.js';
 
-    // CONFIGURAÇÃO DO SERVIDOR (Troque se for pra nuvem)
-    const API_URL = API_BASE_URL;
+document.addEventListener("DOMContentLoaded", () => {
+    const btnCadastrar = document.getElementById("btnCadastrar");
+
+    // AQUI A MÁGICA: Não precisa mais de lógica complexa aqui, só usar a variável
+    const API_URL = API_BASE_URL; 
+    console.log("Conectando em:", API_URL);
 
     if (btnCadastrar) {
         btnCadastrar.addEventListener("click", async (e) => {

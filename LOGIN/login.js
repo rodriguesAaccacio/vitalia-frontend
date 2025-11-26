@@ -1,8 +1,10 @@
+import { API_BASE_URL } from '../api.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const btnLogin = document.getElementById("btnLogin");
 
-    // CONFIGURAÇÃO DO SERVIDOR (Troque se for pra nuvem)
-    const API_URL = API_BASE_URL;
+    const API_URL = API_BASE_URL; 
+    console.log("Conectando em:", API_URL);
 
     if (btnLogin) {
         btnLogin.addEventListener("click", async (e) => {

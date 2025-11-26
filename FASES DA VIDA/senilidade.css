@@ -1,0 +1,103 @@
+body {
+    background-image:url(../HOME/imgs/fundinho.png);
+    background-color: #693332;
+    overflow-x: hidden;
+}
+
+
+.conteudo {
+    line-height: 1.1;
+    margin: 0 6rem;
+    margin-top: 7rem;
+    padding: 0;
+}
+
+h1,
+h2,
+h4,
+p,
+ul {
+    color: #F5F5F5;
+}
+
+h1 {
+    font-family: "Literata", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 3rem;
+}
+
+h2 {
+    font-family: "Literata", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.75rem;
+}
+
+h4 {
+    font-family: "Literata", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.6875rem;
+}
+
+.conteudo p {
+    font-family: "Sulphur Point", sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    font-style: normal;
+    margin-top: 3.2rem;
+}
+
+.titulo {
+    display: flex;
+    margin-top: 4rem;
+    align-items: center;
+    gap: 12rem;
+}
+
+.primeiroParagrafo {
+    display: flex;
+    margin-top: 4rem;
+    align-items: center;
+    text-align: right;
+    gap: 15rem;
+}
+
+.segundoParagrafo {
+    display: flex;
+    margin-top: 4rem;
+    align-items: center;
+    gap: 12rem;
+}
+
+.imagem {
+    background-color: #420E0D;
+    padding: 2rem;
+    border-radius: 15%;
+}
+
+.imagem img {
+    width: 18rem;
+}
+
+.fluxo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+}
+
+.setaEsquerda {
+    transform: rotate(180deg);
+    width: 1.5rem;
+}
+
+.setaDireita {
+    width: 1.5rem;
+}
