@@ -1,5 +1,3 @@
-// frontend/api.js
-
 export function getApiUrl() {
     const host = window.location.hostname;
 
