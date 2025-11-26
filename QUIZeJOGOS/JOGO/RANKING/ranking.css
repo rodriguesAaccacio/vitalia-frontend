@@ -1,0 +1,211 @@
+/* Paleta de Cores: */
+/* --branco: #FFFFFF; */
+/* --verde-escuro: #004D40; (Cor principal dos totens e nomes) */
+/* --vinho: #800020; (Detalhe 2º lugar) */
+/* --amarelo-mostarda: #FFC300; (Detalhe 1º lugar) */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #FFFFFF;
+    color: #333;
+    margin: 0;
+    padding: 0; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /* CHAVE: Removemos o min-height e deixamos a altura se ajustar ao conteúdo,
+             ou usamos overflow-y: hidden se min-height for estritamente necessário. */
+    min-height: 100vh;
+    overflow-y: hidden; /* Adicionado para esconder a barra de rolagem vertical */
+    overflow-x: hidden; /* Adicionado para esconder a barra de rolagem horizontal */
+}
+body {
+    /* Imagem de Fundo */
+    background-image: url('/HOME/imgs/fundinho-ran.png'); 
+    /* Substitua esta URL pela sua imagem de fundo! */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Opcional: mantém a imagem fixa ao rolar, se for o caso */
+    
+    /* Centralização do Conteúdo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Remove barra de rolagem geral */
+}
+
+/* Overlay Escuro AUMENTADO (diretamente no body) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.815); /* Escurecimento */
+    z-index: -1; /* Manda o overlay para trás do conteúdo */
+}
+
+.ranking-container {
+    text-align: center;
+    background: transparent;
+    /* Reduzido o padding inferior para otimizar espaço */
+    padding: 20px 20px 0; 
+    border-radius: 0;
+    box-shadow: none;
+    max-width: none; 
+    width: 100%;
+    /* Removendo a margem inferior para o container não adicionar espaço extra */
+    margin-bottom: 0; 
+}
+
+h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: center;
+}
+
+.podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 25px;
+    
+    /* VALOR AJUSTADO: Margin-top reduzido para evitar empurrar o conteúdo total
+       além dos 100vh da tela. */
+    margin-top: 15rem; 
+    
+    position: relative;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    /* CHAVE: Margin-bottom ZERO para garantir que o pódio termine exatamente na base da tela */
+    margin-bottom: 0; 
+}
+
+.podium-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 30%; 
+    min-width: 150px;
+}
+
+/* Informações do Jogador (Centralizado perfeitamente acima do totem) */
+.player-info {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 150px;
+}
+
+/* Fotos e Estilos (mantidos) */
+.player-photo {
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #eee;
+}
+.player-photo {
+    width: 80px;
+    height: 80px;
+    border: 0.2rem solid #004D40;
+}
+.first-place .player-photo {
+    width: 100px;
+    height: 100px;
+    border: 0.2rem solid #FFC300;
+}
+.second-place .player-photo {
+    border: 0.2rem solid #800020;
+}
+.player-name {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #800020;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+.champion {
+    color: #FFC300;
+    font-size: 1.4em;
+}
+
+#terceiro{
+    color: #004D40;
+}
+.player-score {
+    font-size: 0.9em;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    color: #FFFFFF;
+}
+.score-mostarda {
+    background: #FFC300;
+}
+.score-vinho {
+    background: #800020;
+}
+.score-verde {
+    background: #004D40;
+}
+
+/* Blocos do Pódio (mantidos) */
+.podium-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: #004D40;
+    padding: 10px;
+}
+.podium-block h1, .podium-block h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 3em;
+    color: #FFFFFF;
+}
+.first-place .podium-block {
+    height: 200px;
+}
+.second-place .podium-block {
+    height: 150px;
+}
+.third-place .podium-block {
+    height: 100px;
+}
+
+/* Media Queries (mantidos) */
+@media (max-width: 768px) {
+    .podium {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 200px;
+        gap: 80px;
+    }
+    .podium-step {
+        width: 80%;
+    }
+    .player-info {
+        bottom: 100%;
+        transform: translateX(-50%);
+    }
+}

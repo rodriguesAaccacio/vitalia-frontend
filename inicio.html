@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="inicio.css">
+    <title>Vitalia - Início</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="./HOME/imgs/1-e6fb7e66.ico">
+    
+</head>
+</head> <body>
+    <div class="conteudo-sobreposto">
+        <img src="./HOME/imgs/logo-completa.png" alt="Logo Vitalia" class="logo-vitalia">
+        
+        <h1>Saúde, diversão e conhecimento no mesmo lugar</h1>
+        <p>Cuidar de você é a nossa essência</p>
+
+        <div class="opcoes-botoes">
+            <a href="./CADASTRO/cadastro.html">
+                <button class="btn-cadastro">Cadastrar</button>
+            </a>
+            
+            <a href="./LOGIN/login.html">
+                <button class="btn-entrar">Entrar</button>
+        </a>
+
+            <a href="index.html">
+                <button class="btn-entrar">Entrar sem cadastro</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Seleciona todos os links dentro da div de botões
+        const botoes = document.querySelectorAll('.opcoes-botoes a');
+        
+        botoes.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Cria o "Crachá" de visitante antes de mudar de página
+                sessionStorage.setItem("jaEntrouNoSite", "true");
+            });
+        });
+</script>
+        </div>
+</div>
+</body>
+</html>

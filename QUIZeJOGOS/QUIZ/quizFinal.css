@@ -1,0 +1,128 @@
+/* ================================================= */
+/* CONFIGURAÇÃO GERAL DA PÁGINA                      */
+/* ================================================= */
+body {
+  background-image: url(../../assets/fundoQUIZfinal.jpeg);
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Remove barras de rolagem */
+  height: 100vh;
+  font-family: 'Lato', sans-serif;
+}
+
+/* ================================================= */
+/* CONTAINER PRINCIPAL (Centraliza o Card na Tela)   */
+/* ================================================= */
+.container {
+  display: flex;
+  align-items: center;     /* Centraliza Verticalmente */
+  justify-content: center; /* Centraliza Horizontalmente */
+  width: 100%;
+  /* Altura total menos o tamanho do menu (aprox 5rem) */
+  height: calc(100vh - 5rem); 
+  margin-top: 0; /* Garante que não haja margens estranhas */
+}
+
+/* ================================================= */
+/* O CARD AMARELO (Resultado)                        */
+/* ================================================= */
+.flex-center-flex-column {
+  background-color: #FBB02D;
+  color: white;
+  border-radius: 2rem;
+  padding: 3rem;
+margin-top: 6rem;  
+  /* Tamanho do Card */
+  width: 45%;
+  min-width: 350px;
+  max-width: 600px;
+  
+  /* Flexbox para organizar os itens internos */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* O PULO DO GATO: Espaço automático entre Texto e Botões */
+  gap: 1.5rem; 
+  
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* ================================================= */
+/* TEXTOS (Parabéns e Pontuação)                     */
+/* ================================================= */
+.texto {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-family: "Literata", sans-serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+h2 {
+  font-family: "Literata", sans-serif;
+  font-weight: lighter;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+#finalScore {
+  font-size: 4rem; /* Destaque para a nota */
+}
+
+/* ================================================= */
+/* BOTÕES (Verde e Vermelho)                         */
+/* ================================================= */
+
+/* Divs que seguram os botões (para centralizar) */
+.botao-verde, 
+.botao-vermelho {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilo Comum dos Botões */
+a.verde, a.vermelho {
+  font-family: "Lato", sans-serif;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+  
+  /* Tamanho fixo para ficarem iguais */
+  width: 70%; 
+  padding: 1rem 0;
+  border-radius: 10px;
+  
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Cores Específicas */
+a.verde {
+  background-color: #56792E;
+}
+
+a.vermelho {
+  background-color: #420E0D;
+}
+
+/* Efeito Hover */
+a.verde:hover, a.vermelho:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}

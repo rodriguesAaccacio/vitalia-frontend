@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>VitaLab - Fim de Jogo</title>
+  <link rel="stylesheet" href="fim.css">
+</head>
+<body>
+  <h1 id="result"></h1>
+  <button onclick="window.location.href='../homeJOGO/homeJ.html'">Voltar ao Início</button>
+</body>
+
+<script>
+  const result = localStorage.getItem('gameResult') || 'Fim de Jogo!';
+  document.getElementById('result').innerText = result;
+</script>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cadastro.css">
+    <script src="cadastro.js"></script>
+    <script src="../api.js"></script>
+    <title>Cadastro</title>
+    
+  <link rel="shortcut icon" href="../HOME/imgs/1-e6fb7e66.ico">
+</head>
+<body>
+    <div class="esquerda">
+        <img src="../HOME/imgs/logo verde.png" alt="">
+        <h1>Cadastre-se</h1>
+        <div class="inputs">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+    
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="Digite seu e-mail">
+    
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Crie sua senha">
+        </div>
+        <div class="diretrizes">
+            <label>
+                <input type="checkbox" name="conferido">
+                Eu concordo com os <p id="botao1" class="botao1">termos de privacidade e diretrizes</p>
+              </label>          
+        </div>
+        <div class="botao">
+           <button id="btnCadastrar">Cadastrar</button>
+        </div>
+    <a href="../LOGIN/login.html">Já possui conta?</a>
+    </div>
+    <div class="direita">
+        <img src="../assets/Group 123.png" alt="">
+    </div>
+    <div id="fade" class="fade"></div>
+    <div id="modal1" class="modal">
+        <div class="cimaV">
+            <h4>Termos de privacidade e diretrizes</h4>
+            <button class="fechar" data-close="modal1"><img src="../EXTRAS/IMGSextras/fechar-branco.png" alt=""></button>
+        </div>
+        <div class="texto">
+            <p>Apenas aceite</p>
+        </div>
+    </div>
+</body>
+</html>

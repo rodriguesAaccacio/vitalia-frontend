@@ -1,0 +1,133 @@
+body {
+    background-image: url(../HOME/imgs/fundinho.png);
+    background-color: #56792E;
+    line-height: 1.1;
+    margin: 0 6rem;
+    margin-top: 7rem;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.semicirculo {
+    position: absolute;
+    top: -18.75rem;
+    right: -18.75rem;
+    width: 57.5rem;
+    height: 51.875rem;
+    background-color: #213807;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: -1;
+}
+.texto h1{
+    margin-top: 12rem;
+}
+.semicirculo img {
+    width: 70%;
+    height: auto;
+    object-fit: cover;
+    position: relative;
+    top: 18.75rem;
+    left: 2.4375rem;
+}
+
+.primeiroParagrafo,
+.segundoParagrafo {
+    max-width: 46.875rem;
+}
+
+.segundoParagrafo {
+    margin-bottom: 6.25rem;
+}
+
+.terceiroParagrafo {
+    max-width: 65.625rem;
+    margin-bottom: 10.5rem;
+}
+
+.quartoParagrafo {
+    max-width: 60.3125rem;
+}
+
+h1, h2, h4, ul {
+    color: #F5F5F5;
+    margin-left: 7.25rem;
+    margin-top: 6.25rem;
+}
+
+.conteudo p {
+    font-family: "Sulphur Point", sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    font-style: normal;
+    margin-top: 3.2rem;
+    color: #F5F5F5;
+    margin-left: 7.25rem;
+}
+
+h1 {
+    font-family: "Literata", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 3rem;
+}
+
+h2 {
+    font-family: "Literata", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.75rem;
+}
+
+h4 {
+    font-family: "Literata", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.6875rem;
+}
+
+.conteudo p {
+    font-family: "Sulphur Point", sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    font-style: normal;
+    margin-top: 3.2rem;
+}
+
+.elemento {
+    width: 26rem;
+}
+
+.fluxo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+}
+
+.fluxo div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.fluxo div p {
+    color: #F5F5F5;
+}
+
+.setaEsquerda {
+    transform: rotate(180deg);
+    width: 1.5rem;
+    margin-left: 7.5rem;
+}
+
+.setaDireita {
+    width: 1.5rem;
+    margin-right: 7.5rem;
+}
+
+.setaDireita,
+.setaEsquerda{
+    cursor: pointer;
+}

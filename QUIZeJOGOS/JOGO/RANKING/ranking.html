@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Ranking do Pódio</title>
+    <link rel="stylesheet" href="ranking.css">
+    <link rel="stylesheet" href="../../../menu.css">
+    <script src="ranking.js"></script> 
+    <script src="/user-info.js"></script>
+    <script src="../../../api.js"></script>
+    
+    <link rel="shortcut icon" href="../../../HOME/imgs/1-e6fb7e66.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../../../index.html">
+                <img src="../../../../HOME/imgs/LOGO-VITALIA.png" alt="Logo" />
+            </a>
+        </div>
+<nav class="menu">
+            <ul>
+                <li>
+                    <a href="#">CONTEÚDOS </a>
+                    <ul class="dropdown">
+                        <li class="nutrientes">
+                            <a href="#">NUTRIENTES</a>
+                            <ul class="dropdownNutrientes">
+                                <li><a href="../../../NUTRIENTES/lipidios.html">Lípidios</a></li>
+                                <li><a href="../../../NUTRIENTES/carboidratos.html">Carboidratos</a></li>
+                                <li><a href="../../../NUTRIENTES/fibras.html">Fibras</a></li>
+                                <li><a href="../../../NUTRIENTES/proteinas.html">Proteína</a></li>
+                                <li><a href="../../../NUTRIENTES/hidratacao.html">Hidratação</a></li>
+                                <li><a href="../../../NUTRIENTES/vitaminas.html">Vitaminas</a></li>
+                                <li><a href="../../../NUTRIENTES/minerais.html">Minerais</a></li>
+                            </ul>
+                        </li>
+                        <li class="funcoes">
+                            <a href="#">FUNÇÕES</a>
+                            <ul class="dropdownFuncoes">
+                                <li><a href="../../../FUNCOES/sistemaimunologico.html">Sistema Imunológico</a></li>
+                                <li><a href="../../../FUNCOES/carenciaNutricional.html">Carência nutricional</a></li>
+                                <li><a href="../../../FUNCOES/nutricaoEsaudeMental.html">Nutrição & Saúde mental</a></li>
+                                <li><a href="../../../FUNCOES/nutrientesEmetabolismo.html">Nutrientes & Metabolismo</a></li>
+                            </ul>
+                        </li>
+                        <li class="fases">
+                            <a href="#">FASES DA VIDA</a>
+                            <ul class="dropdownFases">
+                                <li><a href="../../../FASES DA VIDA/infanciaEadolescencia.html">Infância & Adolecência</a></li>
+                                <li><a href="../../../FASES DA VIDA/gravidez.html">Gravidez</a></li>
+                                <li><a href="../../../FASES DA VIDA/senilidade.html">Senilidade</a></li>
+                            </ul>
+                        </li>
+                        <li class="extras">
+                            <a href="#">EXTRAS</a>
+                            <ul class="dropdownExtras">
+                                <li><a href="../../../EXTRAS/mitosEverdadesPRINCIPAL.html">Mitos & Verdades</a></li>
+                                <li><a href="../../../EXTRAS/curiosidades.html">Curiosidades</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="../../../DICAS/dicas0.html">DICAS</a></li>
+                
+                <li><a href="../../../QUIZeJOGOS/quizEjogos.html" class="ativo">QUIZ & JOGOS</a></li>
+                
+                <li><a href="../../../ABOUT US/aboutus.html">SOBRE NÓS</a></li>
+            </ul>
+            <div id="user-info" class="user-info"></div>
+        </nav>
+    </header>
+
+
+    <div class="ranking-container">
+        <h1>Top 3 Jogadores</h1>
+
+        <div class="podium">
+
+            <div class="podium-step second-place">
+                <div class="player-info">
+                    <svg class="player-photo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#C0C0C0">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span class="player-name">---</span>
+                    <span class="player-score score-vinho">---</span>
+                </div>
+                <div class="podium-block">
+                    <h2>2º</h2>
+                </div>
+            </div>
+
+            <div class="podium-step first-place">
+                <div class="player-info">
+                    <svg class="player-photo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100" height="100" fill="#FFD700">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                    <span class="player-name champion">Carregando...</span>
+                    <span class="player-score score-mostarda">---</span>
+                </div>
+                <div class="podium-block">
+                    <h1>1º</h1>
+                </div>
+            </div>
+
+            <div class="podium-step third-place">
+                <div class="player-info">
+                    <svg class="player-photo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#CD7F32">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span class="player-name" id="terceiro">---</span>
+                    <span class="player-score score-verde">---</span>
+                </div>
+                <div class="podium-block">
+                    <h2>3º</h2>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

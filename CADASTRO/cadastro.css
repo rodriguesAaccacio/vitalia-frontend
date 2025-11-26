@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.container {
+    display: flex;
+    width: 90%; 
+    max-width: 1200px;
+    height: calc(100% - 40px);
+    
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden; 
+}
+
+.esquerda {
+    flex: 1; 
+    height: 100%; 
+    background-color: #ffffff;
+    padding-inline: 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto; 
+}
+.esquerda img {
+    width: 5rem;
+    margin-bottom: 4rem;
+    align-self: flex-start;
+}
+
+.esquerda h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    align-self: flex-start;
+    font-weight: 600;
+}
+
+.inputs {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.inputs label {
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.inputs input[type="text"],
+.inputs input[type="email"],
+.inputs input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 3rem;
+    font-size: 1em;
+    color: #333;
+}
+
+.inputs input::placeholder {
+    color: #aeaeae;
+}
+
+.diretrizes {
+    margin-bottom: 25px;
+    width: 100%;
+    text-align: left;
+}
+
+.diretrizes label {
+    display: flex; 
+align-items: center;
+font-size: 0.75em;
+    color: #555;
+    cursor: pointer;
+}
+
+.diretrizes input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #7cb342;
+    border-radius: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    background-color: #fff;
+}
+
+.diretrizes input[type="checkbox"]:checked {
+    background-color: #213807;
+    border-color: #213807;
+}
+
+.diretrizes input[type="checkbox"]:checked::before {
+    content: '✔';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8em;
+    color: #fff;
+}
+
+.diretrizes label a {
+    color: #213807;
+    text-decoration: none;
+    font-weight: 500;
+}
+.diretrizes p{
+    margin-left: 0.3rem;
+    text-decoration: underline;
+}
+
+.diretrizes label a:hover {
+    text-decoration: underline;
+}
+
+.botao {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.botao button {
+    width: 100%;
+    padding: 14px;
+    background-color: #213807;
+    color: #ffffff;
+    border: none;
+    border-radius: 5rem;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.botao button:hover {
+    background-color: #2e4513;
+}
+
+.esquerda > a { 
+    font-size: 0.9em;
+    color: #213807;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+    text-decoration: underline;
+}
+
+.esquerda > a:hover {
+    color: #558b2f;
+    text-decoration: underline;
+}
+
+/* Lado direito - Imagem (GRANDES ALTERAÇÕES AQUI) */
+.direita {
+    flex: 1.2; 
+    height: 100%; /* CORREÇÃO 3: Garante que este div ocupe 100% da altura do .container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+    /* ATENÇÃO: Remova qualquer padding ou margem aqui que possa estar empurrando a imagem */
+    padding: 0; 
+    margin: 0;
+}
+.direita img {
+    /* CORREÇÃO 4: A imagem DEVE cobrir 100% da LARGURA e ALTURA do seu pai (.direita) */
+
+    height: 100%; 
+    object-fit: cover; /* ESSENCIAL: Faz a imagem preencher o espaço sem distorcer, cortando o que sobra */
+    display: block; /* Remove o espaço extra abaixo de imagens em linha */
+    
+    /* CORREÇÃO 5: Remova o border-radius DA IMAGEM AQUI. 
+       O arredondamento será "cortado" pelo overflow: hidden do .container pai. */
+    /* border-radius: 0 10px 10px 0; */ /* COMENTE OU REMOVA ESTA LINHA */
+}
+
+.texto-boas-vindas {
+    position: absolute;
+    top: 60px; 
+    right: 60px; 
+    text-align: right;
+    color: #ffffff; 
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Aumentei a sombra para melhor contraste */
+}
+
+.texto-boas-vindas h2 {
+    font-size: 2.2em;
+    font-weight: 600;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.texto-boas-vindas p {
+    font-size: 1.8em;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+/* Media Queries para Responsividade */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        width: 95%;
+    }
+
+    .esquerda, .direita {
+        flex: none; 
+        width: 100%;
+        padding: 0; /* Remove padding da direita para garantir que a imagem cubra 100% */
+    }
+    
+    .esquerda {
+        padding: 30px; /* Mantém padding do formulário */
+    }
+
+    .direita {
+        min-height: 300px;
+        border-radius: 0 0 10px 10px; 
+    }
+
+    .direita img {
+        border-radius: 0 0 10px 10px; /* Arredonda só embaixo */
+    }
+
+    .texto-boas-vindas {
+        top: 20px;
+        right: 20px;
+        font-size: 0.9em;
+    }
+
+    .texto-boas-vindas h2 {
+        font-size: 1.8em;
+    }
+
+    .texto-boas-vindas p {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 500px) {
+    .esquerda {
+        padding: 20px;
+    }
+    .esquerda h1 {
+        font-size: 1.5em;
+    }
+    /* ... (restante das media queries menores) ... */
+}
+.modal p, h4{
+    color: #fff;
+}
+
+.modal p{
+    font-size: 0.9rem;
+}
+.texto{
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+.modal h4{
+    width: 10rem;
+    font-size: 1rem;
+    text-align: center;
+}
+.cima{
+    display: flex;
+    justify-content: space-between;
+}
+
+.cimaV{
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+  
+    width: 25rem;
+    max-width: 90%;
+    padding: 3rem;
+    border-radius: 3rem;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .modal.show {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  #modal1,
+  #modal2,
+  #modal4,
+  #modal9{
+    background-color: #213807;
+  }
+
+  
+.fade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .fade.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .fechar{
+    background: none;
+    border: none;
+    width: 4rem;
+    cursor: pointer;
+    margin-right: -6rem;
+  
+  
+    img{
+      display: flex;
+      width: 2rem;
+    }
+  }

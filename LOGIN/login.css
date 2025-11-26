@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.container {
+    display: flex;
+    width: 90%; 
+    max-width: 1200px;
+    height: calc(100% - 40px);
+    
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden; 
+}
+
+/* NOVO LADO ESQUERDO: IMAGEM (Antes era .esquerda, agora é a imagem com flex maior) */
+.esquerda {
+    flex: 1.5; /* Ocupa mais espaço que o formulário */
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Para posicionar o texto "DE VOLTA" */
+    padding: 0; 
+    margin: 0;
+}
+
+.esquerda img {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+    /* O arredondamento do .container faz o trabalho */
+}
+
+/* Texto sobre a imagem "DE VOLTA" (Assumindo que seja este texto) */
+.texto-boas-vindas {
+    position: absolute;
+    top: 60px; /* Ajuste a posição */
+    left: 60px; /* Alinhar à esquerda */
+    text-align: left;
+    color: #ffffff; 
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); 
+    z-index: 1; 
+}
+
+.texto-boas-vindas h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+
+/* NOVO LADO DIREITO: FORMULÁRIO (Antes era .direita, agora é o formulário com flex menor) */
+.direita {
+    flex: 1; /* Ocupa menos espaço que a imagem */
+    height: 100%; 
+    background-color: #ffffff;
+    padding-inline: 4rem; /* Reduzindo um pouco o padding para caber o conteúdo */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* Distribui o conteúdo verticalmente */
+    align-items: flex-start;
+    overflow-y: auto; 
+}
+
+/* Estilos dos elementos do formulário (mantidos do seu código, mas com ajustes para caber) */
+.direita img {
+    width: 4rem; /* Ajuste para ser menor */
+    margin-bottom: 3rem; /* Ajuste */
+    align-self: flex-end;
+}
+
+.direita h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem; /* Ajuste */
+    align-self: flex-start;
+    font-weight: 600;
+}
+
+.inputs {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.inputs label {
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px; /* Reduzindo margem */
+    text-align: left;
+    font-weight: 600;
+}
+
+.inputs input[type="text"],
+.inputs input[type="email"],
+.inputs input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 3rem;
+    font-size: 1em;
+    color: #333;
+}
+
+.inputs input::placeholder {
+    color: #aeaeae;
+}
+
+.botao {
+    width: 100%;
+    margin-top: 1.5rem; /* Adicionar margem acima do botão */
+    margin-bottom: 1rem;
+}
+
+.botao button {
+    width: 100%;
+    padding: 14px;
+    background-color: #213807; /* Cor do botão */
+    color: #ffffff;
+    border: none;
+    border-radius: 3rem;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.direita > a:hover {
+    color: #558b2f;
+    text-decoration: underline;
+}
+
+.botao button:hover {
+    background-color: #2e4513;
+}
+
+.direita > a { 
+    font-size: 0.9em;
+    color: #213807;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+    text-decoration: underline;
+    /* Adicionar um pequeno padding embaixo para a distribuição do space-evenly */
+    margin-bottom: 1rem; 
+}
+
+
+/* Media Queries para Responsividade (Invertendo as regras de padding e flex) */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        width: 95%;
+        height: auto;
+    }
+
+    .esquerda, .direita {
+        flex: none; 
+        width: 100%;
+        padding: 0; 
+        height: auto;
+    }
+    
+    .direita {
+        padding: 30px; /* Mantém padding do formulário */
+    }
+
+    .esquerda {
+        min-height: 250px;
+        border-radius: 10px 10px 0 0; /* Arredonda só em cima */
+    }
+
+    .esquerda img {
+        border-radius: 10px 10px 0 0; /* Arredonda só em cima */
+    }
+
+    .texto-boas-vindas {
+        top: 20px;
+        left: 20px;
+        text-align: left;
+    }
+}

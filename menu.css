@@ -1,0 +1,412 @@
+body {
+  margin: 0;
+}
+
+.navbar {
+  background-color: #12180B;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+
+  /* Fixar no topo */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 3.125rem;
+}
+
+.menu {
+  display: flex;
+  gap: 5rem;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+ul li {
+  display: inline-block;
+  position: relative;
+}
+
+ul li a {
+  display: block;
+  padding: 1.875rem 1.563rem;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+
+
+
+
+ul li ul.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  display: none;
+  min-width: 12.5rem;
+  z-index: 999;
+}
+
+ul li ul.dropdown li {
+  display: block;
+}
+
+
+ul li:hover>ul.dropdown {
+  display: block;
+}
+
+ul li ul li ul {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: none;
+  min-width: 12.5rem;
+  z-index: 999;
+}
+
+ul li ul li:hover>ul {
+  display: block;
+}
+
+ul li ul li a {
+  padding: 0.75rem 0.938rem;
+}
+
+.nutrientes>a {
+  background-color: rgba(40, 54, 25, 0.6);
+  color: white;
+}
+
+.nutrientes>a:hover {
+  background-color: rgba(40, 54, 25, 0.6);
+
+}
+
+.nutrientes>ul {
+  background-color: rgba(40, 54, 25, 0.6);
+}
+
+.nutrientes>ul li a {
+  color: white;
+}
+
+.nutrientes>ul li a:hover {
+  background-color: rgba(40, 54, 25, 0.2);
+}
+
+
+
+
+
+.funcoes>a {
+  background-color: rgba(66, 14, 13, 0.6);
+  color: white;
+}
+
+.funcoes>a:hover {
+  background-color: rgba(66, 14, 13, 0.6);
+
+}
+
+.funcoes>ul {
+  background-color: rgba(66, 14, 13, 0.6);
+}
+
+.funcoes>ul li a {
+  color: white;
+}
+
+.funcoes>ul li a:hover {
+  background-color: rgba(66, 14, 13, 0.2);
+}
+
+
+
+
+
+
+.fases>a {
+  background-color: rgba(161, 207, 107, 0.6);
+  color: white;
+}
+
+.fases>a:hover {
+  background-color: rgba(161, 207, 107, 0.6);
+
+}
+
+.fases>ul {
+  background-color: rgba(161, 207, 107, 0.6);
+}
+
+.fases>ul li a {
+  color: white;
+}
+
+.fases>ul li a:hover {
+  background-color: rgba(161, 207, 107, 0.2);
+}
+
+
+
+.extras>a {
+  background-color: rgba(251, 176, 45, 0.6);
+  color: white;
+}
+
+.extras>a:hover {
+  background-color: rgba(251, 176, 45, 0.6);
+
+}
+
+.extras>ul {
+  background-color: rgba(251, 176, 45, 0.6);
+}
+
+.extras>ul li a {
+  color: white;
+}
+
+.extras>ul li a:hover {
+  background-color: rgba(251, 176, 45, 0.2);
+}
+
+
+.menu>ul>li:nth-child(1)>a:hover {
+  color: #A1CF6B;
+}
+
+.menu>ul>li:nth-child(2)>a:hover {
+  color: #FBB02D;
+}
+
+.menu>ul>li:nth-child(3)>a:hover {
+  color: #FBB02D;
+
+}
+
+.menu>ul>li:nth-child(4)>a:hover {
+  color: #FBB02D;
+}
+
+.menu li a.ativo {
+  color: #FBB02D;
+}
+
+.menu li a.ativo1 {
+  color: #FBB02D;
+}
+
+
+
+
+.fluxo{
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+
+  div {
+
+      p{
+          color: #F5F5F5;
+          font-weight: bold;
+          font-family: 'Lato', sans-serif;
+      }
+  }
+}
+
+.setaEsquerda {
+  margin-left: 6rem;
+}
+
+
+.setaDireita {
+  margin-right: 6rem;
+}
+
+
+.logo:hover{
+  transform: scale(1.05);
+transition: 0.4s;
+}
+
+/* Modifique a sua classe existente no final do arquivo */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  /* margin-left: auto;  <-- REMOVA OU COMENTE ESTA LINHA */
+  margin-left: 2rem; /* Adicione isso para dar um espaço entre os links e o perfil */
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #A1CF6B; /* Borda verde bonita */
+  background-color: #fff;
+}
+
+.user-greeting {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #A1CF6B;
+  font-family: 'Lato', sans-serif;
+}
+
+.btn-logout {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.8rem;
+  transition: background 0.3s;
+}
+
+.btn-logout:hover {
+  background-color: #e74c3c;
+}
+
+.btn-login-nav {
+  background-color: #A1CF6B;
+  color: #12180B;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  font-family: 'Lato', sans-serif;
+  transition: transform 0.2s;
+}
+
+.btn-login-nav:hover {
+  transform: scale(1.05);
+  background-color: #b5e877;
+}
+
+/* 1. Configuração do Pai (Cabeçalho) */
+header { /* Se o seu cabeçalho tiver uma classe (ex: .navbar), use ela aqui */
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 5%; /* Ajuste o padding lateral conforme seu gosto */
+  box-sizing: border-box;
+}
+
+/* 2. A MÁGICA: Empurrar o menu para a direita */
+/* Substitua 'nav' pela classe que envolve seus links (Conteúdo, Dicas...) */
+header nav, 
+.menu-links { 
+  margin-left: auto; /* Isso joga este elemento e os próximos (user) para a direita */
+  display: flex;
+  gap: 2rem; /* Espaço entre os itens do menu */
+  align-items: center;
+}
+
+/* Opcional: Estilo dos links para ficarem bonitos (se já não tiver) */
+header nav a {
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+/* Fundo escuro atrás da caixa */
+.logout-overlay {
+    display: none; /* Começa escondido */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fundo preto transparente */
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+/* A caixa branca/verde */
+.logout-box {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    border: 2px solid #A1CF6B; /* Borda verde */
+    font-family: 'Inter', sans-serif;
+}
+
+.logout-box h3 {
+    margin-top: 0;
+    color: #12180B;
+}
+
+.logout-box p {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.logout-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Botões */
+.logout-buttons button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: transform 0.2s;
+}
+
+.logout-buttons button:hover {
+    transform: scale(1.05);
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn-confirm {
+    background-color: #c0392b; /* Vermelho para indicar saída */
+  color: white;
+}

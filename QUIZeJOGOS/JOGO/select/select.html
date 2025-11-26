@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="shortcut icon" href="../../../HOME/imgs/1-e6fb7e66.ico">
+  <title>VitaLab - Seleção de Personagem</title>
+  <link rel="stylesheet" href="select.css">
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="twinkling"></div>
+  
+  <div id="character-select">
+    <div class="header">
+      <h1>Escolha seu Personagem</h1>
+      <p>Hora de correr, coletar e ficar forte! Quem você será?</p>
+    </div>
+    
+    <div class="characters">
+      <div class="character-card" data-file="player1.png">
+        <div class="character-img-container">
+          <img src="../IMGSjogo/player1.png" alt="Personagem 1">
+          <div class="select-overlay">Selecionar</div>
+        </div>
+        <h3>Zyra</h3>
+        <p>Devora frutas, ignora junk food e espalha energia por onde passa.</p>
+      </div>
+      
+      <div class="character-card" data-file="player2.png">
+        <div class="character-img-container">
+          <img src="../IMGSjogo/player2.png" alt="Personagem 2">
+          <div class="select-overlay">Selecionar</div>
+        </div>
+        <h3>Riven</h3>
+        <p>Força bruta dos minerais, foge dos doces e pega tudo que deixa forte.</p>
+      </div>
+      
+      <div class="character-card" data-file="player3.png">
+        <div class="character-img-container">
+          <img src="../IMGSjogo/player3.png" alt="Personagem 3">
+          <div class="select-overlay">Selecionar</div>
+        </div>
+        <h3>Nixie</h3>
+        <p>Mestre das vitaminas, rápida e cheia de estilo, só pega o saudável.</p>
+      </div>
+    </div>
+    
+    <button id="startBtn" class="start-button" disabled>
+      <span>Iniciar Jogo</span>
+      <div class="button-loading"></div>
+    </button>
+    
+    <div class="loading-container" id="loadingContainer">
+      <div class="spinner"></div>
+      <p>Carregando...</p>
+    </div>
+  </div>
+  
+  <script src="select.js"></script>
+</body>
+</html>

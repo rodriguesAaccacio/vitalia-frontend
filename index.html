@@ -1,0 +1,394 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Literata:wght@400;700&family=Lato:wght@400;700&family=Sulphur+Point:wght@400;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+
+  <link rel="stylesheet" href="../menu.css">
+  <link rel="stylesheet" href="../HOME/home.css">
+  <script src="../HOME/home.js" defer></script>
+  <script src="feedback.js" defer></script>
+  <script src="/user-info.js"></script>
+  
+<script>
+    // Verifica se o usuário já passou pela tela de início
+    const jaEntrou = sessionStorage.getItem("jaEntrouNoSite");
+    
+    // Verifica se está logado
+    const estaLogado = sessionStorage.getItem("usuarioId");
+
+    // SE NINGUÉM CONHECE ELE (Nem logou, nem passou pela capa)...
+    if (!jaEntrou && !estaLogado) {
+        // ...Manda para a CAPA (inicio.html)
+        window.location.replace("inicio.html");
+    }
+</script>
+
+  <link rel="shortcut icon" href="./HOME/imgs/1-e6fb7e66.ico">
+
+  <title>Vitalia</title>
+</head>
+
+<body>
+
+  <div id="splash">
+    <h1 class="logo-text">
+      VITALIA
+     <img src="../HOME/imgs/FOLHA.png" alt="Folha" class="folha-logo1">
+    </h1>
+  </div>
+
+  <div id="main-content">
+
+    <header class="navbar">
+      <div class="logo">
+        <a href="index.html">
+          <img src="../HOME/imgs/LOGO-VITALIA.png" alt="Logo" />
+        </a>
+      </div>
+      
+<nav class="menu">
+        <ul>
+          <li>
+            <a class="menus" href="#">CONTEÚDOS </a>
+            <ul class="dropdown">
+              <li class="nutrientes">
+                <a href="#">NUTRIENTES</a>
+                <ul class="dropdownNutrientes">
+                  <li><a href="../../NUTRIENTES/lipidios.html">Lípidios</a></li>
+                  <li><a href="../../NUTRIENTES/carboidratos.html">Carboidratos</a></li>
+                  <li><a href="../../NUTRIENTES/fibras.html">Fibras</a></li>
+                  <li><a href="../../NUTRIENTES/proteinas.html">Proteína</a></li>
+                  <li><a href="../../NUTRIENTES/hidratacao.html">Hidratação</a></li>
+                  <li><a href="../../NUTRIENTES/vitaminas.html">Vitaminas</a></li>
+                  <li><a href="../../NUTRIENTES/minerais.html">Minerais</a></li>
+                </ul>
+              </li>
+              <li class="funcoes">
+                <a href="#">FUNÇÕES</a>
+                <ul class="dropdownFuncoes">
+                  <li><a href="../../FUNCOES/sistemaimunologico.html">Sistema Imunológico</a></li>
+                  <li><a href="../../FUNCOES/carenciaNutricional.html">Carência nutricional</a></li>
+                  <li><a href="../../FUNCOES/nutricaoEsaudeMental.html">Nutrição & Saúde mental</a></li>
+                  <li><a href="../../FUNCOES/nutrientesEmetabolismo.html">Nutrientes & Metabolismo</a></li>
+                </ul>
+              </li>
+              <li class="fases">
+                <a href="#">FASES DA VIDA</a>
+                <ul class="dropdownFases">
+                  <li><a href="../../FASES DA VIDA/infanciaEadolescencia.html">Infância & Adolecência</a></li>
+                  <li><a href="../../FASES DA VIDA/gravidez.html">Gravidez</a></li>
+                  <li><a href="../../FASES DA VIDA/senilidade.html">Senilidade</a></li>
+                </ul>
+              </li>
+              <li class="extras">
+                <a href="#">EXTRAS</a>
+                <ul class="dropdownExtras">
+                  <li><a href="../../EXTRAS/mitosEverdadesPRINCIPAL.html">Mitos & Verdades</a></li>
+                  <li><a href="../../EXTRAS/curiosidades.html">Curiosidades</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a class="menus" href="../../DICAS/dicas0.html">DICAS</a></li>
+          <li><a class="menus" href="../../QUIZeJOGOS/quizEjogos.html">QUIZ & JOGOS</a></li>
+          <li><a class="menus" href="../../ABOUT US/aboutus.html">SOBRE NÓS</a></li>
+        </ul>
+
+        <div id="user-info" class="user-info"></div>
+      </nav>
+
+    </header>
+
+
+    <nav class="tudo">
+      <div class="fundo">
+        <div class="conteudo">
+          <div class="inicio">
+            <h1>
+              VITALIA
+              <img src="../HOME/imgs/FOLHA.png" alt="Folha" class="folha-logo">
+            </h1>
+            <p>
+              Bem-vindo à Vitalia! Aqui você encontra conteúdos e dicas sobre nutrição, saúde e bem-estar para te
+              ajudar a fazer escolhas mais conscientes e viver com mais equilíbrio todos os dias.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    <div class="arraste">
+      <!-- Usei um placeholder se a imagem não carregar -->
+      <img src="./assets/animation_640_l3k1n5d3.gif" alt="Scroll Down" onerror="this.style.display='none'">
+    </div>
+
+      <div class="carousel">
+      <H2 class="titulo-cards" id="title">Explore nossos conteúdos</H2>
+        <div class="carousel-track">
+          <a href="./NUTRIENTES/carboidratos.html" class="card" id="carbo">
+            <h3>Carboidratos</h3>
+            <p>Fonte principal de energia para o corpo.</p>
+          </a>
+          <a href="./NUTRIENTES/fibras.html" class="card">
+            <h3>Fibras</h3>
+            <p>Essenciais para o bom funcionamento intestinal.</p>
+          </a>
+          <a href="./NUTRIENTES/lipidios.html" class="card">
+            <h3>Lipídios</h3>
+            <p>Reservas energéticas e proteção de órgãos.</p>
+          </a>
+          <!-- ... (Outros cards mantidos) ... -->
+           <a href="./NUTRIENTES/hidratacao.html" class="card">
+            <h3>Hidratação</h3>
+            <p>Água é vital para todas as funções do corpo.</p>
+          </a>
+           <a href="./NUTRIENTES/vitaminas.html" class="card">
+            <h3>Vitaminas</h3>
+            <p>Micronutrientes essenciais para metabolismo.</p>
+          </a>
+        </div>
+      
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+      </div>
+      
+
+      <main>
+        <section class="bloco-caminho">
+          <h2 class="titulo">CAMINHO VITAL</h2>
+          <div class="faixa-texto">
+            <p>
+              Antes de falar sobre o futuro da alimentação, que tal entender o passado?
+              De Hipócrates aos apps de dieta, a nutrição percorreu um longo caminho.
+              Veja como tudo ocorreu!
+            </p>
+          </div>
+          <p class="texto-verde">CLIQUE NAS IMAGENS PARA SABER MAIS!</p>
+        </section>
+        <div id="fade"></div>
+        <section class="linha-tempo">
+
+          <div class="evento">
+            <div class="linha-impar"></div>
+            <div class="conteudo teste">3000 a.C.</div>
+            <img class="imagem" src="../HOME/imgs/evento1.png" alt="Evento 1" onclick="abrirPopup('popup1')">
+            <!-- Popups mantidos -->
+            <div class="popup" id="popup1">
+              <span class="fechar" onclick="fecharPopup('popup1')">X</span>
+              <h3>ANTIGUIDADE</h3>
+              <p>Povos como egípcios e chineses já relacionavam alimentação com saúde.</p>
+            </div>
+          </div>
+
+
+          <div class="evento">
+            <div class="linha-par"></div>
+            <div class="conteudo teste2">500–1500</div>
+            <img class="imagem" src="./HOME/imgs/evento2.png" alt="Evento 2" onclick="abrirPopup('popup2')">
+
+            <div class="popup" id="popup2">
+              <span class="fechar" onclick="fecharPopup('popup2')">
+                <img class="img-fechar" src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>IDADE MÉDIA</h3>
+              <p>A alimentação era baseada em costumes religiosos e crenças. A nutrição não era vista de forma
+                científica.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="evento">
+            <div class="linha-impar"></div>
+            <div class="conteudo teste">Século XIX–XXI</div>
+            <img class="imagem" src="./HOME/imgs/evento3.png" alt="Evento 3" onclick="abrirPopup('popup3')">
+
+            <div class="popup" id="popup3">
+              <span class="fechar" onclick="fecharPopup('popup3')"><img class="img-fechar"
+                  src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>RENASCIMENTO</h3>
+              <p>Surgem os primeiros estudos sobre o funcionamento do corpo humano. Início da ligação entre comida e
+                metabolismo.
+
+              </p>
+            </div>
+          </div>
+
+          <div class="evento">
+            <div class="linha-par"></div>
+            <div class="conteudo teste2">Década de 1930</div>
+            <img class="imagem" src="./HOME/imgs/evento4.png" alt="Evento 4" onclick="abrirPopup('popup4')">
+
+            <div class="popup" id="popup4">
+              <span class="fechar" onclick="fecharPopup('popup4')"><img class="img-fechar"
+                  src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>DESCOBERTA DAS VITAMINAS</h3>
+              <p>O termo “vitamina” foi criado e começaram os estudos sobre a importância desses compostos para o
+                organismo.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="evento">
+            <div class="linha-impar"></div>
+            <div class="conteudo teste">1939–1945</div>
+            <img class="imagem" src="./HOME/imgs/evento5.png" alt="Evento 5" onclick="abrirPopup('popup5')">
+
+            <div class="popup" id="popup5">
+              <span class="fechar" onclick="fecharPopup('popup5')">
+                <img class="img-fechar" src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>SEGUNDA GUERRA MUNDIAL</h3>
+              <p>Avanço no estudo da nutrição para manter soldados saudáveis. Criação de dietas balanceadas em larga
+                escala.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="evento">
+            <div class="linha-par"></div>
+            <div class="conteudo teste2">Década de 1990</div>
+            <img class="imagem" src="./HOME/imgs/evento6.png" alt="Evento 6" onclick="abrirPopup('popup6')">
+
+            <div class="popup" id="popup6">
+              <span class="fechar" onclick="fecharPopup('popup6')">
+                <img class="img-fechar" src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>CRIAÇÃO DAS PIRÂMIDES ALIMENTARES</h3>
+              <p>Ferramentas educativas para ensinar como montar uma alimentação equilibrada.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="evento">
+            <div class="linha-impar"></div>
+            <div class="conteudo teste">Anos 2000</div>
+            <img class="imagem" src="./HOME/imgs/evento7.png" alt="Evento 7" onclick="abrirPopup('popup7')">
+
+            <div class="popup" id="popup7">
+              <span class="fechar" onclick="fecharPopup('popup7')">
+                <img class="img-fechar" src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>SURGE A <br> NUTRIÇÃO FUNCIONAL</h3>
+              <p> Ideia de que os alimentos podem prevenir doenças e melhorar funções do corpo, além de nutrir.</p>
+            </div>
+
+          </div>
+
+          <div class="evento">
+            <img class="imagem" id="ultima-imagem" src="./HOME/imgs/evento8.png" alt="Evento 8"
+              onclick="abrirPopup('popup8')">
+
+            <div class="popup" id="popup8">
+              <span class="fechar" onclick="fecharPopup('popup8')">
+                <img class="img-fechar" src="./HOME/imgs/simboloX.png" alt="símbolo de X"></span>
+              <h3>ATUALIDADE</h3>
+              <p>Tendência de alimentação personalizada, dietas baseadas em DNA, foco em sustentabilidade e comida
+                natural.</p>
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="rodape">
+          <div class="footer-logo">
+            <img src="./HOME/imgs/logo-completa.png" alt="">
+          </div>
+          <hr>
+          <div class="footer-content">
+            <div class="developers">
+              <h3>DESENVOLVEDORES</h3>
+              <ul>
+                <li>Andressa Accacio</li>
+                <li>Bruna Marques</li>
+                <li>Myriã Xavier</li>
+                <li>Nicolas de Souza</li>
+                <li>Rayssa Cruz</li>
+              </ul>
+            </div>
+            <div class="contacts">
+              <h3>CONTATE-NOS</h3>
+              <ul>
+                <li>@andressaaxl</li>
+                <li>@brunasmqs</li>
+                <li>@myria.vi_</li>
+                <li>-----</li>
+                <li>@cqzray</li>
+              </ul>
+            </div>
+            <div class="agradecimento">
+              <h3>AGRADECIMENTOS</h3>
+              <ul>
+                <li>Ao professor <strong class="marcio" data-modal="modal1">Márcio</strong>, por toda sua ajuda e paciência;</li><br>
+                <li>Ao professor <strong class="benones" data-modal="modal2">Benones</strong>, pelo auxílio durante as aulas;</li><br>
+                <li>Às nossas famílias, pelo apoio.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="feedback">
+            <button class="buttonFeedback" onclick="abrirPopup('popup-feedback2')">DEIXE SEU FEEDBACK</button>
+          </div>
+          <div>
+            <div class="popup-feedback" id="popup-feedback2">
+
+              <div class="cima">
+                <h4>DEIXE SEU FEEDBACK</h4>
+                <span class="fechar" onclick="fecharPopup('popup-feedback2')">
+                  <img class="fecharPopup" src="./HOME/imgs/fechar preto.png" alt="">
+                </span>
+              </div>
+              <div class="corpo">
+                <p>Nome:</p>
+                <input class="dados" type="text" id="nome" name="nome" required>
+
+                <p>Endereço de e-mail (apenas Gmail):</p>
+                <input class="dados" type="email" id="email" name="email" required>
+
+                <p>Digite aqui</p>
+                <textarea class="seuFeedback" id="feedback" name="feedback" placeholder="Digite aqui..."></textarea required>
+
+              </div>
+              <button class="enviar" onclick="enviarFeedback()">ENVIAR</button>
+          
+          </div>
+        </div>
+
+
+
+
+
+
+        <div id="modal1" class="modal">
+          <img class="marcal" src="./marcio.jpg" alt="">
+        </div>
+        <div id="modal2" class="modal">
+          <img class="bnones" src="./benones.jpg" alt="">
+        </div>
+
+      </section>
+
+
+    </main>
+  </nav>
+
+</div>
+
+</body>
+
+<div id="modal-logout" class="logout-overlay">
+    <div class="logout-box">
+        <h3>Tem certeza que deseja sair?</h3>
+        <p>Você precisará fazer login novamente para acessar sua conta.</p>
+        <div class="logout-buttons">
+            <button id="btn-cancelar-logout" class="btn-cancel">Cancelar</button>
+            <button id="btn-confirmar-logout" class="btn-confirm">Sair da Conta</button>
+        </div>
+    </div>
+</div>  </html>

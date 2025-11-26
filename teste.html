@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="quizPRINCIPALperguntas.css">
+  <script src="./quizPRINCIPALperguntas.js" defer></script>
+  <title>Quiz Principal Perguntas</title>
+  <link rel="shortcut icon" href="../../HOME/imgs/1-e6fb7e66.ico">
+</head>
+<body>
+  <div class="quiz-card">
+    <!-- Barra superior -->
+    <div class="barra">
+      <div id="bar">
+        <div id="inabar"></div>
+      </div>
+      <h1 id="percent" class="porcentagem">0%</h1>
+    </div>
+    <div class="top-bar">
+      <h2 id="question-indicator">Pergunta 1 de 6</h2>
+      <button class="botao-sair" id="exit-btn">X</button>
+    </div>
+
+    <!-- Pergunta -->
+    <div class="question-box">
+      <h2 class="questiontext1"></h2>
+    </div>
+
+    <!-- Alternativas -->
+    <div class="choice-container">
+      <p class="choice-prefix">A</p>
+      <p class="choice-text" data-number="1"></p>
+    </div>
+    <div class="choice-container">
+      <p class="choice-prefix">B</p>
+      <p class="choice-text" data-number="2"></p>
+    </div>
+    <div class="choice-container">
+      <p class="choice-prefix">C</p>
+      <p class="choice-text" data-number="3"></p>
+    </div>
+    <div class="choice-container">
+      <p class="choice-prefix">D</p>
+      <p class="choice-text" data-number="4"></p>
+    </div>
+
+    <!-- Botão -->
+    <div class="next-button">
+      <button class="the-real-button">Responder</button>
+    </div>
+
+    <!-- Barra de progresso -->
+    
+  </div>
+
+  <!-- Modal de saída -->
+  <div id="exit-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Confirmar Saída</h3>
+      <p>Tem certeza que deseja sair do quiz?</p>
+      <div class="modal-actions">
+        <button id="confirm-exit" class="modal-yes">Sim</button>
+        <button id="cancel-exit" class="modal-no">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</body> </html>

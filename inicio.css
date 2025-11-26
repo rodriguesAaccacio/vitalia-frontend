@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* CORREÇÃO CHAVE: O body agora é o fundo de tudo */
+body {
+    /* Imagem de Fundo */
+    background-image: url('./HOME/imgs/img-inicio.jpg'); 
+    /* Substitua esta URL pela sua imagem de fundo! */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Opcional: mantém a imagem fixa ao rolar, se for o caso */
+    
+    /* Centralização do Conteúdo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Remove barra de rolagem geral */
+}
+
+/* Overlay Escuro AUMENTADO (diretamente no body) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65); /* Escurecimento */
+    z-index: -1; /* Manda o overlay para trás do conteúdo */
+}
+
+/* Conteúdo sobre a imagem (o que estava na caixa branca) */
+.conteudo-sobreposto {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    max-width: 34rem; /* Limita a largura do bloco de conteúdo */
+    /* Removendo qualquer background branco */
+    /* background-color: transparent; */
+}
+
+
+.conteudo-sobreposto .logo-vitalia {
+    width: 18rem;
+    margin-bottom: 20px;
+}
+
+.conteudo-sobreposto h1 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.conteudo-sobreposto p {
+    font-size: 0.9em;
+    margin-bottom: 40px;
+    font-weight: 200;
+}
+
+.opcoes-botoes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.opcoes-botoes a {
+    text-decoration: none;
+    width: 100%;
+}
+
+.opcoes-botoes button {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    font-size: 1.1rem;
+    border-radius: 5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+/* Botões Transparentes com Contorno Branco */
+.btn-cadastro {
+    background-color: transparent;
+    color: white; 
+    border: 2px solid white; 
+}
+
+.btn-cadastro:hover {
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+.btn-entrar {
+    background-color: transparent; 
+    color: white;
+    border: 2px solid white; 
+}
+
+.btn-entrar:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}   
+.btn-semcadastro {
+    background-color: transparent; 
+    color: white;
+    border: 2px solid white; 
+}
+
+.btn-semcadastro:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}   
+@media (max-width: 768px) {
+    .conteudo-sobreposto {
+        padding: 40px;
+        max-width: 90%;
+    }
+    
+    .conteudo-sobreposto h1 {
+        font-size: 2em;
+    }
+}
+

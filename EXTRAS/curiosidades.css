@@ -1,0 +1,360 @@
+.conteudo { 
+  font-family: Arial, sans-serif;
+  line-height: 1.1;
+
+}
+
+body {
+  background: 
+    linear-gradient(to right, rgba(37, 0, 0, 0) 0%, rgba(37, 0, 0, 0.4) 30%, rgba(37, 0, 0, 0.8) 60%, #250000 90%),
+    url(./IMGSextras/1000219601.png) no-repeat left center;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #250000;
+
+  margin: 5rem 6rem;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+
+
+
+.video{
+  margin-left: 6rem;
+  display: flex;
+ 
+}
+.instrucao{
+  margin-left: 6rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+
+  p{
+    font-size: 1.125rem;
+    font-weight: bold;
+  }
+}
+
+.texto h1, h2, p{
+
+  color: #fff;
+
+}
+
+
+h1 {
+
+  font-family: "Literata", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 3rem;
+
+}
+
+h2 {
+  font-family: "Literata", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-family: "Literata", sans-serif;
+  font-weight: 500;
+  font-style: medium;
+  font-size: 1.6rem;
+
+
+}
+
+.curiosidades p{
+  color: #000;
+}
+
+p {
+  font-family: "Sulphur Point", sans-serif;
+  font-weight: 400;
+  font-size: 1.375rem;
+  font-style: normal;
+  margin-top: 3.2rem;
+
+}
+
+.texto{
+  margin-top: 9rem;
+}
+
+.arraste{
+  color: #fff;
+}
+
+.video{
+  color: #fff;
+}
+
+.textoVideo p{
+  color: #fff;
+}
+
+.texto2 {
+  background-color: #FFD93D;
+  padding-left: 2rem;
+  padding-right: 14rem;
+  border-radius: 0.75rem;
+  color: #000;
+  padding-top: 0rem;
+
+  position: relative;
+  z-index: -2;
+
+  margin-right: -12rem;
+
+}
+
+.imgEtexto2 {
+  display: flex;
+  margin-top: 4rem;
+  justify-content: right;
+
+  p {
+    width: 39rem;
+  }
+
+}
+.texto1 {
+  background-color: #FFD93D;
+  
+  padding-right: 2rem;
+  padding-left: 14rem;
+  border-radius: 0.75rem;
+  color: #000;
+  padding-top: 0rem;
+  height: -20rem;
+
+  position: relative;
+  z-index: -2;
+
+ margin-left: -12rem;
+
+}
+
+.imgEtexto3 {
+  display: flex;
+  margin-top: 4rem;
+  justify-content: left;
+
+  p {
+    width: 39rem;
+  }
+
+}
+
+.fonte{
+  font-size: 0.9rem;
+}
+
+
+.cacau,
+.graos,
+.espinafre {
+  margin-top: 4rem;
+  align-items: center;
+  text-align: right;
+  gap: 12rem;
+  margin-right: 9.5rem;
+}
+
+.graos img{
+  margin-right:2rem;
+}
+
+.video {
+  display: flex;
+  align-items: center;
+p{
+  text-align: center;
+  color: #e2e2e2;
+  
+  justify-content: end;
+}
+}
+
+h3{
+  color: #fff;
+}
+.cliqe{
+  p{
+  color: #7c0303;
+  font-weight: bold;
+}
+  display: flex;
+  justify-content: center;
+  margin-right: -7rem;
+
+  p{
+    color: #f1a6a6;
+    font-weight: bold;
+  }
+}
+
+video{
+  display: flex;
+  justify-content: end;
+  gap: 10rem;
+  p{
+    color: #7c0303;
+    font-weight: bold;
+  }
+}
+.alho,
+.frutas,
+.titulo {
+  margin-left: 9.5rem;
+}
+
+.conteudo img {
+  width: 25rem;
+}
+
+.titulo {
+  margin-top: 8rem;
+  width: 53rem;
+
+  span{
+    color: #A1CF6B;
+    
+    font-weight: bold;
+
+  }
+}
+
+.info {
+  display: block;           
+  opacity: 0;              
+  max-height: 0;            
+  overflow: hidden;         
+  transition: all 0.5s ease; 
+}
+
+.info.ativo {
+  opacity: 1;               
+  max-height: 62.5rem;   
+}
+
+.texto1{
+  padding-block: -2rem;
+}
+
+.imgEtexto2, .imgEtexto3 {
+  display: flex;
+  align-items: center; 
+  gap: 2rem;         
+}
+
+.graos{
+  margin-bottom: 2rem;
+}
+
+
+.siema{ 
+  display: flex; 
+  height: 13rem; 
+  scroll-behavior: smooth; 
+} 
+.siema > div { 
+  flex: 0 0 600%; 
+  margin-left: 4rem; 
+}
+
+.texto h3{
+  color: #fff;
+}
+
+
+.proximo{
+  display: flex;
+  margin-bottom: 2rem;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 2rem;
+  p{
+    font-family: "Lato", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  img{
+    width: 1.5rem;
+    transform: rotate(180deg);
+    margin-bottom: -2rem;
+  }
+}
+
+.video{
+  display: flex;
+  justify-content: space-between;
+  .textoVideo p{
+    text-align: end;
+    font-size: 1rem;
+    font-weight: 800;
+    margin-right: 2rem;
+  }
+  .textoVideo img{
+    width: 3rem;
+    margin-bottom: -2rem;
+  }
+
+  .textoVideo{
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+  }
+}
+
+/* Estilização do container principal dos vídeos */
+.siema {
+  padding: 2rem 0;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/* Estilização de cada slide (cada div que contém o iframe) */
+.siema > div {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilização do iframe (o vídeo em si) */
+.siema iframe {
+  width: 333.3px;
+  height: 210px;
+  border: none;
+  border-radius: 16px; /* Bordas arredondadas */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Sombra suave */
+  transition: all 0.3s ease-in-out; /* Transição suave */
+  background: #000; /* Fundo preto enquanto carrega */
+}
+
+/* Efeito HOVER: aumenta levemente e sombra mais forte */
+.siema iframe:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 24px rgb(129, 0, 0);}
+
+.imagem{
+  cursor: pointer;
+}
+
+.imagem:hover{
+  transform: scale(1.05);
+  transition: 0.4s;
+}
+
+/* CSS do container do slider */
+.siema {
+  overflow: hidden;  /* bloqueia a rolagem horizontal */
+  width: 100%;       /* largura fixa ou desejada */   }

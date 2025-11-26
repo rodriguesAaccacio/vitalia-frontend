@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../../HOME/imgs/1-e6fb7e66.ico">
+  <title>Pega-Pega Nutricional - Fase 5</title>
+  <link rel="stylesheet" href="jogo.css">
+  <script src="../../api.js"></script>
+</head>
+<body>
+  <div id="gameContainer" role="main">
+    <!-- ===== HUD ===== -->
+    <header id="hud" role="banner">
+      <span id="vidas" aria-label="Vidas">
+        ❤️ <span id="livesCount">3</span>
+      </span>
+      <span id="pontos" aria-label="Pontuação">
+        ⭐ <span id="scoreCount">0</span>
+      </span>
+      <span id="fase">Fase 5/5</span>
+      <div id="hudControls" role="toolbar">
+        <button id="pauseBtn" class="hud-btn" title="Pausar" aria-label="Pausar">⏸️</button>
+        <button id="muteBtn" class="hud-btn" title="Som" aria-label="Ativar/Desativar Som">🔊</button>
+        <button id="menuBtn" class="hud-btn" title="Menu" aria-label="Menu Secundário">🏠</button>
+      </div>
+    </header>
+
+    <!-- ===== CANVAS ===== -->
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    
+    <!-- ===== LOADING ===== -->
+    <div id="loadingContainer" role="alertdialog" aria-live="polite">
+      <div class="loading-content">
+        <h2>Carregando o Jogo</h2>
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Preparando ambiente...</p>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== PAUSE ===== -->
+    <div id="pauseScreen" class="overlay-screen" aria-hidden="true">
+      <div class="modal-content">
+        <h2>Jogo Pausado</h2>
+        <p>Fase atual: 5/5</p>
+        <div class="modal-buttons">
+          <button id="resumeBtn" class="modal-btn primary">Continuar</button>
+          <button id="restartBtn" class="modal-btn">Reiniciar Fase</button>
+          <button id="levelSelectBtn" class="modal-btn">Selecionar Fase</button>
+          <a href="../JOGO/homeJOGO/homeJ.html"><button id="mainMenuBtn" class="modal-btn">Menu Principal</button></a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== GAME OVER ===== -->
+    <div id="gameOverScreen" class="overlay-screen" aria-hidden="true">
+      <div class="modal-content">
+        <h2>Game Over</h2>
+        <p>Você foi derrotado na fase 5!</p>
+        <p class="final-score">Pontuação: <span id="finalScore">0</span></p>
+        <div class="modal-buttons">
+          <button id="retryBtn" class="modal-btn primary">Tentar Novamente</button>
+          <button id="levelSelectFromGameOver" class="modal-btn">Selecionar Fase</button>
+          <a href="../JOGO/homeJOGO/homeJ.html"><button id="goToMenuBtn" class="modal-btn">Menu Principal</button></a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== VITÓRIA DE FASE ===== -->
+    <div id="levelCompleteScreen" class="overlay-screen" aria-hidden="true">
+      <div class="modal-content">
+        <h2>Fase Concluída!</h2>
+        <p>Parabéns! Você completou a fase 5!</p>
+        <p class="final-score">Pontuação: <span id="levelScore">0</span></p>
+        <div class="modal-buttons">
+          <button id="nextLevelBtn" class="modal-btn primary" onclick="window.location.href='jogo.html'">Jogar Novamente</button>
+          <button id="levelSelectFromComplete" class="modal-btn">Selecionar Fase</button>
+          <a href="../JOGO/homeJOGO/homeJ.html"><button id="menuFromComplete" class="modal-btn">Menu Principal</button></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== VITÓRIA FINAL ===== -->
+    <div id="victoryScreen" class="overlay-screen" aria-hidden="true">
+      <div class="modal-content">
+        <h2>Vitória Total!</h2>
+        <p>Parabéns! Você completou todas as 5 fases!</p>
+        <p class="final-score">Pontuação Final: <span id="victoryScore">0</span></p>
+        <div class="modal-buttons">
+          <button id="playAgainBtn" class="modal-btn primary" onclick="window.location.href='jogo.html'">Jogar Novamente</button>
+          <a href="./homeJOGO/homeJ.html"><button id="victoryMenuBtn" class="modal-btn">Continuar</button></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SELEÇÃO DE FASE ===== -->
+    <div id="levelSelectScreen" class="overlay-screen" aria-hidden="true">
+      <div class="modal-content">
+        <h2>Selecionar Fase</h2>
+        <p class="level-status">Fase atual: 5</p>
+        <div class="level-buttons">
+          <button class="level-btn" data-level="1" onclick="window.location.href='jogo.html'">Fase 1</button>
+          <button class="level-btn" data-level="2" onclick="window.location.href='fase2.html'">Fase 2</button>
+          <button class="level-btn" data-level="3" onclick="window.location.href='fase3.html'">Fase 3</button>
+          <button class="level-btn" data-level="4" onclick="window.location.href='fase4.html'">Fase 4</button>
+          <button class="level-btn active" data-level="5">Fase 5</button>
+        </div>
+        <div class="modal-buttons">
+          <button id="backToGameBtn" class="modal-btn">Voltar ao Jogo</button>
+          <a href="../JOGO/homeJOGO/homeJ.html"><button id="mainMenuBtn" class="modal-btn">Ir ao Menu Principal</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="fase5.js"></script>
+</body>
+</html>

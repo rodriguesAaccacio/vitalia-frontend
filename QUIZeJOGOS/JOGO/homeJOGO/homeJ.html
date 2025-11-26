@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="homeJ.css">
+    <link rel="stylesheet" href="../../../menu.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sulphur+Point:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="/user-info.js"></script>
+
+<link
+        href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap"
+        rel="stylesheet">
+    <script src="./homeJ.js"></script>
+    <link rel="shortcut icon" href="../../../HOME/imgs/1-e6fb7e66.ico">
+    <title>Home Jogo</title>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <a href="../../../index.html">
+                <img src="../../../HOME/imgs/LOGO-VITALIA.png" alt="Logo" />
+            </a>
+        </div>
+        <nav class="menu">
+            <ul>
+
+                <li>
+                    <a href="#">CONTEÚDOS </a>
+                    <ul class="dropdown">
+                        <li class="nutrientes">
+                            <a href="#">NUTRIENTES</a>
+                            <ul class="dropdownNutrientes">
+                                <li><a href="../../../NUTRIENTES/lipidios.html">Lípidios</a></li>
+                                <li><a href="../../../NUTRIENTES/carboidratos.html">Carboidratos</a></li>
+                                <li><a href="../../../NUTRIENTES/fibras.html">Fibras</a></li>
+                                <li><a href="../../../NUTRIENTES/proteinas.html">Proteína</a></li>
+                                <li><a href="../../../NUTRIENTES/hidratacao.html">Hidratação</a></li>
+                                <li><a href="../../../NUTRIENTES/vitaminas.html">Vitaminas</a></li>
+                                <li><a href="../../../NUTRIENTES/minerais.html">Minerais</a></li>
+                            </ul>
+                        </li>
+                        <li class="funcoes">
+                            <a href="#">FUNÇÕES</a>
+                            <ul class="dropdownFuncoes">
+                                <li><a href="../../../FUNCOES/sistemaimunologico.html">Sistema Imunológico</a></li>
+                                <li><a href="../../../FUNCOES/carenciaNutricional.html">Carência nutricional</a></li>
+                                <li><a href="../../../FUNCOES/nutricaoEsaudeMental.html">Nutrição & Saúde mental</a></li>
+                                <li><a href="../../../FUNCOES/nutrientesEmetabolismo.html">Nutrientes & Metabolismo</a></li>
+                            </ul>
+                        </li>
+                        <li class="fases">
+                            <a href="#">FASES DA VIDA</a>
+                            <ul class="dropdownFases">
+                                <li><a href="../../../FASES DA VIDA/infanciaEadolescencia.html">Infância & Adolecência</a>
+                                </li>
+                                <li><a href="../../../FASES DA VIDA/gravidez.html">Gravidez</a></li>
+                                <li><a href="../../../FASES DA VIDA/senilidade.html">Senilidade</a></li>
+                            </ul>
+                        </li>
+                        <li class="extras">
+                            <a href="#">EXTRAS</a>
+                            <ul class="dropdownExtras">
+                                <li><a href="../../../EXTRAS/mitosEverdadesPRINCIPAL.html">Mitos & Verdades</a></li>
+                                <li><a href="../../../EXTRAS/curiosidades.html">Curiosidades</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="../../../DICAS/dicas0.html">DICAS</a></li>
+                <li><a href="../../QUIZ/quizPRINCIPAL.html" class="ativo">QUIZ & JOGOS</a></li>
+                <li><a href="../../../ABOUT US/aboutus.html">SOBRE NÓS</a></li>
+
+            </ul>
+    <div id="user-info" class="user-info"></div>
+
+    </nav>
+    </header>
+    <div class="conteudo">
+
+        <img class="sla" src="../IMGSjogo/image 81.png" alt="">
+
+<div class="botoes">
+        <button class="com">COMEÇAR</button>
+        <button class="como" data-modal="modal1">COMO JOGAR?</button>
+        <button class="best" onclick="window.location.href='../RANKING/ranking.html'">RANKING</button>
+    </div>
+</div>
+    <div id="fade" class="fade"></div>
+    <div id="modal1" class="modal">
+        <div class="cima">
+            <h4 class="cj">Como jogar?</h4>
+            <button class="fechar" data-close="modal1"><img src="../../../EXTRAS/IMGSextras/fechar-branco.png"
+                    alt=""></button>
+        </div>
+        <div class="bots">
+            <button class="obj" data-modal="modal-objetivo">OBJETIVO</button>
+            <button class="dica" data-modal="modal-dica">DICAS</button>
+            <button class="control" data-modal="modal-controle">CONTROLE</button>
+            <button class="regras" data-modal="modal-regras">REGRAS</button>
+        </div>
+    </div>
+
+    <div class="objetivo">
+        <div id="modal-objetivo" class="modal">
+            <div class="cima">
+                <h4 class="cj">Objetivo</h4>
+                <button class="fechar" data-close="modal-objetivo"><img
+                        src="../../../EXTRAS/IMGSextras/fechar-branco.png" alt=""></button>
+            </div>
+            <p>Colete todas as frutas espalhadas pelo mapa sem perder suas 3 vidas!</p>
+        </div>
+    </div>
+
+
+    <div class="dica">
+        <div id="modal-dica" class="modal">
+            <div class="cima">
+                <h4 class="cj">Dicas</h4>
+                <button class="fechar" data-close="modal-dica"><img src="../../../EXTRAS/IMGSextras/fechar-branco.png"
+                        alt=""></button>
+            </div>
+            <p>Fuja dos monstros: eles seguem você!</p>
+
+            <p>Aperte <strong>P</strong> no teclado para pausar o jogo.</p>
+        </div>
+
+    </div>
+
+
+    <!-- Modal Controle -->
+    <div id="modal-controle" class="modal">
+        <div class="cima">
+            <h4 class="cj">Controle</h4>
+            <button class="fechar" data-close="modal-controle"><img src="../../../EXTRAS/IMGSextras/fechar-branco.png"
+                    alt=""></button>
+        </div>
+        <p>
+        <ul>
+            <ul class="controles">
+                <li class="moverCima">
+                  <img src="../../../assets/streamline_computer-keyboard-next-keyboard-next-arrow-right (3).png"
+                       alt="Seta para Cima" class="rotacionarCima">
+                  <span>Seta para Cima ou tecla <strong class="controleCOR">W</strong>: mover para cima</span>
+                </li>
+              
+                <li class="moverBaixo">
+                  <img src="../../../assets/streamline_computer-keyboard-next-keyboard-next-arrow-right (3).png"
+                       alt="Seta para Baixo" class="rotacionarBaixo">
+                  <span>Seta para Baixo ou tecla <strong class="controleCOR">S</strong>: mover para baixo</span>
+                </li>
+              
+                <li class="moverDireita">
+                  <img src="../../../assets/streamline_computer-keyboard-next-keyboard-next-arrow-right (3).png"
+                       alt="Seta para Direita" class="rotacionarDireita">
+                  <span>Seta para Direita ou tecla <strong class="controleCOR">D</strong>: mover para a direita</span>
+                </li>
+              
+                <li class="moverEsquerda">
+                  <img src="../../../assets/streamline_computer-keyboard-next-keyboard-next-arrow-right (3).png"
+                       alt="Seta para Esquerda" class="rotacionarEsquerda">
+                  <span>Seta para Esquerda ou tecla <strong class="controleCOR">A</strong>: mover para a esquerda</span>
+                </li>
+              </ul>
+              
+        </ul>
+        </p>
+    </div>
+
+    <!-- Modal Regras -->
+    <div id="modal-regras" class="modal">
+        <div class="cima">
+            <h4 class="cj">Regras</h4>
+            <button class="fechar" data-close="modal-regras"><img src="../../../EXTRAS/IMGSextras/fechar-branco.png"
+                    alt=""></button>
+        </div>
+        <p>- Desvie dos obstáculos para não ser pego! <br> <br>
+            - Fuja dos monstros! Se perder 3 vidas será Game Over! <br> <br>
+            - Colete todas as frutas para vencer a fase e avançar no jogo! <br> <br>
+
+            - Cada fase traz novos desafios: obstáculos diferentes, monstros mais rápidos e mais frutas! <br> <br></p>
+    </div>
+
+</body>
+
+</html>

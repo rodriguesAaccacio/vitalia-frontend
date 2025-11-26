@@ -1,0 +1,32 @@
+# ======================
+# FRONTEND GITIGNORE
+# ======================
+
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Build gerado pelo build de produção
+dist/
+build/
+
+# Cache de ferramentas (React, Vite, Next, etc.)
+.next/
+.nuxt/
+.vite/
+.parcel-cache/
+.cache/
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/

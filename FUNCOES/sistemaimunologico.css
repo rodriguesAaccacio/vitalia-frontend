@@ -1,0 +1,127 @@
+body {
+    background-image:url(../HOME/imgs/fundinho.png);
+    background-color: #420E0D;
+
+
+    overflow-x: hidden;
+}
+.imagem{
+    padding: 2rem;
+    background-color: #390909;
+    border-radius: 3rem;
+}
+
+.conteudo{
+
+    line-height: 1.1;
+    margin: 0 6rem;
+    margin-top: 7rem;
+    padding: 0;
+
+}
+
+.primeiroParagrafo,
+.segundoParagrafo,
+.conteudo{
+    justify-content: space-between;
+}
+
+
+.fluxo p {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+h1,
+h2,
+h4,
+p,
+ul {
+    color: #F5F5F5;
+}
+
+
+h1 {
+
+    font-family: "Literata", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size:3rem;
+
+}
+
+h2 {
+    font-family: "Literata", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.75rem;
+}
+
+h4 {
+    font-family: "Literata", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.688rem;
+
+}
+
+.conteudo p {
+    font-family: "Sulphur Point", sans-serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    font-style: normal;
+    margin-top: 3.2rem;
+}
+
+.titulo {
+    display: flex;
+    margin-top: 4rem;
+    align-items: center;
+    gap: 12rem;
+
+}
+
+.primeiroParagrafo {
+    display: flex;
+    margin-top: 4rem;
+    align-items: center;
+    text-align: right;
+    gap: 13rem;
+}
+
+.segundoParagrafo{
+    display: flex;
+    margin-top: 4rem;
+    align-items: center;
+    gap: 12rem;
+    
+}
+
+.imgConteudo{
+    width: 22rem;
+   
+}
+
+
+.fluxo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+}
+
+
+.setaEsquerda {
+    transform: rotate(180deg);
+    width: 1.5rem;
+  }
+  
+.setaDireita {
+    width: 1.5rem
+  }
