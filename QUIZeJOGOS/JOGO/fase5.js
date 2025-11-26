@@ -1,5 +1,3 @@
-import { API_BASE_URL } from '../../api.js';
-
 // ==================== GUARDA-COSTAS (SEGURANÇA) ==================== 
 // // Verifica se o usuário está logado. Se não estiver, manda pro Login.
 if (!sessionStorage.getItem("usuarioId")) {

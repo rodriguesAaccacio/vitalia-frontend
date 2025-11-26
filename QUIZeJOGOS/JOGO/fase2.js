@@ -1,8 +1,5 @@
-import { API_BASE_URL } from '../../api.js';
-
-// ==================== GUARDA-COSTAS (SEGURANÇA) ====================// Verifica se o usuário está logado. Se não estiver, manda pro Login.
 if (!sessionStorage.getItem("usuarioId")) {
-  alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
+alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
   
   // ATENÇÃO: Ajuste os "../" abaixo dependendo de onde está sua pasta de Login
   // Se o jogo está em /QUIZeJOGOS/JOGO/ e o login na raiz ou pasta irmã:

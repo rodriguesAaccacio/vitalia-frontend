@@ -1,5 +1,3 @@
-import { API_BASE_URL } from '../../api.js';
-
 if (!sessionStorage.getItem("usuarioId")) {
   alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
   
@@ -97,12 +95,8 @@ restartBtn.addEventListener('click', restartGame);
 mainMenuBtn.addEventListener('click', goToMainMenu);
 retryBtn.addEventListener('click', restartGame);
 goToMenuBtn.addEventListener('click', goToMainMenu);
-nextLevelBtn.addEventListener('click', () => {
-    // Redundância de segurança: Salva de novo antes de ir
-    localStorage.setItem("accumulatedScore", player.score.toString());
-    localStorage.setItem("lives", player.lives.toString());
-    window.location.href = 'fase2.html';
-});menuFromComplete.addEventListener('click', goToMainMenu);
+nextLevelBtn.addEventListener('click', () => window.location.href = 'fase2.html');
+menuFromComplete.addEventListener('click', goToMainMenu);
 levelSelectFromComplete.addEventListener('click', showLevelSelect);
 muteBtn.addEventListener('click', toggleMute);
 menuBtn.addEventListener('click', showLevelSelect);
@@ -164,14 +158,17 @@ buttons.forEach(btn => {
 }
 
 // Chamar essa função quando carregar o menu de seleção
-window.addEventListener("load", updateLevelButtons);  
+window.addEventListener("load", updateLevelButtons);
+
+// Chamar saveProgress() smp que uma fase for concluída
+/*
 function showLevelComplete() {
-    levelScore.textContent = player.score;
-    levelCompleteScreen.style.display = 'flex';
-    
-    localStorage.setItem("accumulatedScore", player.score.toString()); 
-    localStorage.setItem("lives", player.lives.toString()); // Salve a vida também
-}
+levelScore.textContent = player.score;
+  levelCompleteScreen.style.display = 'flex';
+    saveProgress(currentLevel);
+    }
+    */
+
 
 
 // Inicializa o jogo
@@ -661,9 +658,10 @@ async function enviarPontuacaoParaBanco(pontosFinais) {
       console.log("Status do salvamento:", data.message);
       
       if(data.newRecord) {
-          console.log("NOVO RECORDE REGISTRADO!");
-    }
-  } catch (error) {
-      console.error("Erro ao conectar com o servidor:", error);
-  }
+           console.log("NOVO RECORDE REGISTRADO!");
+           alert("Parabéns! Novo recorde!");
+       } // <--- TEM QUE TER ESSA CHAVE AQUI
+   } catch (error) {
+       console.error("Erro ao conectar com o servidor:", error);
+   }
 }
