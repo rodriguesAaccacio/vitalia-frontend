@@ -1,7 +1,7 @@
 // Lista com os perfis do grupo, cada um com nome, insta, faculdade, resumo e foto
 const perfis = {
     andressa: {
-        nome: "Andressa Acaccio",
+        nome: "Andressa Accacio",
         user: "Instagram: @andressaaxl",
         faculdade: "Estuda no: UNASP-SP",
         resumo: "Infos textuais, ajuda no design e envolvimento em todas as animações",
