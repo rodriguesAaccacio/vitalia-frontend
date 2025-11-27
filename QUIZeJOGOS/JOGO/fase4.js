@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../../api.js';
+
 if (!sessionStorage.getItem("usuarioId")) { 
   alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
   
@@ -403,18 +405,19 @@ function showLevelComplete() {
 levelScore.textContent = player.score;
 levelCompleteScreen.style.display = 'flex';
 paused = true;
-}
-
-// Avança para o próximo nível
+} 
 function nextLevel() {
-if (currentLevel < totalLevels) {
-  // Salva o progresso
-localStorage.setItem("accumulatedScore", player.score.toString());
-  localStorage.setItem("lives", player.lives.toString());
-  
-  // Redireciona para a próxima fase
-  window.location.href = 'fase5.html';
-}
+  if (currentLevel < totalLevels) {
+    // Salva o progresso
+    localStorage.setItem("accumulatedScore", player.score.toString());
+    localStorage.setItem("lives", player.lives.toString());
+    
+    // ADICIONE ISSO AQUI:
+    enviarPontuacaoParaBanco(player.score); // <--- Garante o ranking atualizado
+    
+    // Redireciona para a próxima fase
+    window.location.href = 'fase4.html';
+  }
 }
 
 // ==================== CARREGAMENTO DE IMAGENS ====================

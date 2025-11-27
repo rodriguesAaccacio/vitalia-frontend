@@ -1,23 +1,29 @@
 import { API_BASE_URL } from '../../../api.js'; 
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Usa a variável mágica do api.js
-    const API_URL = API_BASE_URL; 
+const API_URL = API_BASE_URL; 
 
     try {
-        // 🔴 O SEGREDO ESTÁ AQUI: credentials: 'include'
+        // Adicionei cache: 'no-store' para o navegador não guardar versão velha
         const response = await fetch(`${API_URL}/ranking`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include' 
+            credentials: 'include',
+            cache: 'no-store' 
         });
 
-        const rankingData = await response.json();
+        let rankingData = await response.json();
 
         if (!response.ok) {
             console.error("Erro na resposta da API");
             return;
         }
+
+        console.log("Ranking recebido (bruto):", rankingData);
+
+        rankingData.sort((a, b) => b.score - a.score);
+
+        console.log("Ranking ordenado:", rankingData);
 
         // === 1º LUGAR (OURO) ===
         const firstPlaceDiv = document.querySelector('.first-place');
@@ -45,8 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // === 3º LUGAR (BRONZE) ===
         const thirdPlaceDiv = document.querySelector('.third-place');
-        if (rankingData[2]) {
-            // Nota: Seu HTML usa ID 'terceiro' no nome
+    if (rankingData[2]) {
             const nomeEl = document.getElementById('terceiro'); 
             const pontosEl = thirdPlaceDiv.querySelector('.player-score');
             
