@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="cadastro.css">
+    
     <link rel="shortcut icon" href="../HOME/imgs/1-e6fb7e66.ico">
+    
     <title>Cadastro</title>
 
     <script type="module" src="cadastro.js"></script>
 
-    </head>
+</head>
 <body>
+    
     <div class="esquerda">
-        <img src="../HOME/imgs/logo verde.png" alt="">
+        <img src="../HOME/imgs/logo verde.png" alt="Logo Vitalia">
+        
         <h1>Cadastre-se</h1>
+        
         <div class="inputs">
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
@@ -24,29 +30,44 @@
             <label for="senha">Senha</label>
             <input type="password" id="senha" name="senha" placeholder="Crie sua senha">
         </div>
+        
         <div class="diretrizes">
             <label>
                 <input type="checkbox" name="conferido">
-                Eu concordo com os <p id="botao1" class="botao1">termos de privacidade e diretrizes</p>
-              </label>          
+                Eu concordo com os 
+                <p id="botao1" class="botao1" style="display:inline; cursor:pointer; text-decoration:underline;">
+                    termos de privacidade e diretrizes
+                </p>
+            </label>          
         </div>
+        
         <div class="botao">
            <button id="btnCadastrar">Cadastrar</button>
         </div>
-    <a href="../LOGIN/login.html">Já possui conta?</a>
+        
+        <a href="../LOGIN/login.html">Já possui conta?</a>
     </div>
+    
     <div class="direita">
-        <img src="../assets/Group 123.png" alt="">
+        <img src="../assets/Group 123.png" alt="Ilustração">
     </div>
+
     <div id="fade" class="fade"></div>
+    
     <div id="modal1" class="modal">
         <div class="cimaV">
             <h4>Termos de privacidade e diretrizes</h4>
-            <button class="fechar" data-close="modal1"><img src="../EXTRAS/IMGSextras/fechar-branco.png" alt=""></button>
+            <button class="fechar" data-close="modal1">
+                <img src="../EXTRAS/IMGSextras/fechar-branco.png" alt="Fechar">
+            </button>
         </div>
         <div class="texto">
-            <p>Apenas aceite</p>
+            <p>1. Coleta de Dados: Coletamos apenas nome e e-mail para identificação no ranking.</p>
+            <p>2. Privacidade: Seus dados não serão compartilhados com terceiros.</p>
+            <p>3. Respeito: Comentários ofensivos resultarão em banimento.</p>
+            <p>4. Ao clicar em cadastrar, você concorda com estas regras.</p>
         </div>
     </div>
+
 </body>
 </html>
