@@ -335,8 +335,8 @@ hitSound.muted = soundMuted;
 
 // Reinicia o jogo
 function restartGame() {
-localStorage.setItem("lives", "3");
-window.location.reload();
+  sessionStorage.setItem("lives", "3"); 
+  window.location.reload();
 }
 
 // Vai para o menu principal
@@ -400,6 +400,8 @@ function showLevelComplete() {
 levelScore.textContent = player.score;
 levelCompleteScreen.style.display = 'flex';
 paused = true;
+
+enviarPontuacaoParaBanco(player.score);
 } 
 
 function nextLevel() {
@@ -682,7 +684,6 @@ async function enviarPontuacaoParaBanco(pontosFinais) {
           })
       });
       
-      // ... o resto continua igual ...
       const data = await response.json();
       console.log("Status do salvamento:", data.message);
       

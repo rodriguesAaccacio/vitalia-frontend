@@ -685,7 +685,6 @@ async function enviarPontuacaoParaBanco(pontosFinais) {
           })
       });
       
-      // ... o resto continua igual ...
       const data = await response.json();
       console.log("Status do salvamento:", data.message);
       

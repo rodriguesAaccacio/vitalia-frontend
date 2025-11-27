@@ -251,8 +251,7 @@ function togglePause() {
 
  function restartGame() {
   // Reinicia mantendo vidas em 3? Ou como estava?
-  // O código da fase 3 reseta vidas para 3 no restart:
-  localStorage.setItem("lives", "3");
+   localStorage.setItem("lives", "3");
   window.location.reload();
 }
 

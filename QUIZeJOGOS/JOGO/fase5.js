@@ -433,7 +433,7 @@ function checkFruitCollection() {
   });
 
   const allCollected = fruits.every(fruit => fruit.collected);
-  if (allCollected) showLevelComplete(); // Na fase 5, isso deve chamar showVictory, mas seu código chama levelComplete e o botão chama nextLevel, que chama showVictory. Está ok.
+  if (allCollected) showLevelComplete();
 }
 
 function checkCollision() {
