@@ -107,45 +107,58 @@ window.addEventListener('load', function() {
   });
 }
 
-// SISTEMA DE FASE TRAVADA
+// EM TODOS OS ARQUIVOS JS:
 function updateLevelButtons() {
-  const unlockedLevel = parseInt(localStorage.getItem("unlockedLevel")) || 1;
-  const buttons = document.querySelectorAll(".level-btn");
-  buttons.forEach(btn => {
-    const level = parseInt(btn.getAttribute("data-level"));
-    if (level > unlockedLevel) {
-      btn.disabled = true;
-      btn.classList.add("locked");
-    } else {
-      btn.disabled = false;
-      btn.classList.remove("locked");
-      btn.onclick = () => {
-         window.location.href = level === 1 ? 'jogo.html' : `fase${level}.html`;
-      };
-    }
-  });
-}
- window.addEventListener("load", updateLevelButtons);
+    // Sempre usa || 1 como padrão de segurança
+    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    const buttons = document.querySelectorAll(".level-btn");
+
+    buttons.forEach(btn => {
+      const level = parseInt(btn.getAttribute("data-level"));
+
+      // Se o nível do botão for maior que o desbloqueado, trava
+      if (level > unlockedLevel) {
+        btn.disabled = true;
+        btn.classList.add("locked");
+      } else {
+        btn.disabled = false;
+        btn.classList.remove("locked");
+        // Reatribui o clique para garantir que funcione
+        btn.onclick = () => {
+          if (level === 1) {
+            window.location.href = "jogo.html"; // Ajuste o nome se for diferente
+          } else {
+            window.location.href = `fase${level}.html`;
+          }
+        };
+      }
+    });
+} 
 
 // ==================== INITIALIZE GAME ====================
+// EM fase2.js
 function initGame() {
-  const savedLives = parseInt(localStorage.getItem("lives")) || 3;
+  updateLevelButtons(); // Garante que os botões do menu atualizem
+  const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;
   
-  // Pega o score acumulado (igual fase 3 faz)
-  let accumulatedScore = parseInt(localStorage.getItem("accumulatedScore"));
-  if (isNaN(accumulatedScore)) accumulatedScore = 0;
+  // --- CORREÇÃO AQUI ---
+  // Carrega o que você tinha ao terminar a Fase 1
+  // Se não existir (hack ou erro), começa com 0
+  let startScore = parseInt(sessionStorage.getItem("checkpoint_fase1"));
+  if (isNaN(startScore)) startScore = 0;
+  // ---------------------
 
-  currentLevel = 2; // FORÇANDO FASE 2
+  currentLevel = 2; 
 
   const character = localStorage.getItem("selectedCharacter") || 'player1.png';
 
   player = {
-    x: 50, // Posição inicial Fase 2
+    x: 50, 
     y: 350,
     size: 20,
     speed: 2,
     lives: savedLives,
-    score: accumulatedScore,
+    score: startScore, // <--- Usa o startScore (checkpoint)
     invincible: false,
     image: new Image()
   };
@@ -249,7 +262,13 @@ function togglePause() {
   window.location.href = "../select/select.html";
 }
 
-function showLevelSelect() { levelSelectScreen.style.display = 'flex'; paused = true; }
+// EM TODOS OS ARQUIVOS (jogo.js, fase2.js, fase3.js, etc...)
+function showLevelSelect() {
+    updateLevelButtons(); // <--- ADICIONE ISSO PARA ATUALIZAR OS CADEADOS
+    levelSelectScreen.style.display = 'flex';
+    paused = true;
+}
+
 function hideLevelSelect() { levelSelectScreen.style.display = 'none'; paused = false; }
 
  function showLoadingScreen() {
@@ -278,16 +297,18 @@ function showLevelComplete() {
 }
 
 // ==================== A FUNÇÃO MÁGICA (CÓPIA DA FASE 3) ====================
+// EM fase2.js - nextLevel
 function nextLevel() {
   if (currentLevel < totalLevels) {
-    // Salva o progresso local
-    localStorage.setItem("accumulatedScore", player.score.toString());
+    // SALVA O CHECKPOINT DA FASE 2
+    sessionStorage.setItem("checkpoint_fase2", player.score);
+    
     localStorage.setItem("lives", player.lives.toString());
-    
-    // Salva no banco (SEM AWAIT, igual na Fase 3)
-    enviarPontuacaoParaBanco(player.score); 
-    
-    // Redireciona
+     enviarPontuacaoParaBanco(player.score); 
+
+    const currentUnlocked = parseInt(localStorage.getItem("unlockedLevel")) || 1;
+    if (currentUnlocked < 3) localStorage.setItem("unlockedLevel", "3");
+
     window.location.href = 'fase3.html';
   }
 }

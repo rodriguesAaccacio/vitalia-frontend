@@ -144,81 +144,75 @@ if (level > unlockedLevel) {
 }
 
 // Botões da seleção de fase travam nas não liberadas
+// EM TODOS OS ARQUIVOS JS:
 function updateLevelButtons() {
-const unlockedLevel = parseInt(localStorage.getItem("unlockedLevel")) || 5;
-const buttons = document.querySelectorAll(".level-btn");
+    // Sempre usa || 1 como padrão de segurança
+    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    const buttons = document.querySelectorAll(".level-btn");
 
-buttons.forEach(btn => {
-  const level = parseInt(btn.getAttribute("data-level"));
+    buttons.forEach(btn => {
+      const level = parseInt(btn.getAttribute("data-level"));
 
-  if (level > unlockedLevel) {
-    btn.disabled = true;
-    btn.classList.add("locked");
-  } else {
-    btn.disabled = false;
-    btn.classList.remove("locked");
-    btn.onclick = () => {
-      if (level === 1) {
-        window.location.href = "jogo.html";
+      // Se o nível do botão for maior que o desbloqueado, trava
+      if (level > unlockedLevel) {
+        btn.disabled = true;
+        btn.classList.add("locked");
       } else {
-        window.location.href = `fase${level}.html`;
+        btn.disabled = false;
+        btn.classList.remove("locked");
+        // Reatribui o clique para garantir que funcione
+        btn.onclick = () => {
+          if (level === 1) {
+            window.location.href = "jogo.html"; // Ajuste o nome se for diferente
+          } else {
+            window.location.href = `fase${level}.html`;
+          }
+        };
       }
-    };
-  }
-});
+    });
 }
+ 
 
-// Chamar essa função quando carregar o menu de seleção
-window.addEventListener("load", updateLevelButtons);
-
-// Chamar saveProgress() smp que uma fase for concluída
-/*
-function showLevelComplete() {
-levelScore.textContent = player.score;
-levelCompleteScreen.style.display = 'flex';
-saveProgress(currentLevel);
-}
-*/
-
-
-// Inicializa o jogo
+// EM fase5.js
 function initGame() {
-// Carrega dados salvos ou usa padrão
-const savedLives = parseInt(localStorage.getItem("lives")) || 3;
-const accumulatedScore = parseInt(localStorage.getItem("accumulatedScore")) || 0;
+  updateLevelButtons();
+  const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;
+  
+  // --- CORREÇÃO AQUI ---
+  // Carrega o checkpoint da Fase 4
+  let startScore = parseInt(sessionStorage.getItem("checkpoint_fase4"));
+  if (isNaN(startScore)) startScore = 0;
+  // ---------------------
 
-currentLevel = 5;
+  currentLevel = 5;
 
-// Inicializa o player
-const character = localStorage.getItem("selectedCharacter") || 'player1.png';
+  const character = localStorage.getItem("selectedCharacter") || 'player1.png';
 
-player = {
-  x: 200,
-  y: 200,
-  size: 20,
-  speed: 2,
-  lives: savedLives,
-  score: accumulatedScore,
-  invincible: false,
-  image: new Image()
-};
+  player = {
+    x: 200,
+    y: 200,
+    size: 20,
+    speed: 2,
+    lives: savedLives,
+    score: startScore, // <--- Usa o checkpoint
+    invincible: false,
+    image: new Image()
+  };
 
-player.image.src = IMGS_PATH + character;
+  player.image.src = IMGS_PATH + character;
 
-// Inicializa sons
-collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
-hitSound = new Audio(SOUNDS_PATH + 'hit.mp3');
-GameOverSound = new Audio(SOUNDS_PATH + 'GameOver.mp3');
-startSound = new Audio(SOUNDS_PATH + 'start.mp3');
-buttonSound = new Audio(SOUNDS_PATH + 'button.mp3');
+  collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
+  hitSound = new Audio(SOUNDS_PATH + 'hit.mp3');
+  GameOverSound = new Audio(SOUNDS_PATH + 'GameOver.mp3');
+  startSound = new Audio(SOUNDS_PATH + 'start.mp3');
+  buttonSound = new Audio(SOUNDS_PATH + 'button.mp3');
 
-if (!soundMuted) {
-  startSound.currentTime = 0;
-  startSound.play().catch(e => console.log("Erro ao reproduzir som"));
-}
+  if (!soundMuted) {
+    startSound.currentTime = 0;
+    startSound.play().catch(e => console.log("Erro ao reproduzir som"));
+  }
 
-// Carrega o nível atual
-loadLevel(currentLevel);
+  loadLevel(currentLevel);
 }
 
 // ==================== GERENCIAMENTO DE NÍVEIS ====================
@@ -374,10 +368,11 @@ window.location.href = "../QUIZeJOGOS/homeJOGO/homej.html";
 const levelSelectBtn = document.querySelector("#levelSelectBtn")
 levelSelectBtn.addEventListener("click", showLevelSelect)
 
-// Mostra seleção de nível
+// EM TODOS OS ARQUIVOS (jogo.js, fase2.js, fase3.js, etc...)
 function showLevelSelect() {
-levelSelectScreen.style.display = 'flex';
-paused = true;
+    updateLevelButtons(); // <--- ADICIONE ISSO PARA ATUALIZAR OS CADEADOS
+    levelSelectScreen.style.display = 'flex';
+    paused = true;
 }
 
 // Esconde seleção de nível

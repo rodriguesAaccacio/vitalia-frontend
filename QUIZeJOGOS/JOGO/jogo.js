@@ -95,7 +95,19 @@ function setupEventListeners() {
     mainMenuBtn.addEventListener('click', goToMainMenu);
     retryBtn.addEventListener('click', restartGame);
     goToMenuBtn.addEventListener('click', goToMainMenu);
-    nextLevelBtn.addEventListener('click', () => window.location.href = 'fase2.html');
+nextLevelBtn.addEventListener('click', () => {
+    // 1. Salva o Checkpoint da Fase 1 (Pontuação atual)
+    sessionStorage.setItem("checkpoint_fase1", player.score); 
+    
+    // 2. Lógica de desbloqueio (que já fizemos)
+    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    if (currentUnlocked < 2) {
+        localStorage.setItem("unlockedLevel", "2");
+    }
+
+    // 3. Vai para a fase 2
+    window.location.href = 'fase2.html';
+});
     menuFromComplete.addEventListener('click', goToMainMenu);
     levelSelectFromComplete.addEventListener('click', showLevelSelect);
     muteBtn.addEventListener('click', toggleMute);
@@ -132,23 +144,26 @@ function saveProgress(level) {
     }
 }
 
-// Botões da seleção de fase travam nas não liberadas
+// EM TODOS OS ARQUIVOS JS:
 function updateLevelButtons() {
+    // Sempre usa || 1 como padrão de segurança
     const unlockedLevel = parseInt(localStorage.getItem("unlockedLevel")) || 1;
     const buttons = document.querySelectorAll(".level-btn");
 
     buttons.forEach(btn => {
       const level = parseInt(btn.getAttribute("data-level"));
 
+      // Se o nível do botão for maior que o desbloqueado, trava
       if (level > unlockedLevel) {
         btn.disabled = true;
         btn.classList.add("locked");
       } else {
         btn.disabled = false;
         btn.classList.remove("locked");
+        // Reatribui o clique para garantir que funcione
         btn.onclick = () => {
           if (level === 1) {
-            window.location.href = "jogo.html";
+            window.location.href = "jogo.html"; // Ajuste o nome se for diferente
           } else {
             window.location.href = `fase${level}.html`;
           }
@@ -171,8 +186,10 @@ function updateLevelButtons() {
 
 // Inicializa o jogo
 function initGame() {
+
+  updateLevelButtons();
     // Carrega dados salvos ou usa padrão
-    const savedLives = parseInt(localStorage.getItem("lives")) || 3;
+    const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;
     const savedScore = 0;
 
     currentLevel = 1;
@@ -345,8 +362,9 @@ if (levelSelectBtn) { // Adicionei verificação de segurança aqui
     levelSelectBtn.addEventListener("click", showLevelSelect)
 }
 
-// Mostra seleção de nível
+// EM TODOS OS ARQUIVOS (jogo.js, fase2.js, fase3.js, etc...)
 function showLevelSelect() {
+    updateLevelButtons(); // <--- ADICIONE ISSO PARA ATUALIZAR OS CADEADOS
     levelSelectScreen.style.display = 'flex';
     paused = true;
 }
