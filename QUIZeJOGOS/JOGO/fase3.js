@@ -403,16 +403,20 @@ levelCompleteScreen.style.display = 'flex';
 paused = true;
 } 
 
+// EM fase3.js
 function nextLevel() {
   if (currentLevel < totalLevels) {
-    // SALVA O CHECKPOINT DA FASE 3
+    // Salva Checkpoint e Vidas na SESSÃO
     sessionStorage.setItem("checkpoint_fase3", player.score);
-
-    localStorage.setItem("lives", player.lives.toString());
+    sessionStorage.setItem("lives", player.lives.toString());
+    
     enviarPontuacaoParaBanco(player.score); 
 
-    const currentUnlocked = parseInt(localStorage.getItem("unlockedLevel")) || 1;
-    if (currentUnlocked < 4) localStorage.setItem("unlockedLevel", "4");
+    // Desbloqueia Fase 4 na SESSÃO
+    const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    if (currentUnlocked < 4) {
+        sessionStorage.setItem("unlockedLevel", "4");
+    }
 
     window.location.href = 'fase4.html';
   }

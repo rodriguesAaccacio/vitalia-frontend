@@ -95,19 +95,21 @@ function setupEventListeners() {
     mainMenuBtn.addEventListener('click', goToMainMenu);
     retryBtn.addEventListener('click', restartGame);
     goToMenuBtn.addEventListener('click', goToMainMenu);
+// EM jogo.js
 nextLevelBtn.addEventListener('click', () => {
-    // 1. Salva o Checkpoint da Fase 1 (Pontuação atual)
+    // 1. Salva o Checkpoint da Fase 1
     sessionStorage.setItem("checkpoint_fase1", player.score); 
     
-    // 2. Lógica de desbloqueio (que já fizemos)
-    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    // 2. Lógica de desbloqueio
+    const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     if (currentUnlocked < 2) {
-        localStorage.setItem("unlockedLevel", "2");
+        sessionStorage.setItem("unlockedLevel", "2");
     }
 
     // 3. Vai para a fase 2
     window.location.href = 'fase2.html';
 });
+
     menuFromComplete.addEventListener('click', goToMainMenu);
     levelSelectFromComplete.addEventListener('click', showLevelSelect);
     muteBtn.addEventListener('click', toggleMute);

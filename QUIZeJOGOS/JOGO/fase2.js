@@ -296,18 +296,19 @@ function showLevelComplete() {
   // AQUI a fase 3 não salva direto, ela espera clicar no botão
 }
 
-// ==================== A FUNÇÃO MÁGICA (CÓPIA DA FASE 3) ====================
-// EM fase2.js - nextLevel
-function nextLevel() {
+ function nextLevel() {
   if (currentLevel < totalLevels) {
-    // SALVA O CHECKPOINT DA FASE 2
+    // Salva Checkpoint e Vidas na SESSÃO
     sessionStorage.setItem("checkpoint_fase2", player.score);
+    sessionStorage.setItem("lives", player.lives.toString());
     
-    localStorage.setItem("lives", player.lives.toString());
-     enviarPontuacaoParaBanco(player.score); 
+    enviarPontuacaoParaBanco(player.score); 
 
-    const currentUnlocked = parseInt(localStorage.getItem("unlockedLevel")) || 1;
-    if (currentUnlocked < 3) localStorage.setItem("unlockedLevel", "3");
+    // Desbloqueia Fase 3 na SESSÃO
+    const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    if (currentUnlocked < 3) {
+        sessionStorage.setItem("unlockedLevel", "3");
+    }
 
     window.location.href = 'fase3.html';
   }
