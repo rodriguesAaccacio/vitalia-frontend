@@ -1,5 +1,9 @@
 import { API_BASE_URL } from '../api.js';
 
+sessionStorage.removeItem("usuarioId");
+sessionStorage.removeItem("usuarioNome");
+// -----------------------------------------------------------------------
+
 // variavel pra garantir que nao clique duas vezes no botao
 let jaEstouLogando = false;
 

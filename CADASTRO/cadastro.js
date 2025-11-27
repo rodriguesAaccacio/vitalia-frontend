@@ -1,5 +1,9 @@
 import { API_BASE_URL } from '../api.js';
 
+sessionStorage.removeItem("usuarioId");
+sessionStorage.removeItem("usuarioNome");
+// -----------------------------------------------------------------------
+
 // variavel pra controlar se o cadastro ja ta rolando pra evitar clique duplo
 let jaEstouCadastrando = false;
 
