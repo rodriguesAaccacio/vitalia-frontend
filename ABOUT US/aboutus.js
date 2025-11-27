@@ -35,37 +35,37 @@ const perfis = {
         resumo: "Editora chefe, ama estética e desenvolvidora do jogo",
         imagem: "../HOME/imgs/rayssa.png"
     }
-};
+}
 
 // guarda qual perfil tá aberto, null se nenhum
-let perfilVisivel = null;
+let perfilVisivel = null
 
 // função q roda qnd clica numa foto
 // nome = perfil da pessoa, imgElement = foto clicada
 function mostrarPerfil(nome, imgElement) {
-    const perfil = perfis[nome]; // pega infos do perfil
-    const perfilCaixa = document.getElementById("perfil"); // caixinha do perfil
+    const perfil = perfis[nome] // pega infos do perfil
+    const perfilCaixa = document.getElementById("perfil") // caixinha do perfil
 
     // se clicou na msm pessoa q já tava aberta
     if (perfilVisivel === nome) {
-        perfilCaixa.style.display = "none"; // fecha a caixinha
-        imgElement.classList.remove('selecionada'); // tira destaque da foto
-        perfilVisivel = null; // agora ninguem aberto
+        perfilCaixa.style.display = "none" // fecha a caixinha
+        imgElement.classList.remove('selecionada') // tira destaque da foto
+        perfilVisivel = null // agora ninguem aberto
     } else {
         // se clicou em outra pessoa, mostra infos dela
-        document.getElementById("nome").textContent = perfil.nome;
-        document.getElementById("user").textContent = perfil.user;
-        document.getElementById("faculdade").textContent = perfil.faculdade;
-        document.getElementById("resumo").textContent = perfil.resumo;
-        perfilCaixa.style.display = "block"; // mostra a caixinha
+        document.getElementById("nome").textContent = perfil.nome
+        document.getElementById("user").textContent = perfil.user
+        document.getElementById("faculdade").textContent = perfil.faculdade
+        document.getElementById("resumo").textContent = perfil.resumo
+        perfilCaixa.style.display = "block" // mostra a caixinha
 
         // tira selecao de todas as fotos
-        const todasImagens = document.querySelectorAll('.f');
+        const todasImagens = document.querySelectorAll('.f')
         todasImagens.forEach(img => {
-            img.classList.remove('selecionada'); // remove classe de destaque
-        });
+            img.classList.remove('selecionada') // remove classe de destaque
+        })
 
-        imgElement.classList.add('selecionada'); // marca só a clicada
-        perfilVisivel = nome; // atualiza qual ta aberto
+        imgElement.classList.add('selecionada') // marca só a clicada
+        perfilVisivel = nome // atualiza qual ta aberto
     }
 }

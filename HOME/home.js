@@ -1,13 +1,14 @@
-// =================================================================// 1. LÓGICA DO USUÁRIO (LOGIN/LOGOUT)
-// =================================================================
 document.addEventListener("DOMContentLoaded", () => {
     
-    const usuarioNome = sessionStorage.getItem("usuarioNome");
-    const userInfoDiv = document.getElementById("user-info");
+    // tenta puxar o nome do usuario q ta salvo na sessao e a div de info
+    const usuarioNome = sessionStorage.getItem("usuarioNome")
+    const userInfoDiv = document.getElementById("user-info")
 
+    // se a div de info existir na pagina, a gente mexe nela
     if (userInfoDiv) {
+        // caso o usuario esteja logado (tem nome salvo)
         if (usuarioNome) {
-            // --- ESTADO: LOGADO ---
+            // monta o html do perfil com o icone e o botao de sair
             userInfoDiv.innerHTML = `
                 <div class="user-profile">
                     <svg class="user-avatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#A1CF6B">
@@ -16,188 +17,203 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="user-greeting">Olá, ${usuarioNome}</span>
                 </div>
                 <button id="btnSair" class="btn-logout">SAIR</button>
-            `;
+            `
 
-            // Configuração do Modal de Logout
-            const btnSair = document.getElementById("btnSair");
-            const modalLogout = document.getElementById("modal-logout");
-            const btnConfirmar = document.getElementById("btn-confirmar-logout");
-            const btnCancelar = document.getElementById("btn-cancelar-logout");
+            // pega os botoes do modal de logout pra fazer funcionar
+            const btnSair = document.getElementById("btnSair")
+            const modalLogout = document.getElementById("modal-logout")
+            const btnConfirmar = document.getElementById("btn-confirmar-logout")
+            const btnCancelar = document.getElementById("btn-cancelar-logout")
 
+            // verifica se o botao e o modal existem antes de add evento
             if(btnSair && modalLogout) {
-                // 1. Abre o modal ao clicar em SAIR
                 btnSair.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    modalLogout.style.display = "flex"; 
-                });
+                    e.preventDefault()
+                    // mostra o modal perguntando se quer sair msm
+                    modalLogout.style.display = "flex" 
+                })
 
-                // 2. Fecha o modal ao clicar em CANCELAR
+                // se clicar em cancelar, so esconde o modal
                 if(btnCancelar) {
                     btnCancelar.addEventListener("click", () => {
-                        modalLogout.style.display = "none";
-                    });
+                        modalLogout.style.display = "none"
+                    })
                 }
 
-                // 3. Desloga ao clicar em CONFIRMAR
+                // se confirmar, ai sim desloga
                 if(btnConfirmar) {
                     btnConfirmar.addEventListener("click", () => {
-                        sessionStorage.removeItem("usuarioId");
-                        sessionStorage.removeItem("usuarioNome");
-                        alert("Você saiu da conta. Volte sempre!");
-                        window.location.reload(); 
-                    });
+                        // limpa tudo da sessao
+                        sessionStorage.removeItem("usuarioId")
+                        sessionStorage.removeItem("usuarioNome")
+                        alert("Você saiu da conta. Volte sempre!")
+                        // recarrega a pagina pra atualizar o estado
+                        window.location.reload() 
+                    })
                 }
                 
-                // Fecha se clicar fora da caixinha (no fundo preto)
+                // fecha o modal se clicar fora dele (no fundo escuro)
                 modalLogout.addEventListener("click", (e) => {
                     if (e.target === modalLogout) {
-                        modalLogout.style.display = "none";
+                        modalLogout.style.display = "none"
                     }
-                });
+                })
             }
 
         } else {
-            // --- ESTADO: DESLOGADO (O código que faltava) ---
+            // se n tiver logado, mostra so o botaozao de entrar
             userInfoDiv.innerHTML = `
                 <a href="../LOGIN/login.html" class="btn-login-nav">ENTRAR</a>
-            `;
+            `
         }
     }
-}); // <--- ESSA LINHA ERA A QUE FALTAVA (Fechando o primeiro bloco)
+})
 
 
-// =================================================================
-// 2. LÓGICA DAS ANIMAÇÕES (SPLASH, CARROSSEL, POPUPS)
-// =================================================================
+// pega o elemento q faz o fundo escuro (fade)
+const fade = document.getElementById("fade") 
 
-const fade = document.getElementById("fade"); 
-
-// Animação de splash screen
+// --- Animação de splash screen (aquela tela de carregamento inicial) ---
 window.addEventListener('load', () => {
-    const splash = document.getElementById('splash'); 
-    const mainContent = document.getElementById('main-content'); 
+    const splash = document.getElementById('splash') 
+    const mainContent = document.getElementById('main-content') 
     
     if(splash && mainContent) {
-        const splashTime = 2000; 
+        const splashTime = 2000 // tempo q a tela de load fica (2s)
         setTimeout(() => {
-            splash.classList.add('hidden'); 
-            mainContent.classList.add('visible'); 
-        }, splashTime);
+            splash.classList.add('hidden') // esconde o load
+            mainContent.classList.add('visible') // mostra o site
+        }, splashTime)
     }
-});
+})
 
-// Funções Globais para Popups
+// funcao global pra abrir qualquer popup pelo ID
 window.abrirPopup = function(id) {
-    const popup = document.getElementById(id);
-    const fade = document.getElementById('fade');
-    if (!popup) return;
-    popup.style.display = "flex"; 
-    if(fade) fade.classList.add("show"); 
+    const popup = document.getElementById(id)
+    const fade = document.getElementById('fade')
+    if (!popup) return
+    popup.style.display = "flex" 
+    if(fade) fade.classList.add("show") // escurece o fundo
 }
 
+// funcao global pra fechar
 window.fecharPopup = function(id) {
-    const popup = document.getElementById(id);
-    const fade = document.getElementById('fade');
-    if (!popup) return; 
-    popup.style.display = "none"; 
-    if(fade) fade.classList.remove("show"); 
+    const popup = document.getElementById(id)
+    const fade = document.getElementById('fade')
+    if (!popup) return 
+    popup.style.display = "none" 
+    if(fade) fade.classList.remove("show") 
 }
 
+// fecha tudo q tiver aberto qnd clica no fundo escuro
 function fecharTodos() {
-    document.querySelectorAll(".popup, .popup-feedback").forEach(p => p.style.display = "none"); 
-    const fade = document.getElementById('fade');
-    if(fade) fade.classList.remove("show"); 
+    document.querySelectorAll(".popup, .popup-feedback").forEach(p => p.style.display = "none") 
+    const fade = document.getElementById('fade')
+    if(fade) fade.classList.remove("show") 
 }
 
-if(fade) fade.addEventListener("click", fecharTodos);
+if(fade) fade.addEventListener("click", fecharTodos)
 
+// evita q o clique DENTRO do popup feche ele (propagacao de evento)
 document.querySelectorAll(".popup, .popup-feedback").forEach(popup => {
     popup.addEventListener("click", function(e) {
-        e.stopPropagation(); 
-    });
-});
+        e.stopPropagation() 
+    })
+})
 
-// Modais de imagem (Professores)
+// logica generica pra qualquer elemento q tenha o atributo data-modal
 document.querySelectorAll("[data-modal]").forEach(el => {
     el.addEventListener("click", () => {
-      const modalId = el.getAttribute("data-modal"); 
-      const modal = document.getElementById(modalId);
-      const fade = document.getElementById('fade');
+      const modalId = el.getAttribute("data-modal") 
+      const modal = document.getElementById(modalId)
+      const fade = document.getElementById('fade')
 
-      if (!modal) return;
+      if (!modal) return
   
-      modal.classList.add("show"); 
-      if(fade) fade.classList.add("show"); 
+      modal.classList.add("show") 
+      if(fade) fade.classList.add("show") 
   
+      // garante q se clicar no fundo tbm fecha esse modal especifico
       if(fade) {
           fade.onclick = () => {
-            modal.classList.remove("show"); 
-            fade.classList.remove("show"); 
-          };
+            modal.classList.remove("show") 
+            fade.classList.remove("show") 
+          }
       }
-    modal.onclick = e => e.stopPropagation();
-    });
-}); 
-// --- LÓGICA DO CARROSSEL ---
-const track = document.querySelector('.carousel-track');
-const prevBtn = document.querySelector('.prev');
-const nextBtn = document.querySelector('.next');
-let index = 0;
+    modal.onclick = e => e.stopPropagation()
+    })
+}) 
+
+// --- Logica do Carrossel ---
+const track = document.querySelector('.carousel-track')
+const prevBtn = document.querySelector('.prev')
+const nextBtn = document.querySelector('.next')
+let index = 0
 
 if (track && prevBtn && nextBtn) {
     function updateCarousel() {
-        const card = track.querySelector('.card');
-        if(!card) return;
+        const card = track.querySelector('.card')
+        if(!card) return
 
-        const cardWidth = card.offsetWidth + 24; 
-        track.style.transform = `translateX(${-index * cardWidth}px)`;
+        // calcula largura do card + margem pra saber qnto tem q andar
+        const cardWidth = card.offsetWidth + 24 
+        // move a trilha do carrossel
+        track.style.transform = `translateX(${-index * cardWidth}px)`
 
-        prevBtn.disabled = index === 0;
-        const cardsVisiveis = Math.floor(track.parentElement.offsetWidth / cardWidth);
-        const totalCards = track.children.length;
+        // desabilita botao de voltar se tiver no inicio
+        prevBtn.disabled = index === 0
         
-        nextBtn.disabled = index >= totalCards - cardsVisiveis;
+        // contas matematicas pra saber qnd chegou no fim e desabilitar o botao next
+        const cardsVisiveis = Math.floor(track.parentElement.offsetWidth / cardWidth)
+        const totalCards = track.children.length
+        
+        nextBtn.disabled = index >= totalCards - cardsVisiveis
     }
 
+    // avanca um card
     nextBtn.addEventListener('click', () => {
-        index++;
-        updateCarousel();
-    });
+        index++
+        updateCarousel()
+    })
 
+    // volta um card
     prevBtn.addEventListener('click', () => {
-        index--;
-        updateCarousel();
-    });
+        index--
+        updateCarousel()
+    })
 
-    window.addEventListener('resize', updateCarousel);
-    setTimeout(updateCarousel, 100);
+    // se redimensionar a tela, recalcula tudo pra nao quebrar
+    window.addEventListener('resize', updateCarousel)
+    setTimeout(updateCarousel, 100)
 }
 
-// Scroll da seta (Arraste)
+// esconde aquela setinha de "arraste pra baixo" qnd a pessoa comeca a rolar a tela
 window.addEventListener("scroll", function () {
-    const img = document.querySelector(".arraste img");
+    const img = document.querySelector(".arraste img")
     if(img) {
-        const limiteEmRem = 0.5;
-        const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const limitePx = limiteEmRem * rootFontSize;
+        const limiteEmRem = 0.5
+        // converte rem pra pixel pra fazer a conta certa
+        const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize)
+        const limitePx = limiteEmRem * rootFontSize
     
         if (window.scrollY > limitePx) {
-            img.classList.add("oculto");
+            img.classList.add("oculto")
         } else {
-            img.classList.remove("oculto");
+            img.classList.remove("oculto")
         }
     }
-});
+})
 
-// Animação do Título
+// animacao das letras do titulo aparecendo uma por uma
 document.addEventListener("DOMContentLoaded", () => {
-const el = document.getElementById("title");
+const el = document.getElementById("title")
     if (el) {
-      const text = el.textContent.trim();
+      const text = el.textContent.trim()
+      // quebra o texto letra por letra e coloca num span com delay diferente
       el.innerHTML = text
         .split("")
         .map((ch, i) =>
-          `<span style="animation-delay:${i * 0.1}s">${ch === " " ? "&nbsp;" : ch}</span>`
+          `<span style="animation-delay:${i * 0.1}s">${ch === " " ? "&nbsp" : ch}</span>`
         )
-        .join("");
-    }});
+        .join("")
+    }})

@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
             isRotating = true; // marca que agora tá girando
             this.style.transform = 'rotate(360deg) scale(1.05)'; // gira e aumenta um pouquinho
 
-            // depois que termina a animação, reseta tudo
-            setTimeout(() => {
+             setTimeout(() => {
                 this.style.transform = 'rotate(0deg) scale(1)'; // volta pro normal
                 isRotating = false; // marca que parou de girar
             }, 800); // duração da animação

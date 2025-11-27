@@ -251,14 +251,12 @@ ul li ul li a {
 transition: 0.4s;
 }
 
-/* Modifique a sua classe existente no final do arquivo */
 .user-info {
   display: flex;
   align-items: center;
   gap: 1rem;
   color: white;
-  /* margin-left: auto;  <-- REMOVA OU COMENTE ESTA LINHA */
-  margin-left: 2rem; /* Adicione isso para dar um espaço entre os links e o perfil */
+  margin-left: 2rem;
 }
 
 .user-profile {
@@ -271,7 +269,7 @@ transition: 0.4s;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #A1CF6B; /* Borda verde bonita */
+  border: 2px solid #A1CF6B;
   background-color: #fff;
 }
 
@@ -315,26 +313,21 @@ transition: 0.4s;
   background-color: #b5e877;
 }
 
-/* 1. Configuração do Pai (Cabeçalho) */
-header { /* Se o seu cabeçalho tiver uma classe (ex: .navbar), use ela aqui */
+header {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0 5%; /* Ajuste o padding lateral conforme seu gosto */
+  padding: 0 5%;
   box-sizing: border-box;
 }
-
-/* 2. A MÁGICA: Empurrar o menu para a direita */
-/* Substitua 'nav' pela classe que envolve seus links (Conteúdo, Dicas...) */
 header nav, 
 .menu-links { 
-  margin-left: auto; /* Isso joga este elemento e os próximos (user) para a direita */
+  margin-left: auto;
   display: flex;
-  gap: 2rem; /* Espaço entre os itens do menu */
+  gap: 2rem;
   align-items: center;
 }
 
-/* Opcional: Estilo dos links para ficarem bonitos (se já não tiver) */
 header nav a {
   color: #fff;
   text-decoration: none;
@@ -342,21 +335,19 @@ header nav a {
   font-weight: 600;
 }
 
-/* Fundo escuro atrás da caixa */
 .logout-overlay {
-    display: none; /* Começa escondido */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Fundo preto transparente */
+    background: rgba(0, 0, 0, 0.7);
     z-index: 9999;
     align-items: center;
     justify-content: center;
 }
 
-/* A caixa branca/verde */
 .logout-box {
     background: #fff;
     padding: 2rem;
@@ -365,7 +356,7 @@ header nav a {
     width: 90%;
     max-width: 400px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    border: 2px solid #A1CF6B; /* Borda verde */
+    border: 2px solid #A1CF6B; 
     font-family: 'Inter', sans-serif;
 }
 
@@ -386,7 +377,6 @@ header nav a {
     justify-content: center;
 }
 
-/* Botões */
 .logout-buttons button {
     padding: 0.8rem 1.5rem;
     border: none;
@@ -407,6 +397,6 @@ header nav a {
 }
 
 .btn-confirm {
-    background-color: #c0392b; /* Vermelho para indicar saída */
+    background-color: #c0392b;
   color: white;
 }

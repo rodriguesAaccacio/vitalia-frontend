@@ -1,28 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const userInfoDiv = document.getElementById("user-info");
-    const nomeUsuario = sessionStorage.getItem("usuarioNome");
+    // pegando a div onde vai aparecer a info do usuario
+    const userInfoDiv = document.getElementById("user-info")
+    // tenta pegar o nome do usuario se ele tiver logado na sessao
+    const nomeUsuario = sessionStorage.getItem("usuarioNome")
 
-    // ============================================================
-    // 1. FUNÇÃO PARA DESCOBRIR O CAMINHO (Lógica Ajustada)
-    // ============================================================
+    // essa funcao aq serve pra arrumar os links dependendo de onde a pessoa ta no site
     function getCaminhos() {
-        const rawPath = window.location.pathname;
-        const path = decodeURIComponent(rawPath).toUpperCase();
+        const rawPath = window.location.pathname
+        // deixa tudo maiusculo pra facilitar a verificacao e evitar erro
+        const path = decodeURIComponent(rawPath).toUpperCase()
 
-        // --- NÍVEL 3: MUITO FUNDO (Volta 3x) ---
-        // Ex: .../QUIZeJOGOS/JOGO/homeJOGO/homeJ.html
-        // Ex: .../QUIZeJOGOS/JOGO/select/select.html
+        // se tiver nessas pastas mais fundas, tem q voltar 3 niveis (../../..)
         if (path.includes("HOMEJOGO") || path.includes("SELECT")) {
             return {
                 login: "../../../LOGIN/login.html",
                 home: "../../../index.html"
-            };
+            }
         }
 
-        // --- NÍVEL 2: FUNDO (Volta 2x) ---
-        // Ex: .../QUIZeJOGOS/JOGO/fase2.html (Fases estão na pasta JOGO)
-        // Ex: .../QUIZeJOGOS/QUIZ/quizFINAL.html
-        // Ex: .../IMGsJOGO/RANKING/ranking.html
+        // se tiver nessas pastas aq, volta 2 niveis (../..)
         if (
             path.includes("/JOGO/") || 
             path.includes("/QUIZ/") || 
@@ -31,40 +27,37 @@ document.addEventListener("DOMContentLoaded", () => {
             return {
                 login: "../../LOGIN/login.html",
                 home: "../../index.html"
-            };
+            }
         }
 
-        // --- NÍVEL 1: RASO (Volta 1x) ---
-        // Ex: .../ABOUT US/aboutus.html
-        // Ex: .../QUIZeJOGOS/quizEjogos.html
+        // nessas aqui eh mais simples, so volta 1 nivel (../)
         if (
             path.includes("NUTRIENTES") || 
             path.includes("FUNCOES") || 
             path.includes("FASES") || 
             path.includes("EXTRAS") ||
             path.includes("DICAS") || 
-            path.includes("QUIZEJOGOS") || // Pega o arquivo quizEjogos.html
+            path.includes("QUIZEJOGOS") || 
             path.includes("ABOUT") ||
             path.includes("CADASTRO")
         ) {
             return {
                 login: "../LOGIN/login.html",
                 home: "../index.html"
-            };
+            }
         }
 
-        // --- NÍVEL 0: RAIZ (Home) ---
+        // se n cair em nenhuma das de cima, ta na raiz, entao n precisa voltar nada
         return {
             login: "LOGIN/login.html",
             home: "index.html"
-        };
+        }
     }
 
-    const caminhos = getCaminhos();
+    // executa a funcao pra pegar os caminhos certos pra pagina atual
+    const caminhos = getCaminhos()
 
-    // ============================================================
-    // 2. INJETA O MODAL DE LOGOUT
-    // ============================================================
+    // cria o html do modal de sair, aquela janelinha de confirmacao
     const modalHTML = `
         <div id="logoutModal" class="logout-overlay">
             <div class="logout-box">
@@ -76,17 +69,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         </div>
-    `;
+    `
     
+    // verifica se o modal ja existe, se n existir, adiciona ele no final do body
     if (!document.getElementById("logoutModal")) {
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.body.insertAdjacentHTML('beforeend', modalHTML)
     }
 
-    // ============================================================
-    // 3. PREENCHE O HEADER
-    // ============================================================
+    // aqui a gente checa: se tem nome de usuario, mostra o perfil
     if (nomeUsuario) {
-        // --- LOGADO ---
         userInfoDiv.innerHTML = `
             <div class="user-profile">
                 <svg class="user-avatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#A1CF6B" style="background: #fff;">
@@ -95,33 +86,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="user-greeting">Olá, ${nomeUsuario}</span>
                 <button id="btnSair" class="btn-logout">Sair</button>
             </div>
-        `;
+        `
 
-        const btnSair = document.getElementById("btnSair");
-        const modal = document.getElementById("logoutModal");
-        const btnCancel = document.getElementById("cancelLogout");
-        const btnConfirm = document.getElementById("confirmLogout");
+        // pegando os elementos do modal e o botao de sair pra dar vida a eles
+        const btnSair = document.getElementById("btnSair")
+        const modal = document.getElementById("logoutModal")
+        const btnCancel = document.getElementById("cancelLogout")
+        const btnConfirm = document.getElementById("confirmLogout")
 
+        // qnd clica em sair, previne o padrao e mostra o modal na tela
         btnSair.addEventListener("click", (e) => {
-            e.preventDefault();
-            modal.style.display = "flex";
-        });
+            e.preventDefault()
+            modal.style.display = "flex"
+        })
 
+        // se clicar em cancelar, so esconde o modal de novo
         btnCancel.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
+            modal.style.display = "none"
+        })
 
+        // se confirmar msm, limpa a sessao e manda o usuario pra home
         btnConfirm.addEventListener("click", () => {
-            sessionStorage.removeItem("usuarioId");
-            sessionStorage.removeItem("usuarioNome");
-            sessionStorage.setItem("acabouDeSair", "true");
-            window.location.href = caminhos.home;
-        });
+            sessionStorage.removeItem("usuarioId")
+            sessionStorage.removeItem("usuarioNome")
+            sessionStorage.setItem("acabouDeSair", "true") // marca q ele acabou de deslogar
+            window.location.href = caminhos.home
+        })
 
     } else {
-        // --- DESLOGADO ---
+        // se n tiver logado, mostra so o botao pra entrar usando o caminho certo
         userInfoDiv.innerHTML = `
             <a href="${caminhos.login}" class="btn-login-nav">Entrar</a>
-        `;
+        `
     }
-});
+})

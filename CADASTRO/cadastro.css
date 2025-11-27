@@ -224,7 +224,6 @@ font-size: 0.75em;
 }
 
 
-/* Media Queries para Responsividade */
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
@@ -234,11 +233,11 @@ font-size: 0.75em;
     .esquerda, .direita {
         flex: none; 
         width: 100%;
-        padding: 0; /* Remove padding da direita para garantir que a imagem cubra 100% */
+        padding: 0;
     }
     
     .esquerda {
-        padding: 30px; /* Mantém padding do formulário */
+        padding: 30px;
     }
 
     .direita {
@@ -247,7 +246,7 @@ font-size: 0.75em;
     }
 
     .direita img {
-        border-radius: 0 0 10px 10px; /* Arredonda só embaixo */
+        border-radius: 0 0 10px 10px;
     }
 
     .texto-boas-vindas {
@@ -272,7 +271,6 @@ font-size: 0.75em;
     .esquerda h1 {
         font-size: 1.5em;
     }
-    /* ... (restante das media queries menores) ... */
 }
 .modal p, h4{
     color: #fff;
