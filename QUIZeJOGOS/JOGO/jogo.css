@@ -380,12 +380,27 @@ canvas.obstaculo {
   display: block;
   font-size: 1.1rem;
   color: #FFD700; /* Dourado */
-  margin-top: 8px;
-  font-weight: bold;
+   font-weight: bold;
   text-transform: uppercase;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  min-height: 1.2em;
-  animation: pulse 1.5s infinite;
+   animation: pulse 1.5s infinite;
+
+  /* === FLEXIBILIDADE === */
+  min-height: 0;     /* Remove a altura obrigatória */
+  margin-top: 0;     /* Remove a margem inicial */
+  height: auto;      /* Altura automática */
+  overflow: hidden;  /* Garante que não ocupe espaço fantasma */
+}
+
+/* Se o elemento estiver vazio, ele some da tela (display: none) */
+.record-msg:empty {
+  display: none;
+}
+
+/* Quando o JS colocar texto (não estiver vazio), adiciona o espaçamento */
+.record-msg:not(:empty) {
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 @keyframes pulse {
