@@ -1,11 +1,11 @@
 import { API_BASE_URL } from '../../api.js';
 
-// ==================== GUARDA-COSTAS (SEGURANÇA) ====================
- if (!sessionStorage.getItem("usuarioId")) {
+// ==================== GUARDA-COSTAS ====================
+if (!sessionStorage.getItem("usuarioId")) {
   alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
-   window.location.href = "../../LOGIN/login.html"; 
+  window.location.href = "../../LOGIN/login.html"; 
   throw new Error("Acesso negado: Usuário não logado."); 
- }
+}
 
 // ==================== CONFIGURAÇÕES GLOBAIS ====================
 const IMGS_PATH = './IMGSjogo/'; 
@@ -26,6 +26,7 @@ let collectSound, hitSound, GameOverSound, startSound, buttonSound;
 let keys = {};
 let paused = false;
 let gameOver = false;
+let levelFinished = false; // NOVA VARIÁVEL
 let imagesLoaded = 0;
 let totalImages = 0;
 let soundMuted = false;
@@ -39,7 +40,6 @@ window.addEventListener('load', function() {
     initGame();
 });
 
-// Inicializa elementos do DOM
 function initDOMElements() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
@@ -50,7 +50,6 @@ function initDOMElements() {
     levelCompleteScreen = document.getElementById('levelCompleteScreen');
     levelSelectScreen = document.getElementById('levelSelectScreen');
 
-    // Botões
     pauseBtn = document.getElementById('pauseBtn');
     resumeBtn = document.getElementById('resumeBtn');
     restartBtn = document.getElementById('restartBtn');
@@ -63,56 +62,48 @@ function initDOMElements() {
     muteBtn = document.getElementById('muteBtn');
     menuBtn = document.getElementById('menuBtn');
 
-    // Elementos de texto
     livesCount = document.getElementById('livesCount');
     scoreCount = document.getElementById('scoreCount');
     finalScore = document.getElementById('finalScore');
     levelScore = document.getElementById('levelScore');
 
-    // Botões de seleção de nível
     levelButtons = document.querySelectorAll('.level-btn');
 }
 
-// Configura event listeners
 function setupEventListeners() {
-    // Controles de teclado
     document.addEventListener('keydown', e => {
-      if (gameOver) return;
+      if (gameOver || levelFinished) return;
       keys[e.key] = true;
       if (e.key === "p" || e.key === "P") togglePause();
     });
 
     document.addEventListener('keyup', e => keys[e.key] = false);
 
-    // Controles de interface
     pauseBtn.addEventListener('click', togglePause);
     resumeBtn.addEventListener('click', togglePause);
+    
     restartBtn.addEventListener('click', restartGame);
     retryBtn.addEventListener('click', restartGame);
     
-    // === BOTÕES DE MENU PRINCIPAL (COM ALERT E RESET) ===
+    // === MENU PRINCIPAL ===
     mainMenuBtn.addEventListener('click', goToMainMenu);
     goToMenuBtn.addEventListener('click', goToMainMenu);
     menuFromComplete.addEventListener('click', goToMainMenu);
     
-    // Botão de Próxima Fase
     nextLevelBtn.addEventListener('click', nextLevel);
     
     if (levelSelectFromComplete) levelSelectFromComplete.addEventListener('click', showLevelSelect);
     muteBtn.addEventListener('click', toggleMute);
     menuBtn.addEventListener('click', showLevelSelect);
 
-    // Botão de voltar
     const backToGameBtn = document.getElementById('backToGameBtn');
     if (backToGameBtn) {
       backToGameBtn.addEventListener('click', hideLevelSelect);
     }
 
-    // Botões de seleção de nível
     levelButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const level = parseInt(btn.getAttribute('data-level'));
-        // Verificação de segurança de nível desbloqueado
         const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
         if (level <= unlockedLevel) {
             window.location.href = level === 1 ? 'jogo.html' : `fase${level}.html`;
@@ -121,48 +112,40 @@ function setupEventListeners() {
     });
 }
 
-// ==================== SISTEMA DE FASES BLOQUEADAS ====================
-// Botões da seleção de fase travam nas não liberadas
 function updateLevelButtons() {
-    // Sempre usa || 1 como padrão de segurança
     const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     const buttons = document.querySelectorAll(".level-btn");
 
     buttons.forEach(btn => {
       const level = parseInt(btn.getAttribute("data-level"));
-
-      // Se o nível do botão for maior que o desbloqueado, trava
       if (level > unlockedLevel) {
         btn.disabled = true;
         btn.classList.add("locked");
       } else {
         btn.disabled = false;
         btn.classList.remove("locked");
-        // Reatribui o clique para garantir que funcione
         btn.onclick = () => {
-          if (level === 1) {
-            window.location.href = "jogo.html"; 
-          } else {
-            window.location.href = `fase${level}.html`;
-          }
+          if (level === 1) window.location.href = "jogo.html"; 
+          else window.location.href = `fase${level}.html`;
         };
       }
     });
- }
+}
 
-// Inicializa o jogo
- function initGame() {
+// ==================== INICIALIZAÇÃO (VIDAS CORRIGIDAS) ====================
+function initGame() {
   updateLevelButtons();
   
-  // CORREÇÃO: Força 3 vidas no início da fase, ignorando o que veio da fase anterior
-  // const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;  <-- REMOVIDO
-  const savedLives = 3; // <-- NOVO: Sempre começa com 3 vidas
+  // CORREÇÃO: Força 3 vidas
+  const savedLives = 3; 
 
-  // Carrega o checkpoint de PONTUAÇÃO da Fase 2
   let startScore = parseInt(sessionStorage.getItem("checkpoint_fase2"));
-   if (isNaN(startScore)) startScore = 0;
+  if (isNaN(startScore)) startScore = 0;
 
   currentLevel = 3;
+  levelFinished = false; 
+  gameOver = false;
+  paused = false;
 
   const character = localStorage.getItem("selectedCharacter") || 'player1.png';
 
@@ -171,13 +154,14 @@ function updateLevelButtons() {
     y: 50,
     size: 20,
     speed: 2,
-    lives: savedLives, // Agora vale 3
+    lives: savedLives, 
     score: startScore, 
     invincible: false,
     image: new Image()
   };
 
-  player.image.src = IMGS_PATH + character;
+  // Cache fix
+  player.image.dataset.src = IMGS_PATH + character;
 
   collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
   hitSound = new Audio(SOUNDS_PATH + 'hit.mp3');
@@ -194,7 +178,7 @@ function updateLevelButtons() {
 }
 
 // ==================== GERENCIAMENTO DE NÍVEIS ====================
- const levelData = {
+const levelData = {
     3: {
       player: { x: 200, y: 50 },
       monsters: [
@@ -219,7 +203,7 @@ function updateLevelButtons() {
     }
 };
 
- function loadLevel(level) {
+function loadLevel(level) {
     if (level < 1 || level > totalLevels) return;
 
     currentLevel = level;
@@ -231,9 +215,7 @@ function updateLevelButtons() {
     player.invincible = false;
 
     data.monsters.forEach(m => {
-      const monster = {
-        x: m.x, y: m.y, size: 20, speed: m.speed, image: new Image()
-      };
+      const monster = { x: m.x, y: m.y, size: 20, speed: m.speed, image: new Image() };
       monster.image.src = IMGS_PATH + 'enemy.png';
       monsters.push(monster);
     });
@@ -243,9 +225,7 @@ function updateLevelButtons() {
     });
 
     data.fruits.forEach(f => {
-      const fruit = {
-        x: f.x, y: f.y, size: 20, collected: false, image: new Image(), type: f.type
-      };
+      const fruit = { x: f.x, y: f.y, size: 20, collected: false, image: new Image(), type: f.type };
       if (f.type === 1) fruit.image.src = IMGS_PATH + 'fruit1.png';
       else if (f.type === 2) fruit.image.src = IMGS_PATH + 'fruit2.png';
       else fruit.image.src = IMGS_PATH + 'fruit3.png';
@@ -253,46 +233,53 @@ function updateLevelButtons() {
     });
 
     totalImages = 1 + monsters.length + fruits.length;
+    
     player.image.onload = imageLoaded;
+    player.image.onerror = imageLoaded;
     monsters.forEach(monster => { monster.image.onload = imageLoaded; monster.image.onerror = () => imageLoaded(); });
     fruits.forEach(fruit => { fruit.image.onload = imageLoaded; fruit.image.onerror = () => imageLoaded(); });
+    
     showLoadingScreen();
+
+    // Cache fix
+    player.image.src = player.image.dataset.src;
+    if (player.image.complete) { imageLoaded(); }
+
+    setTimeout(() => {
+        if (loadingContainer.style.display !== 'none') {
+            console.warn("Loading demorou muito. Forçando início.");
+            hideLoadingScreen();
+            if (!paused && !gameOver) gameLoop();
+        }
+    }, 3000);
 }
 
 // ==================== CONTROLES DE JOGO ====================
- function togglePause() {
-    if (gameOver) return;
+function togglePause() {
+    if (gameOver || levelFinished) return;
     paused = !paused;
     pauseScreen.style.display = paused ? 'flex' : 'none';
 }
 
- function toggleMute() {
+function toggleMute() {
     soundMuted = !soundMuted;
     muteBtn.textContent = soundMuted ? '🔇' : '🔊';
     collectSound.muted = soundMuted;
     hitSound.muted = soundMuted;
 }
 
- function restartGame() {
+function restartGame() {
     sessionStorage.setItem("lives", "3");
     window.location.reload();
 }
 
-// ==================== FUNÇÃO DE SAÍDA COM LIMPEZA ====================
 async function goToMainMenu() {
-    // 1. Tenta salvar a pontuação atual no banco
     if (player.score > 0) {
-        await enviarPontuacaoParaBanco(player.score);
+        // Tenta salvar sem bloquear
+        enviarPontuacaoParaBanco(player.score).catch(e => console.log("Erro save:", e));
     }
     
-    // 2. Exibe o alerta solicitado
-    alert(
-        `Pontuação final desta partida: ${player.score}\n\n` +
-        `Sua pontuação foi sincronizada com o sistema.\n` +
-        `O progresso desta sessão (fases desbloqueadas) será resetado.`
-    );
-
-    // 3. LIMPA O PROGRESSO DA SESSÃO (CORREÇÃO DO BUG)
+    // Limpeza da sessão
     sessionStorage.removeItem("unlockedLevel");
     sessionStorage.removeItem("lives");
     sessionStorage.removeItem("checkpoint_fase1");
@@ -300,63 +287,76 @@ async function goToMainMenu() {
     sessionStorage.removeItem("checkpoint_fase3");
     sessionStorage.removeItem("checkpoint_fase4");
 
-    // 4. Redireciona para o caminho solicitado
     window.location.href = "../../QUIZeJOGOS/JOGO/homeJOGO/homeJ.html";
 }
 
 const levelSelectBtn = document.querySelector("#levelSelectBtn")
 if(levelSelectBtn) levelSelectBtn.addEventListener("click", showLevelSelect)
 
- function showLevelSelect() {
+function showLevelSelect() {
     updateLevelButtons(); 
     levelSelectScreen.style.display = 'flex';
     paused = true;
 }
 
- function hideLevelSelect() {
+function hideLevelSelect() {
     levelSelectScreen.style.display = 'none';
     paused = false;
 }
 
 // ==================== TELAS DE JOGO ====================
- function showLoadingScreen() {
+function showLoadingScreen() {
     loadingContainer.style.display = 'flex';
     loadingContainer.style.opacity = '1';
     progressFill.style.width = '0%';
 }
 
- function hideLoadingScreen() {
+function hideLoadingScreen() {
     loadingContainer.style.opacity = '0';
     setTimeout(() => { loadingContainer.style.display = 'none'; }, 500);
 }
 
- function showGameOver() {
+function showGameOver() {
+    if(gameOver) return;
     gameOver = true;
+    
     finalScore.textContent = player.score;
     gameOverScreen.style.display = 'flex';
-    enviarPontuacaoParaBanco(player.score);
+    
+    // Feedback
+    document.getElementById('msgGameOver').textContent = "Salvando pontuação...";
+    document.getElementById('recordMsgGameOver').textContent = "";
+
+    enviarPontuacaoParaBanco(player.score, 'recordMsgGameOver', 'msgGameOver'); 
+
     if (!soundMuted) GameOverSound.play().catch(e => console.log(e));
 }
 
 const levelSelectFromGameOver = document.querySelector("#levelSelectFromGameOver")
 if(levelSelectFromGameOver) levelSelectFromGameOver.addEventListener("click", showLevelSelect)
 
- function showLevelComplete() {
+function showLevelComplete() {
+    if(levelFinished) return;
+    levelFinished = true;
+    paused = true; // Trava o loop
+
     levelScore.textContent = player.score;
     levelCompleteScreen.style.display = 'flex';
-    paused = true;
-    enviarPontuacaoParaBanco(player.score);
+    
+    // Feedback
+    document.getElementById('msgLevelComplete').textContent = "Salvando pontuação...";
+    document.getElementById('recordMsgLevelComplete').textContent = "";
+
+    enviarPontuacaoParaBanco(player.score, 'recordMsgLevelComplete', 'msgLevelComplete'); 
 } 
 
- function nextLevel() {
+function nextLevel() {
   if (currentLevel < totalLevels) {
-    // Salva Checkpoint e Vidas na SESSÃO
     sessionStorage.setItem("checkpoint_fase3", player.score);
-    sessionStorage.setItem("lives", player.lives.toString());
+    sessionStorage.setItem("lives", "3"); // Força 3 vidas
     
-    enviarPontuacaoParaBanco(player.score); 
+    // O save já foi feito no showLevelComplete
 
-    // Desbloqueia Fase 4 na SESSÃO
     const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     if (currentUnlocked < 4) {
         sessionStorage.setItem("unlockedLevel", "4");
@@ -369,6 +369,8 @@ if(levelSelectFromGameOver) levelSelectFromGameOver.addEventListener("click", sh
 // ==================== LOOP E OUTROS ====================
 function imageLoaded() {
     imagesLoaded++;
+    if(imagesLoaded > totalImages) imagesLoaded = totalImages;
+
     const progress = Math.round((imagesLoaded / totalImages) * 100);
     progressFill.style.width = progress + '%';
     if (imagesLoaded >= totalImages) {
@@ -381,14 +383,14 @@ function imageLoaded() {
     }
 }
 
- function isCollidingWithObstacle(x, y, size) {
+function isCollidingWithObstacle(x, y, size) {
     return obstacles.some(obs =>
       x < obs.x + obs.width && x + size > obs.x &&
       y < obs.y + obs.height && y + size > obs.y
     );
 }
 
- function movePlayer() {
+function movePlayer() {
     let nextX = player.x;
     let nextY = player.y;
 
@@ -412,18 +414,18 @@ function moveMonster(monster) {
     if (!isCollidingWithObstacle(monster.x, nextY, monster.size)) monster.y = nextY;
 }
 
- function drawPlayer() {
+function drawPlayer() {
     if (player.invincible && Math.floor(Date.now() / 100) % 2 === 0) return;
     if (player.image.complete && player.image.naturalHeight !== 0) ctx.drawImage(player.image, player.x, player.y, player.size, player.size);
     else { ctx.fillStyle = "#3498db"; ctx.fillRect(player.x, player.y, player.size, player.size); }
 }
 
- function drawMonster(monster) {
+function drawMonster(monster) {
     if (monster.image.complete && monster.image.naturalHeight !== 0) ctx.drawImage(monster.image, monster.x, monster.y, monster.size, monster.size);
     else { ctx.fillStyle = "#e74c3c"; ctx.fillRect(monster.x, monster.y, monster.size, monster.size); }
 }
 
- function drawObstacles() {
+function drawObstacles() {
     ctx.fillStyle = "#34495e";
     obstacles.forEach(obs => {
       ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
@@ -432,7 +434,7 @@ function moveMonster(monster) {
     });
 }
 
- function drawFruits() {
+function drawFruits() {
     fruits.forEach((fruit, index) => {
       if (!fruit.collected) {
         if (fruit.image.complete && fruit.image.naturalHeight !== 0) ctx.drawImage(fruit.image, fruit.x, fruit.y, fruit.size, fruit.size);
@@ -447,7 +449,7 @@ function moveMonster(monster) {
     });
 }
 
- function drawHUD() {
+function drawHUD() {
     livesCount.textContent = player.lives;
     scoreCount.textContent = player.score;
     ctx.fillStyle = "#ecf0f1";
@@ -457,7 +459,9 @@ function moveMonster(monster) {
     ctx.fillText(`Fase ${currentLevel}`, canvas.width - 70, 20);
 }
 
- function checkFruitCollection() {
+function checkFruitCollection() {
+    if(levelFinished) return;
+
     fruits.forEach(fruit => {
       if (!fruit.collected &&
         player.x < fruit.x + fruit.size && player.x + player.size > fruit.x &&
@@ -475,7 +479,9 @@ function moveMonster(monster) {
     }
 }
 
- function checkCollision() {
+function checkCollision() {
+    if(levelFinished) return;
+
     for (const monster of monsters) {
       if (
         player.x < monster.x + monster.size && player.x + player.size > monster.x &&
@@ -495,9 +501,9 @@ function moveMonster(monster) {
     }
 }
 
- function gameLoop() {
+function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (!paused && !gameOver) {
+    if (!paused && !gameOver && !levelFinished) {
       movePlayer();
       monsters.forEach(monster => { moveMonster(monster); });
       checkCollision();
@@ -511,24 +517,38 @@ function moveMonster(monster) {
     requestAnimationFrame(gameLoop);
 } 
 
-async function enviarPontuacaoParaBanco(pontosFinais) {
-   const idUsuario = sessionStorage.getItem("usuarioId");
-  if (!idUsuario) {
-      console.warn("Usuário não logado. Pontuação não salva.");
-      return;
-   }
-   try {
+async function enviarPontuacaoParaBanco(pontosFinais, elementIdForRecordMsg, elementIdForSaveMsg) {
+  const idUsuario = sessionStorage.getItem("usuarioId");
+  if (!idUsuario) return;
+
+  try {
       const response = await fetch(`${API_BASE_URL}/salvar-pontuacao`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ userId: idUsuario, pontos: pontosFinais })
       });
-       const data = await response.json();
-      console.log("Status do salvamento:", data.message);
-      if(data.newRecord) { console.log("NOVO RECORDE REGISTRADO!"); }
+      const data = await response.json();
+      console.log("Status:", data.message);
+      
+      if(elementIdForSaveMsg && document.getElementById(elementIdForSaveMsg)) {
+          document.getElementById(elementIdForSaveMsg).textContent = "Pontuação salva com sucesso!";
+      }
+
+      const isRecord = data.newRecord === true || data.newRecord === "true" || data.newRecord === 1;
+
+      if(isRecord && elementIdForRecordMsg) {
+           const el = document.getElementById(elementIdForRecordMsg);
+           if(el) {
+               el.textContent = "🏆 NOVO RECORDE! 🏆";
+           }
+      }
   } catch (error) {
       console.error("Erro ao conectar com o servidor:", error);
+      if(elementIdForSaveMsg && document.getElementById(elementIdForSaveMsg)) {
+          document.getElementById(elementIdForSaveMsg).textContent = "Erro ao salvar.";
+          document.getElementById(elementIdForSaveMsg).style.color = "red";
+      }
   }
 }
 

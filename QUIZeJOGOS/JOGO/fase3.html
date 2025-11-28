@@ -10,7 +10,7 @@
 </head>
 <body>
   <div id="gameContainer" role="main">
-     <header id="hud" role="banner">
+    <header id="hud" role="banner">
       <span id="vidas" aria-label="Vidas">
         ❤️ <span id="livesCount">3</span>
       </span>
@@ -25,9 +25,9 @@
       </div>
     </header>
 
-     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
     
-     <div id="loadingContainer" role="alertdialog" aria-live="polite">
+    <div id="loadingContainer" role="alertdialog" aria-live="polite">
       <div class="loading-content">
         <h2>Carregando o Jogo</h2>
         <div class="loading-spinner"></div>
@@ -38,7 +38,7 @@
       </div>
     </div>
     
-     <div id="pauseScreen" class="overlay-screen" aria-hidden="true">
+    <div id="pauseScreen" class="overlay-screen" aria-hidden="true">
       <div class="modal-content">
         <h2>Jogo Pausado</h2>
         <p>Fase atual: 3/5</p>
@@ -51,11 +51,15 @@
       </div>
     </div>
     
-     <div id="gameOverScreen" class="overlay-screen" aria-hidden="true">
+    <div id="gameOverScreen" class="overlay-screen" aria-hidden="true">
       <div class="modal-content">
         <h2>Game Over</h2>
         <p>Você foi derrotado na fase 3!</p>
         <p class="final-score">Pontuação: <span id="finalScore">0</span></p>
+        
+        <p id="msgGameOver" class="save-msg"></p>
+        <p id="recordMsgGameOver" class="record-msg"></p>
+
         <div class="modal-buttons">
           <button id="retryBtn" class="modal-btn primary">Tentar Novamente</button>
           <button id="levelSelectFromGameOver" class="modal-btn">Selecionar Fase</button>
@@ -64,11 +68,15 @@
       </div>
     </div>
     
-     <div id="levelCompleteScreen" class="overlay-screen" aria-hidden="true">
+    <div id="levelCompleteScreen" class="overlay-screen" aria-hidden="true">
       <div class="modal-content">
         <h2>Fase Concluída!</h2>
         <p>Parabéns! Você completou a fase 3!</p>
         <p class="final-score">Pontuação: <span id="levelScore">0</span></p>
+        
+        <p id="msgLevelComplete" class="save-msg"></p>
+        <p id="recordMsgLevelComplete" class="record-msg"></p>
+
         <div class="modal-buttons">
           <button id="nextLevelBtn" class="modal-btn primary">Próxima Fase</button>
           <button id="levelSelectFromComplete" class="modal-btn">Selecionar Fase</button>
@@ -77,7 +85,7 @@
       </div>
     </div>
 
-     <div id="levelSelectScreen" class="overlay-screen" aria-hidden="true">
+    <div id="levelSelectScreen" class="overlay-screen" aria-hidden="true">
       <div class="modal-content">
         <h2>Selecionar Fase</h2>
         <p class="level-status">Fase atual: 3</p>

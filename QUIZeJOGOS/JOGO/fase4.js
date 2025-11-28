@@ -1,9 +1,9 @@
 import { API_BASE_URL } from '../../api.js';
 
-// ==================== GUARDA-COSTAS ====================
+// ==================== GUARDA-COSTAS (SEGURANÇA) ====================
 if (!sessionStorage.getItem("usuarioId")) {
   alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
-   window.location.href = "../../LOGIN/login.html"; 
+  window.location.href = "../../LOGIN/login.html"; 
   throw new Error("Acesso negado: Usuário não logado."); 
 }
 
@@ -26,6 +26,7 @@ let collectSound, hitSound, GameOverSound, startSound, buttonSound;
 let keys = {};
 let paused = false;
 let gameOver = false;
+let levelFinished = false; // NOVA VARIÁVEL PARA TRAVAR LOOP
 let imagesLoaded = 0;
 let totalImages = 0;
 let soundMuted = false;
@@ -39,7 +40,8 @@ window.addEventListener('load', function() {
     initGame();
 });
 
- function initDOMElements() {
+// Inicializa elementos do DOM
+function initDOMElements() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     loadingContainer = document.getElementById('loadingContainer');
@@ -69,9 +71,10 @@ window.addEventListener('load', function() {
     levelButtons = document.querySelectorAll('.level-btn');
 }
 
- function setupEventListeners() {
+// Configura event listeners
+function setupEventListeners() {
     document.addEventListener('keydown', e => {
-      if (gameOver) return;
+      if (gameOver || levelFinished) return;
       keys[e.key] = true;
       if (e.key === "p" || e.key === "P") togglePause();
     });
@@ -83,14 +86,14 @@ window.addEventListener('load', function() {
     restartBtn.addEventListener('click', restartGame);
     retryBtn.addEventListener('click', restartGame);
     
-    // === MENU PRINCIPAL (COM RESET) ===
+    // === MENU PRINCIPAL ===
     mainMenuBtn.addEventListener('click', goToMainMenu);
     goToMenuBtn.addEventListener('click', goToMainMenu);
     menuFromComplete.addEventListener('click', goToMainMenu);
     
     nextLevelBtn.addEventListener('click', nextLevel);
     
-    levelSelectFromComplete.addEventListener('click', showLevelSelect);
+    if (levelSelectFromComplete) levelSelectFromComplete.addEventListener('click', showLevelSelect);
     muteBtn.addEventListener('click', toggleMute);
     menuBtn.addEventListener('click', showLevelSelect);
 
@@ -110,19 +113,20 @@ window.addEventListener('load', function() {
     });
 }
 
- function updateLevelButtons() {
-     const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+// ==================== SISTEMA DE FASES BLOQUEADAS ====================
+function updateLevelButtons() {
+    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     const buttons = document.querySelectorAll(".level-btn");
 
     buttons.forEach(btn => {
       const level = parseInt(btn.getAttribute("data-level"));
-       if (level > unlockedLevel) {
+      if (level > unlockedLevel) {
         btn.disabled = true;
         btn.classList.add("locked");
       } else {
         btn.disabled = false;
         btn.classList.remove("locked");
-         btn.onclick = () => {
+        btn.onclick = () => {
           if (level === 1) window.location.href = "jogo.html"; 
           else window.location.href = `fase${level}.html`;
         };
@@ -130,17 +134,21 @@ window.addEventListener('load', function() {
     });
 }
 
+// ==================== INICIALIZAÇÃO ====================
 function initGame() {
   updateLevelButtons();
   
   // CORREÇÃO: Força 3 vidas
   const savedLives = 3; 
   
-  // Carrega Checkpoint de PONTUAÇÃO da Fase 3
+  // Carrega Checkpoint de PONTUAÇÃO
   let startScore = parseInt(sessionStorage.getItem("checkpoint_fase3"));
-   if (isNaN(startScore)) startScore = 0;
+  if (isNaN(startScore)) startScore = 0;
 
   currentLevel = 4;
+  levelFinished = false; // Reset da flag
+  gameOver = false;
+  paused = false;
 
   const character = localStorage.getItem("selectedCharacter") || 'player1.png';
 
@@ -149,13 +157,14 @@ function initGame() {
     y: 350,
     size: 20,
     speed: 2,
-    lives: savedLives, // Vale 3
+    lives: savedLives,
     score: startScore, 
     invincible: false,
     image: new Image()
   };
 
-  player.image.src = IMGS_PATH + character;
+  // Cache fix
+  player.image.dataset.src = IMGS_PATH + character;
 
   collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
   hitSound = new Audio(SOUNDS_PATH + 'hit.mp3');
@@ -172,7 +181,7 @@ function initGame() {
 }
 
 // ==================== GERENCIAMENTO DE NÍVEIS ====================
- const levelData = {
+const levelData = {
     4: {
       player: { x: 280, y: 350 },
       monsters: [
@@ -201,7 +210,7 @@ function initGame() {
     }
 };
 
- function loadLevel(level) {
+function loadLevel(level) {
     if (level < 1 || level > totalLevels) return;
 
     currentLevel = level;
@@ -231,68 +240,78 @@ function initGame() {
     });
 
     totalImages = 1 + monsters.length + fruits.length;
+    
     player.image.onload = imageLoaded;
+    player.image.onerror = imageLoaded;
     monsters.forEach(m => { m.image.onload = imageLoaded; m.image.onerror = () => imageLoaded(); });
     fruits.forEach(f => { f.image.onload = imageLoaded; f.image.onerror = () => imageLoaded(); });
+    
     showLoadingScreen();
+
+    // Cache fix
+    player.image.src = player.image.dataset.src;
+    if (player.image.complete) { imageLoaded(); }
+
+    setTimeout(() => {
+        if (loadingContainer.style.display !== 'none') {
+            console.warn("Loading demorou muito. Forçando início.");
+            hideLoadingScreen();
+            if (!paused && !gameOver) gameLoop();
+        }
+    }, 3000);
 }
 
 // ==================== CONTROLES ====================
 function togglePause() {
-    if (gameOver) return;
+    if (gameOver || levelFinished) return;
     paused = !paused;
     pauseScreen.style.display = paused ? 'flex' : 'none';
 }
 
- function toggleMute() {
+function toggleMute() {
     soundMuted = !soundMuted;
     muteBtn.textContent = soundMuted ? '🔇' : '🔊';
     collectSound.muted = soundMuted;
     hitSound.muted = soundMuted;
 }
 
- function restartGame() {
+function restartGame() {
     sessionStorage.setItem("lives", "3");
     window.location.reload();
 }
 
-// ==================== FUNÇÃO DE SAÍDA COM LIMPEZA DE SESSÃO ====================
 async function goToMainMenu() {
-    // 1. Salva a pontuação
     if (player.score > 0) {
-        await enviarPontuacaoParaBanco(player.score);
+        // Tenta salvar sem bloquear
+        enviarPontuacaoParaBanco(player.score).catch(e => console.log("Erro save:", e));
     }
     
-    // 2. Alerta
     alert(
         `Pontuação final desta partida: ${player.score}\n\n` +
         `Sua pontuação foi sincronizada com o sistema.\n` +
         `O progresso desta sessão (fases desbloqueadas) será resetado.`
     );
 
-    // 3. LIMPA O PROGRESSO DA SESSÃO (CORREÇÃO DO BUG)
     sessionStorage.removeItem("unlockedLevel");
     sessionStorage.removeItem("lives");
     sessionStorage.removeItem("checkpoint_fase1");
     sessionStorage.removeItem("checkpoint_fase2");
     sessionStorage.removeItem("checkpoint_fase3");
     sessionStorage.removeItem("checkpoint_fase4");
-    // Não removemos o usuarioId para não deslogar
 
-    // 4. Redireciona
     window.location.href = "../../QUIZeJOGOS/JOGO/homeJOGO/homeJ.html";
 }
 
 const levelSelectBtn = document.querySelector("#levelSelectBtn")
 if(levelSelectBtn) levelSelectBtn.addEventListener("click", showLevelSelect)
 
- function showLevelSelect() {
+function showLevelSelect() {
     updateLevelButtons(); 
     levelSelectScreen.style.display = 'flex';
     paused = true;
 }
 
- function hideLevelSelect() {
+function hideLevelSelect() {
     levelSelectScreen.style.display = 'none';
     paused = false;
 }
@@ -304,40 +323,55 @@ function showLoadingScreen() {
     progressFill.style.width = '0%';
 }
 
- function hideLoadingScreen() {
+function hideLoadingScreen() {
     loadingContainer.style.opacity = '0';
     setTimeout(() => { loadingContainer.style.display = 'none'; }, 500);
 }
 
- function showGameOver() {
+function showGameOver() {
+    if(gameOver) return;
     gameOver = true;
+    
     finalScore.textContent = player.score;
     gameOverScreen.style.display = 'flex';
-    enviarPontuacaoParaBanco(player.score);
+    
+    document.getElementById('msgGameOver').textContent = "Salvando pontuação...";
+    document.getElementById('recordMsgGameOver').textContent = "";
+
+    enviarPontuacaoParaBanco(player.score, 'recordMsgGameOver', 'msgGameOver');
+
     if (!soundMuted) GameOverSound.play().catch(e => console.log(e));
 }
 
 const levelSelectFromGameOver = document.querySelector("#levelSelectFromGameOver")
 if(levelSelectFromGameOver) levelSelectFromGameOver.addEventListener("click", showLevelSelect)
 
- function showLevelComplete() {
+function showLevelComplete() {
+    if(levelFinished) return;
+    levelFinished = true;
+    paused = true; // Trava o loop
+
     levelScore.textContent = player.score;
     levelCompleteScreen.style.display = 'flex';
-    paused = true;
-    enviarPontuacaoParaBanco(player.score);
+    
+    document.getElementById('msgLevelComplete').textContent = "Salvando pontuação...";
+    document.getElementById('recordMsgLevelComplete').textContent = "";
+
+    enviarPontuacaoParaBanco(player.score, 'recordMsgLevelComplete', 'msgLevelComplete'); 
 } 
 
 function nextLevel() {
-   if (currentLevel < totalLevels) {
+  if (currentLevel < totalLevels) {
     sessionStorage.setItem("checkpoint_fase4", player.score);
-     sessionStorage.setItem("lives", player.lives.toString());
-    enviarPontuacaoParaBanco(player.score); 
+    sessionStorage.setItem("lives", "3"); // Força 3 vidas
+    
+    // Save já feito no showLevelComplete
 
-     const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     if (currentUnlocked < 5) {
         sessionStorage.setItem("unlockedLevel", "5");
     }
-     window.location.href = 'fase5.html';
+    window.location.href = 'fase5.html';
   }
 }
 
@@ -356,14 +390,14 @@ function imageLoaded() {
     }
 }
 
- function isCollidingWithObstacle(x, y, size) {
+function isCollidingWithObstacle(x, y, size) {
     return obstacles.some(obs =>
       x < obs.x + obs.width && x + size > obs.x &&
       y < obs.y + obs.height && y + size > obs.y
     );
 }
 
- function movePlayer() {
+function movePlayer() {
     let nextX = player.x;
     let nextY = player.y;
     if (keys['ArrowUp'] || keys['W'] || keys['w']) nextY -= player.speed;
@@ -385,18 +419,18 @@ function moveMonster(monster) {
     if (!isCollidingWithObstacle(monster.x, nextY, monster.size)) monster.y = nextY;
 }
 
- function drawPlayer() {
+function drawPlayer() {
     if (player.invincible && Math.floor(Date.now() / 100) % 2 === 0) return;
     if (player.image.complete && player.image.naturalHeight !== 0) ctx.drawImage(player.image, player.x, player.y, player.size, player.size);
     else { ctx.fillStyle = "#3498db"; ctx.fillRect(player.x, player.y, player.size, player.size); }
 }
 
- function drawMonster(monster) {
+function drawMonster(monster) {
     if (monster.image.complete && monster.image.naturalHeight !== 0) ctx.drawImage(monster.image, monster.x, monster.y, monster.size, monster.size);
     else { ctx.fillStyle = "#e74c3c"; ctx.fillRect(monster.x, monster.y, monster.size, monster.size); }
 }
 
- function drawObstacles() {
+function drawObstacles() {
     ctx.fillStyle = "#34495e";
     obstacles.forEach(obs => {
       ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
@@ -405,7 +439,7 @@ function moveMonster(monster) {
     });
 }
 
- function drawFruits() {
+function drawFruits() {
     fruits.forEach((fruit, index) => {
       if (!fruit.collected) {
         if (fruit.image.complete && fruit.image.naturalHeight !== 0) ctx.drawImage(fruit.image, fruit.x, fruit.y, fruit.size, fruit.size);
@@ -420,7 +454,7 @@ function moveMonster(monster) {
     });
 }
 
- function drawHUD() {
+function drawHUD() {
     livesCount.textContent = player.lives;
     scoreCount.textContent = player.score;
     ctx.fillStyle = "#ecf0f1";
@@ -430,7 +464,9 @@ function moveMonster(monster) {
     ctx.fillText(`Fase ${currentLevel}`, canvas.width - 70, 20);
 }
 
- function checkFruitCollection() {
+function checkFruitCollection() {
+    if(levelFinished) return;
+
     fruits.forEach(fruit => {
       if (!fruit.collected &&
         player.x < fruit.x + fruit.size && player.x + player.size > fruit.x &&
@@ -439,21 +475,23 @@ function moveMonster(monster) {
         fruit.collected = true;
         player.score += 10;
         monsters.forEach(monster => { monster.speed += 0.1; });
-        if (!soundMuted) { collectSound.currentTime = 0; collectSound.play().catch(e => console.log("Erro ao reproduzir som")); }
+        if (!soundMuted) { collectSound.currentTime = 0; collectSound.play().catch(e => console.log("Erro som")); }
       }
     });
     const allCollected = fruits.every(fruit => fruit.collected);
     if (allCollected) { showLevelComplete(); }
 }
 
- function checkCollision() {
+function checkCollision() {
+    if(levelFinished) return;
+
     for (const monster of monsters) {
       if (
         player.x < monster.x + monster.size && player.x + player.size > monster.x &&
         player.y < monster.y + monster.size && player.y + player.size > monster.y
       ) {
         if (!player.invincible) {
-          if (!soundMuted) { hitSound.currentTime = 0; hitSound.play().catch(e => console.log("Erro ao reproduzir som")); }
+          if (!soundMuted) { hitSound.currentTime = 0; hitSound.play().catch(e => console.log("Erro som")); }
           player.lives--;
           livesCount.classList.add("vida-perdida");
           setTimeout(() => livesCount.classList.remove("vida-perdida"), 800);
@@ -466,9 +504,9 @@ function moveMonster(monster) {
     }
 }
 
- function gameLoop() {
+function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (!paused && !gameOver) {
+    if (!paused && !gameOver && !levelFinished) {
       movePlayer();
       monsters.forEach(monster => { moveMonster(monster); });
       checkCollision();
@@ -482,24 +520,39 @@ function moveMonster(monster) {
     requestAnimationFrame(gameLoop);
 } 
 
-async function enviarPontuacaoParaBanco(pontosFinais) {
+async function enviarPontuacaoParaBanco(pontosFinais, elementIdForRecordMsg, elementIdForSaveMsg) {
   const idUsuario = sessionStorage.getItem("usuarioId");
-   if (!idUsuario) {
-      console.warn("Usuário não logado. Pontuação não salva.");
-      return;
-   }
-   try {
+  if (!idUsuario) return;
+
+  try {
       const response = await fetch(`${API_BASE_URL}/salvar-pontuacao`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ userId: idUsuario, pontos: pontosFinais })
       });
-       const data = await response.json();
-      console.log("Status do salvamento:", data.message);
-      if(data.newRecord) { console.log("NOVO RECORDE REGISTRADO!"); }
+      const data = await response.json();
+      console.log("Status:", data.message);
+      
+      if(elementIdForSaveMsg && document.getElementById(elementIdForSaveMsg)) {
+          document.getElementById(elementIdForSaveMsg).textContent = "Pontuação salva com sucesso!";
+      }
+
+      const isRecord = data.newRecord === true || data.newRecord === "true" || data.newRecord === 1;
+
+      if(isRecord && elementIdForRecordMsg) {
+           const el = document.getElementById(elementIdForRecordMsg);
+           if(el) {
+               el.textContent = "🏆 NOVO RECORDE! 🏆";
+           }
+      }
   } catch (error) {
       console.error("Erro ao conectar com o servidor:", error);
+      if(elementIdForSaveMsg && document.getElementById(elementIdForSaveMsg)) {
+          document.getElementById(elementIdForSaveMsg).textContent = "Erro ao salvar.";
+          document.getElementById(elementIdForSaveMsg).style.color = "red";
+      }
   }
 }
+
 window.goToMainMenu = goToMainMenu;

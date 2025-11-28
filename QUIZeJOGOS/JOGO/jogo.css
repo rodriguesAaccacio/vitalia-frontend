@@ -362,3 +362,34 @@ canvas.obstaculo {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Mensagem de salvamento */
+.save-msg {
+  display: block;
+  font-size: 0.9rem;
+  color: #a5d6a7; /* Um verde claro agradável */
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-weight: normal;
+  font-style: italic;
+  min-height: 1.2em; /* Reserva espaço para o texto não pular */
+}
+
+/* Mensagem de Novo Recorde */
+.record-msg {
+  display: block;
+  font-size: 1.1rem;
+  color: #FFD700; /* Dourado */
+  margin-top: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  min-height: 1.2em;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}

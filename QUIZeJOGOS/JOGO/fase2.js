@@ -26,6 +26,7 @@ let collectSound, hitSound, GameOverSound, startSound, buttonSound;
 let keys = {};
 let paused = false;
 let gameOver = false;
+let levelFinished = false; // NOVA VARIÁVEL
 let imagesLoaded = 0;
 let totalImages = 0;
 let soundMuted = false;
@@ -71,7 +72,7 @@ function initDOMElements() {
 
 function setupEventListeners() {
   document.addEventListener('keydown', e => {
-    if (gameOver) return;
+    if (gameOver || levelFinished) return;
     keys[e.key] = true;
     if (e.key === "p" || e.key === "P") togglePause();
   });
@@ -80,14 +81,14 @@ function setupEventListeners() {
   pauseBtn.addEventListener('click', togglePause);
   resumeBtn.addEventListener('click', togglePause);
   
-   restartBtn.addEventListener('click', restartGame);
+  restartBtn.addEventListener('click', restartGame);
   retryBtn.addEventListener('click', restartGame);
   
-   mainMenuBtn.addEventListener('click', goToMainMenu);
+  mainMenuBtn.addEventListener('click', goToMainMenu);
   goToMenuBtn.addEventListener('click', goToMainMenu);
   menuFromComplete.addEventListener('click', goToMainMenu);
   
-   nextLevelBtn.addEventListener('click', nextLevel);
+  nextLevelBtn.addEventListener('click', nextLevel);
   
   if (levelSelectFromComplete) levelSelectFromComplete.addEventListener('click', showLevelSelect);
   muteBtn.addEventListener('click', toggleMute);
@@ -107,18 +108,18 @@ function setupEventListeners() {
   });
 }
 
- function updateLevelButtons() {
-     const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+function updateLevelButtons() {
+    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     const buttons = document.querySelectorAll(".level-btn");
 
     buttons.forEach(btn => {
       const level = parseInt(btn.getAttribute("data-level"));
-       if (level > unlockedLevel) {
+      if (level > unlockedLevel) {
         btn.disabled = true;
         btn.classList.add("locked");
       } else {
         btn.disabled = false;
-         btn.classList.remove("locked");
+        btn.classList.remove("locked");
         btn.onclick = () => {
           if (level === 1) window.location.href = "jogo.html"; 
           else window.location.href = `fase${level}.html`;
@@ -128,14 +129,20 @@ function setupEventListeners() {
 } 
 
 // ==================== INITIALIZE GAME ====================
- function initGame() {
+function initGame() {
   updateLevelButtons();
-  const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;
   
-   let startScore = parseInt(sessionStorage.getItem("checkpoint_fase1"));
-   if (isNaN(startScore)) startScore = 0;
+  // Força 3 vidas no início da fase
+  const savedLives = 3;
+  
+  // Carrega checkpoint
+  let startScore = parseInt(sessionStorage.getItem("checkpoint_fase1"));
+  if (isNaN(startScore)) startScore = 0;
 
   currentLevel = 2; 
+  levelFinished = false; // Reset da flag
+  gameOver = false;
+  paused = false;
 
   const character = localStorage.getItem("selectedCharacter") || 'player1.png';
 
@@ -145,12 +152,11 @@ function setupEventListeners() {
     size: 20,
     speed: 2,
     lives: savedLives,
-    score: startScore,
+    score: startScore, 
     invincible: false,
     image: new Image()
   };
   
-  // AQUI MUDOU: Não defino o SRC aqui ainda para evitar cache antes da hora
   player.image.dataset.src = IMGS_PATH + character; 
 
   collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
@@ -191,7 +197,7 @@ const levelData = {
 function loadLevel(level) {
   monsters = []; obstacles = []; fruits = []; imagesLoaded = 0;
   
-   if (!levelData[level]) level = 2;
+  if (!levelData[level]) level = 2;
 
   const data = levelData[level];
   player.x = data.player.x;
@@ -216,33 +222,21 @@ function loadLevel(level) {
     fruits.push(fruit);
   });
 
-  // CONFIGURAÇÃO DO LOADING (CORRIGIDO)
   totalImages = 1 + monsters.length + fruits.length;
   
-  // Listener do Player
   player.image.onload = imageLoaded;
-  player.image.onerror = imageLoaded; // Garante que continua mesmo se erro
-  
-  // Listener dos Monstros
+  player.image.onerror = imageLoaded;
   monsters.forEach(m => { m.image.onload = imageLoaded; m.image.onerror = imageLoaded; });
-  
-  // Listener das Frutas
   fruits.forEach(f => { f.image.onload = imageLoaded; f.image.onerror = imageLoaded; });
   
   showLoadingScreen();
 
-  // --- CORREÇÃO DO CACHE ---
-  // Define o SRC do player AGORA, para disparar o onload
   player.image.src = player.image.dataset.src;
 
-  // VERIFICAÇÃO DE SEGURANÇA: Se a imagem já estiver em cache, o onload pode não disparar.
-  // Checamos manualmente:
   if (player.image.complete) {
       imageLoaded();
   }
 
-  // --- CORREÇÃO DE SEGURANÇA FINAL ---
-  // Se por algum motivo o loading travar por 3 segundos, força o início do jogo
   setTimeout(() => {
       if (loadingContainer.style.display !== 'none') {
           console.warn("Loading demorou muito. Forçando início.");
@@ -252,9 +246,9 @@ function loadLevel(level) {
   }, 3000);
 }
 
-// ==================== RESTANTE DAS FUNÇÕES (PADRÃO) ====================
+// ==================== CONTROLES E TELAS ====================
 function togglePause() {
-  if (gameOver) return;
+  if (gameOver || levelFinished) return;
   paused = !paused;
   pauseScreen.style.display = paused ? 'flex' : 'none';
 }
@@ -273,15 +267,10 @@ function restartGame() {
 
 async function goToMainMenu() {
   if (player.score > 0) {
-      await enviarPontuacaoParaBanco(player.score);
+      // Tenta salvar sem bloquear
+      enviarPontuacaoParaBanco(player.score).catch(e => console.log("Erro save exit:", e));
   }
   
-  alert(
-      `Pontuação final desta partida: ${player.score}\n\n` +
-      `Sua pontuação foi sincronizada com o sistema.\n` +
-      `O progresso desta sessão (fases desbloqueadas) será resetado.`
-  );
-
   sessionStorage.removeItem("unlockedLevel");
   sessionStorage.removeItem("lives");
   sessionStorage.removeItem("checkpoint_fase1");
@@ -312,27 +301,45 @@ function hideLoadingScreen() {
 }
 
 function showGameOver() {
+  if(gameOver) return;
   gameOver = true;
+  
   finalScore.textContent = player.score;
   gameOverScreen.style.display = 'flex';
-  enviarPontuacaoParaBanco(player.score); 
+  
+  // Feedback
+  document.getElementById('msgGameOver').textContent = "Salvando pontuação...";
+  document.getElementById('recordMsgGameOver').textContent = "";
+
+  enviarPontuacaoParaBanco(player.score, 'recordMsgGameOver', 'msgGameOver'); 
+  
   if (!soundMuted) GameOverSound.play().catch(e => console.log(e));
 }
 
 function showLevelComplete() {
+  if(levelFinished) return;
+  levelFinished = true;
+  paused = true; // Trava o loop
+
   levelScore.textContent = player.score;
   levelCompleteScreen.style.display = 'flex';
-  enviarPontuacaoParaBanco(player.score);
+  
+  // Feedback
+  document.getElementById('msgLevelComplete').textContent = "Salvando pontuação...";
+  document.getElementById('recordMsgLevelComplete').textContent = "";
+
+  enviarPontuacaoParaBanco(player.score, 'recordMsgLevelComplete', 'msgLevelComplete');
 }
 
 function nextLevel() {
   if (currentLevel < totalLevels) {
-     sessionStorage.setItem("checkpoint_fase2", player.score);
-    sessionStorage.setItem("lives", player.lives.toString());
+    sessionStorage.setItem("checkpoint_fase2", player.score);
+    sessionStorage.setItem("lives", "3"); // Garante 3 vidas
     
-    enviarPontuacaoParaBanco(player.score); 
+    // O salvamento já ocorreu no showLevelComplete, não precisa duplicar aqui
+    // enviarPontuacaoParaBanco(player.score); 
 
-     const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+    const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     if (currentUnlocked < 3) {
         sessionStorage.setItem("unlockedLevel", "3");
     }
@@ -341,14 +348,13 @@ function nextLevel() {
   }
 }
 
- function imageLoaded() {
+// ==================== ASSET LOADING & LOOP ====================
+function imageLoaded() {
   imagesLoaded++;
-  // Proteção contra contagem maior que o total (pode acontecer com cache)
   if (imagesLoaded > totalImages) imagesLoaded = totalImages;
   
   const progress = Math.round((imagesLoaded / totalImages) * 100);
   progressFill.style.width = progress + '%';
-  
   if (imagesLoaded >= totalImages) {
     setTimeout(() => {
       hideLoadingScreen();
@@ -391,6 +397,8 @@ function moveMonster(monster) {
 }
 
 function checkFruitCollection() {
+  if(levelFinished) return;
+
   fruits.forEach(fruit => {
     if (!fruit.collected &&
       player.x < fruit.x + fruit.size && player.x + player.size > fruit.x &&
@@ -408,6 +416,8 @@ function checkFruitCollection() {
 }
 
 function checkCollision() {
+  if(levelFinished) return;
+
   for (const monster of monsters) {
     if (
       player.x < monster.x + monster.size && player.x + player.size > monster.x &&
@@ -474,7 +484,7 @@ function drawHUD() {
 
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (!paused && !gameOver) {
+  if (!paused && !gameOver && !levelFinished) {
     movePlayer();
     monsters.forEach(m => moveMonster(m));
     checkCollision();
@@ -488,7 +498,7 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 } 
 
-async function enviarPontuacaoParaBanco(pontosFinais) {
+async function enviarPontuacaoParaBanco(pontosFinais, elementIdForRecordMsg, elementIdForSaveMsg) {
   const idUsuario = sessionStorage.getItem("usuarioId");
   if (!idUsuario) return;
 
@@ -499,14 +509,30 @@ async function enviarPontuacaoParaBanco(pontosFinais) {
           credentials: 'include',
           body: JSON.stringify({ userId: idUsuario, pontos: pontosFinais })
       });
-       
+      
       const data = await response.json();
-    if(data.newRecord) {
-           console.log("NOVO RECORDE REGISTRADO!");
+      console.log("Status:", data.message);
+      console.log("Response:", data);
+
+      if(elementIdForSaveMsg && document.getElementById(elementIdForSaveMsg)) {
+          document.getElementById(elementIdForSaveMsg).textContent = "Pontuação salva com sucesso!";
+      }
+
+      const isRecord = data.newRecord === true || data.newRecord === "true" || data.newRecord === 1;
+
+      if(isRecord && elementIdForRecordMsg) {
+           const el = document.getElementById(elementIdForRecordMsg);
+           if(el) {
+               el.textContent = "🏆 NOVO RECORDE! 🏆";
+           }
       }
 
   } catch (error) {
       console.error("Erro ao conectar:", error);
+      if(elementIdForSaveMsg && document.getElementById(elementIdForSaveMsg)) {
+          document.getElementById(elementIdForSaveMsg).textContent = "Erro ao salvar.";
+          document.getElementById(elementIdForSaveMsg).style.color = "red";
+      }
   }
 }
 
