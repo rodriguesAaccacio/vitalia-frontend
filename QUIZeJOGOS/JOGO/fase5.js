@@ -1,9 +1,9 @@
 import { API_BASE_URL } from '../../api.js';
 
-// ==================== GUARDA-COSTAS (SEGURANÇA) ==================== 
- if (!sessionStorage.getItem("usuarioId")) {
+// ==================== GUARDA-COSTAS ==================== 
+if (!sessionStorage.getItem("usuarioId")) {
   alert("Ops! Você precisa fazer login para jogar e salvar sua pontuação.");
-   window.location.href = "../../LOGIN/login.html"; 
+  window.location.href = "../../LOGIN/login.html"; 
   throw new Error("Acesso negado: Usuário não logado."); 
 }
 
@@ -41,8 +41,7 @@ window.addEventListener('load', function() {
   initGame();
 });
 
-// Inicializa elementos do DOM
-function initDOMElements() {
+ function initDOMElements() {
   canvas = document.getElementById('gameCanvas');
   ctx = canvas.getContext('2d');
   loadingContainer = document.getElementById('loadingContainer');
@@ -53,8 +52,7 @@ function initDOMElements() {
   victoryScreen = document.getElementById('victoryScreen');
   levelSelectScreen = document.getElementById('levelSelectScreen');
 
-  // Botões
-  pauseBtn = document.getElementById('pauseBtn');
+   pauseBtn = document.getElementById('pauseBtn');
   resumeBtn = document.getElementById('resumeBtn');
   restartBtn = document.getElementById('restartBtn');
   mainMenuBtn = document.getElementById('mainMenuBtn');
@@ -68,85 +66,66 @@ function initDOMElements() {
   muteBtn = document.getElementById('muteBtn');
   menuBtn = document.getElementById('menuBtn');
 
-  // Elementos de texto
-  livesCount = document.getElementById('livesCount');
+   livesCount = document.getElementById('livesCount');
   scoreCount = document.getElementById('scoreCount');
   finalScore = document.getElementById('finalScore');
   levelScore = document.getElementById('levelScore');
   victoryScore = document.getElementById('victoryScore');
 
-  // Botões de seleção de nível
-  levelButtons = document.querySelectorAll('.level-btn');
+   levelButtons = document.querySelectorAll('.level-btn');
 }
 
-// Configura event listeners
-function setupEventListeners() {
-  // Controles de teclado
+ function setupEventListeners() {
   document.addEventListener('keydown', e => {
     if (gameOver || victory) return;
     keys[e.key] = true;
     if (e.key === "p" || e.key === "P") togglePause();
   });
+   document.addEventListener('keyup', e => keys[e.key] = false);
 
-  document.addEventListener('keyup', e => keys[e.key] = false);
-
-  // Controles de interface
-  pauseBtn.addEventListener('click', togglePause);
+   pauseBtn.addEventListener('click', togglePause);
   resumeBtn.addEventListener('click', togglePause);
   restartBtn.addEventListener('click', restartGame);
+   retryBtn.addEventListener('click', restartGame);
+  
+  // === BOTÕES DE SAÍDA (Com limpeza de sessão) ===
   mainMenuBtn.addEventListener('click', goToMainMenu);
-  retryBtn.addEventListener('click', restartGame);
-  goToMenuBtn.addEventListener('click', goToMainMenu);
-  
-  // Botão de Próxima Fase / Jogar Novamente
-  if (nextLevelBtn) nextLevelBtn.addEventListener('click', nextLevel);
-  
-  if (levelSelectFromComplete) levelSelectFromComplete.addEventListener('click', showLevelSelect);
-  if (menuFromComplete) menuFromComplete.addEventListener('click', goToMainMenu);
+   goToMenuBtn.addEventListener('click', goToMainMenu);
+  menuFromComplete.addEventListener('click', goToMainMenu);
+  if (victoryMenuBtn) victoryMenuBtn.addEventListener('click', goToMainMenu);
   
   if (playAgainBtn) playAgainBtn.addEventListener('click', () => window.location.href = 'jogo.html');
-  if (victoryMenuBtn) victoryMenuBtn.addEventListener('click', goToMainMenu);
+
+   if (nextLevelBtn) nextLevelBtn.addEventListener('click', nextLevel);
+   if (levelSelectFromComplete) levelSelectFromComplete.addEventListener('click', showLevelSelect);
   
   muteBtn.addEventListener('click', toggleMute);
   menuBtn.addEventListener('click', showLevelSelect);
 
-  // Botão de voltar do menu de seleção
-  const backToGameBtn = document.getElementById('backToGameBtn');
+   const backToGameBtn = document.getElementById('backToGameBtn');
   if (backToGameBtn) {
     backToGameBtn.addEventListener('click', hideLevelSelect);
   }
 
-  // Botões de seleção de nível (Lógica do Cadeado)
-  levelButtons.forEach(btn => {
+   levelButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const level = parseInt(btn.getAttribute('data-level'));
-      // A lógica de clique real é redefinida em updateLevelButtons
-      // mas deixamos aqui como fallback
-      if (level === 1) window.location.href = 'jogo.html';
-      else window.location.href = `fase${level}.html`;
+      const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+      if (level <= unlockedLevel) {
+          window.location.href = level === 1 ? 'jogo.html' : `fase${level}.html`;
+      }
     });
   });
 }
 
-// ==================== SISTEMA DE FASES BLOQUEADAS ====================
-
-// Salva o progresso (Atualizado para sessionStorage)
-function saveProgress(level) {
-  const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
-  if (level > unlockedLevel) {
-    sessionStorage.setItem("unlockedLevel", level);
-  }
-}
-
-// Atualiza os cadeados (Atualizado para sessionStorage)
+// ==================== SISTEMA DE CADEADOS ====================
 function updateLevelButtons() {
   const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
   const buttons = document.querySelectorAll(".level-btn");
 
   buttons.forEach(btn => {
     const level = parseInt(btn.getAttribute("data-level"));
-
-    if (level > unlockedLevel) {
+     if (level > unlockedLevel) {
       btn.disabled = true;
       btn.classList.add("locked");
     } else {
@@ -160,25 +139,14 @@ function updateLevelButtons() {
   });
 }
 
-// Mostra nível completo (Atualizado para sessionStorage)
-function showLevelComplete() {
-  levelScore.textContent = player.score;
-  levelCompleteScreen.style.display = 'flex';
-  
-  // Salva score acumulado na sessão
-  sessionStorage.setItem("accumulatedScore", player.score.toString());
-  
-  enviarPontuacaoParaBanco(player.score); 
-}
-
-// ==================== INICIALIZAÇÃO DO JOGO (CHECKPOINTS) ====================
+// ==================== INICIALIZAÇÃO (LOADING FIX + CHECKPOINTS) ====================
 function initGame() {
-  updateLevelButtons(); // Atualiza os botões visualmente
+  updateLevelButtons();
   
-  // Carrega vidas da sessão
-  const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;
+  // CORREÇÃO: Força 3 vidas
+  const savedLives = 3;
   
-  // Carrega o Checkpoint da Fase 4 (para começar a 5 com a pontuação certa)
+  // Carrega o Checkpoint de PONTUAÇÃO da Fase 4
   let startScore = parseInt(sessionStorage.getItem("checkpoint_fase4"));
   if (isNaN(startScore)) startScore = 0;
  
@@ -191,16 +159,16 @@ function initGame() {
     y: 200,
     size: 20,
     speed: 2,
-    lives: savedLives,
-    score: startScore, // Usa o checkpoint carregado
+    lives: savedLives, // Vale 3
+    score: startScore,
     invincible: false,
     image: new Image()
   };
 
-  player.image.src = IMGS_PATH + character;
+  // PROTEÇÃO CONTRA CACHE (Não define SRC agora)
+  player.image.dataset.src = IMGS_PATH + character;
 
-  // Sons
-  collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
+   collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
   hitSound = new Audio(SOUNDS_PATH + 'hit.mp3');
   GameOverSound = new Audio(SOUNDS_PATH + 'GameOver.mp3');
   startSound = new Audio(SOUNDS_PATH + 'start.mp3');
@@ -214,8 +182,8 @@ function initGame() {
   loadLevel(currentLevel);
 }
 
-// ==================== GERENCIAMENTO DE NÍVEIS ====================
- const levelData = {
+// ==================== DADOS DA FASE 5 ====================
+const levelData = {
   5: {
     player: { x: 200, y: 250, speed: 1.2 },
     monsters: [
@@ -253,14 +221,11 @@ function initGame() {
   }
 };
 
- function loadLevel(level) {
+function loadLevel(level) {
   if (level < 1 || level > totalLevels) return;
   currentLevel = level;
   
-  monsters = [];
-  obstacles = [];
-  fruits = [];
-  imagesLoaded = 0;
+  monsters = []; obstacles = []; fruits = []; imagesLoaded = 0;
 
   const data = levelData[level];
   player.x = data.player.x;
@@ -268,9 +233,7 @@ function initGame() {
   player.invincible = false;
 
   data.monsters.forEach(m => {
-    const monster = {
-      x: m.x, y: m.y, size: 20, speed: m.speed, image: new Image()
-    };
+    const monster = { x: m.x, y: m.y, size: 20, speed: m.speed, image: new Image() };
     monster.image.src = IMGS_PATH + 'enemy.png';
     monsters.push(monster);
   });
@@ -280,47 +243,81 @@ function initGame() {
   });
 
   data.fruits.forEach(f => {
-    const fruit = {
-      x: f.x, y: f.y, size: 20, collected: false, image: new Image(), type: f.type
-    };
+    const fruit = { x: f.x, y: f.y, size: 20, collected: false, image: new Image(), type: f.type };
     if (f.type === 1) fruit.image.src = IMGS_PATH + 'fruit1.png';
     else if (f.type === 2) fruit.image.src = IMGS_PATH + 'fruit2.png';
     else fruit.image.src = IMGS_PATH + 'fruit3.png';
     fruits.push(fruit);
   });
 
+  // CONFIGURAÇÃO DO LOADING (CORRIGIDO PARA EVITAR TRAVAMENTO)
   totalImages = 1 + monsters.length + fruits.length;
+
   player.image.onload = imageLoaded;
+  player.image.onerror = imageLoaded;
   monsters.forEach(m => { m.image.onload = imageLoaded; m.image.onerror = imageLoaded; });
   fruits.forEach(f => { f.image.onload = imageLoaded; f.image.onerror = imageLoaded; });
+  
   showLoadingScreen();
+
+  // Define SRC agora
+  player.image.src = player.image.dataset.src;
+  
+  // Verificação manual de cache
+  if (player.image.complete) {
+      imageLoaded();
+  }
+
+  // Timeout de segurança (3 segundos)
+  setTimeout(() => {
+      if (loadingContainer.style.display !== 'none') {
+          console.warn("Loading demorou muito. Forçando início.");
+          hideLoadingScreen();
+          if (!paused && !gameOver && !victory) gameLoop();
+      }
+  }, 3000);
 }
 
 // ==================== CONTROLES DE JOGO ====================
- function togglePause() {
+function togglePause() {
   if (gameOver || victory) return;
   paused = !paused;
   pauseScreen.style.display = paused ? 'flex' : 'none';
 }
 
- function toggleMute() {
+function toggleMute() {
   soundMuted = !soundMuted;
   muteBtn.textContent = soundMuted ? '🔇' : '🔊';
   collectSound.muted = soundMuted;
   hitSound.muted = soundMuted;
 }
 
- function restartGame() {
-  // Reinicia mantendo vidas em 3
+function restartGame() {
   sessionStorage.setItem("lives", "3");
   window.location.reload();
 }
 
+// ==================== FUNÇÃO DE SAÍDA COM LIMPEZA ====================
 async function goToMainMenu() {
   if (player.score > 0) {
     await enviarPontuacaoParaBanco(player.score);
   }
-  window.location.href = "../select/select.html";
+  
+  alert(
+      `Pontuação final desta partida: ${player.score}\n\n` +
+      `Sua pontuação foi sincronizada com o sistema.\n` +
+      `O progresso desta sessão (fases desbloqueadas) será resetado.`
+  );
+  
+  // LIMPEZA DA SESSÃO
+  sessionStorage.removeItem("unlockedLevel");
+  sessionStorage.removeItem("lives");
+  sessionStorage.removeItem("checkpoint_fase1");
+  sessionStorage.removeItem("checkpoint_fase2");
+  sessionStorage.removeItem("checkpoint_fase3");
+  sessionStorage.removeItem("checkpoint_fase4");
+
+  window.location.href = "../../QUIZeJOGOS/JOGO/homeJOGO/homeJ.html";
 }
 
 function showLevelSelect() {
@@ -329,24 +326,24 @@ function showLevelSelect() {
   paused = true;
 }
 
- function hideLevelSelect() {
+function hideLevelSelect() {
   levelSelectScreen.style.display = 'none';
   paused = false;
 }
 
-// ==================== TELAS DE JOGO ====================
- function showLoadingScreen() {
+// ==================== TELAS E VITÓRIA ====================
+function showLoadingScreen() {
   loadingContainer.style.display = 'flex';
   loadingContainer.style.opacity = '1';
   progressFill.style.width = '0%';
 }
 
- function hideLoadingScreen() {
+function hideLoadingScreen() {
   loadingContainer.style.opacity = '0';
   setTimeout(() => { loadingContainer.style.display = 'none'; }, 500);
 }
 
- function showGameOver() {
+function showGameOver() {
   gameOver = true;
   finalScore.textContent = player.score;
   gameOverScreen.style.display = 'flex';
@@ -354,7 +351,13 @@ function showLevelSelect() {
   if (!soundMuted) GameOverSound.play().catch(e => console.log(e));
 }
 
-// VITÓRIA TOTAL DO JOGO
+function showLevelComplete() {
+  levelScore.textContent = player.score;
+  levelCompleteScreen.style.display = 'flex';
+  sessionStorage.setItem("accumulatedScore", player.score.toString());
+  enviarPontuacaoParaBanco(player.score); 
+}
+
 function showVictory() {
   victory = true;
   victoryScore.textContent = player.score;
@@ -362,20 +365,16 @@ function showVictory() {
   enviarPontuacaoParaBanco(player.score);
 }
 
-// Lógica de Próximo Nível (Aqui aciona a Vitória)
-function nextLevel() {
-  if (currentLevel < totalLevels) {
-     // Se houver mais fases (no futuro), salva progresso aqui
-     // Como estamos na fase 5/5, ele cai no else
-  } else {
-     // Jogo completo
-     showVictory();
-  }
+ function nextLevel() {
+  // Como estamos na fase 5, nextLevel leva à vitória
+  showVictory();
 }
 
-// ==================== CARREGAMENTO E LOOP ====================
+// ==================== LOOP E OUTROS ====================
 function imageLoaded() {
   imagesLoaded++;
+  if (imagesLoaded > totalImages) imagesLoaded = totalImages;
+  
   const progress = Math.round((imagesLoaded / totalImages) * 100);
   progressFill.style.width = progress + '%';
   if (imagesLoaded >= totalImages) {
@@ -386,14 +385,14 @@ function imageLoaded() {
   }
 }
 
- function isCollidingWithObstacle(x, y, size) {
+function isCollidingWithObstacle(x, y, size) {
   return obstacles.some(obs =>
     x < obs.x + obs.width && x + size > obs.x &&
     y < obs.y + obs.height && y + size > obs.y
   );
 }
 
- function movePlayer() {
+function movePlayer() {
   let nextX = player.x;
   let nextY = player.y;
 
@@ -431,8 +430,7 @@ function checkFruitCollection() {
       if (!soundMuted) { collectSound.currentTime = 0; collectSound.play().catch(e => {}); }
     }
   });
-
-  const allCollected = fruits.every(fruit => fruit.collected);
+   const allCollected = fruits.every(fruit => fruit.collected);
   if (allCollected) showLevelComplete();
 }
 
@@ -462,12 +460,12 @@ function drawPlayer() {
   else { ctx.fillStyle = "#3498db"; ctx.fillRect(player.x, player.y, player.size, player.size); }
 }
 
- function drawMonster(monster) {
+function drawMonster(monster) {
   if (monster.image.complete && monster.image.naturalHeight !== 0) ctx.drawImage(monster.image, monster.x, monster.y, monster.size, monster.size);
   else { ctx.fillStyle = "#e74c3c"; ctx.fillRect(monster.x, monster.y, monster.size, monster.size); }
 }
 
- function drawObstacles() {
+function drawObstacles() {
   ctx.fillStyle = "#34495e";
   obstacles.forEach(obs => {
     ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
@@ -476,7 +474,7 @@ function drawPlayer() {
   });
 }
 
- function drawFruits() {
+function drawFruits() {
   fruits.forEach((fruit, index) => {
     if (!fruit.collected) {
       if (fruit.image.complete && fruit.image.naturalHeight !== 0) ctx.drawImage(fruit.image, fruit.x, fruit.y, fruit.size, fruit.size);
@@ -491,7 +489,7 @@ function drawPlayer() {
   });
 }
 
- function drawHUD() {
+function drawHUD() {
   livesCount.textContent = player.lives;
   scoreCount.textContent = player.score;
   ctx.fillStyle = "#ecf0f1";
@@ -501,7 +499,7 @@ function drawPlayer() {
   ctx.fillText(`Fase ${currentLevel}`, canvas.width - 70, 20);
 }
 
- function gameLoop() {
+function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (!paused && !gameOver && !victory) {
     movePlayer();
@@ -519,29 +517,20 @@ function drawPlayer() {
 
 async function enviarPontuacaoParaBanco(pontosFinais) {
   const idUsuario = sessionStorage.getItem("usuarioId");
-   if (!idUsuario) {
-    console.warn("Usuário não logado. Pontuação não salva.");
-    return;
-  }
-
+  if (!idUsuario) return;
   try {
     const response = await fetch(`${API_BASE_URL}/salvar-pontuacao`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({
-        userId: idUsuario,
-        pontos: pontosFinais
-      })
+      body: JSON.stringify({ userId: idUsuario, pontos: pontosFinais })
     });
-    
-    const data = await response.json();
+     const data = await response.json();
     console.log("Status do salvamento:", data.message);
-    
-    if(data.newRecord) {
-      console.log("NOVO RECORDE REGISTRADO!");
-    }
+    if(data.newRecord) { console.log("NOVO RECORDE REGISTRADO!"); }
   } catch (error) {
     console.error("Erro ao conectar com o servidor:", error);
   }
 }
+
+window.goToMainMenu = goToMainMenu;

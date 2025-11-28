@@ -39,7 +39,7 @@ window.addEventListener('load', function() {
   initGame();
 });
 
- function initDOMElements() {
+function initDOMElements() {
   canvas = document.getElementById('gameCanvas');
   ctx = canvas.getContext('2d');
   loadingContainer = document.getElementById('loadingContainer');
@@ -69,7 +69,7 @@ window.addEventListener('load', function() {
   levelButtons = document.querySelectorAll('.level-btn');
 }
 
- function setupEventListeners() {
+function setupEventListeners() {
   document.addEventListener('keydown', e => {
     if (gameOver) return;
     keys[e.key] = true;
@@ -80,17 +80,14 @@ window.addEventListener('load', function() {
   pauseBtn.addEventListener('click', togglePause);
   resumeBtn.addEventListener('click', togglePause);
   
-  // Botões de Restart
-  restartBtn.addEventListener('click', restartGame);
+   restartBtn.addEventListener('click', restartGame);
   retryBtn.addEventListener('click', restartGame);
   
-  // Botões de Menu (Adicionei o save aqui tbm pra garantir)
-  mainMenuBtn.addEventListener('click', goToMainMenu);
+   mainMenuBtn.addEventListener('click', goToMainMenu);
   goToMenuBtn.addEventListener('click', goToMainMenu);
   menuFromComplete.addEventListener('click', goToMainMenu);
   
-  // O FAMOSO NEXT LEVEL IGUAL DA FASE 3
-  nextLevelBtn.addEventListener('click', nextLevel);
+   nextLevelBtn.addEventListener('click', nextLevel);
   
   if (levelSelectFromComplete) levelSelectFromComplete.addEventListener('click', showLevelSelect);
   muteBtn.addEventListener('click', toggleMute);
@@ -102,51 +99,41 @@ window.addEventListener('load', function() {
   levelButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const level = parseInt(btn.getAttribute('data-level'));
-      window.location.href = level === 1 ? 'jogo.html' : `fase${level}.html`;
+      const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+      if (level <= unlockedLevel) {
+          window.location.href = level === 1 ? 'jogo.html' : `fase${level}.html`;
+      }
     });
   });
 }
 
-// EM TODOS OS ARQUIVOS JS:
-function updateLevelButtons() {
-    // Sempre usa || 1 como padrão de segurança
-    const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+ function updateLevelButtons() {
+     const unlockedLevel = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     const buttons = document.querySelectorAll(".level-btn");
 
     buttons.forEach(btn => {
       const level = parseInt(btn.getAttribute("data-level"));
-
-      // Se o nível do botão for maior que o desbloqueado, trava
-      if (level > unlockedLevel) {
+       if (level > unlockedLevel) {
         btn.disabled = true;
         btn.classList.add("locked");
       } else {
         btn.disabled = false;
-        btn.classList.remove("locked");
-        // Reatribui o clique para garantir que funcione
+         btn.classList.remove("locked");
         btn.onclick = () => {
-          if (level === 1) {
-            window.location.href = "jogo.html"; // Ajuste o nome se for diferente
-          } else {
-            window.location.href = `fase${level}.html`;
-          }
+          if (level === 1) window.location.href = "jogo.html"; 
+          else window.location.href = `fase${level}.html`;
         };
       }
     });
 } 
 
 // ==================== INITIALIZE GAME ====================
-// EM fase2.js
-function initGame() {
-  updateLevelButtons(); // Garante que os botões do menu atualizem
+ function initGame() {
+  updateLevelButtons();
   const savedLives = parseInt(sessionStorage.getItem("lives")) || 3;
   
-  // --- CORREÇÃO AQUI ---
-  // Carrega o que você tinha ao terminar a Fase 1
-  // Se não existir (hack ou erro), começa com 0
-  let startScore = parseInt(sessionStorage.getItem("checkpoint_fase1"));
-  if (isNaN(startScore)) startScore = 0;
-  // ---------------------
+   let startScore = parseInt(sessionStorage.getItem("checkpoint_fase1"));
+   if (isNaN(startScore)) startScore = 0;
 
   currentLevel = 2; 
 
@@ -158,11 +145,13 @@ function initGame() {
     size: 20,
     speed: 2,
     lives: savedLives,
-    score: startScore, // <--- Usa o startScore (checkpoint)
+    score: startScore,
     invincible: false,
     image: new Image()
   };
-  player.image.src = IMGS_PATH + character;
+  
+  // AQUI MUDOU: Não defino o SRC aqui ainda para evitar cache antes da hora
+  player.image.dataset.src = IMGS_PATH + character; 
 
   collectSound = new Audio(SOUNDS_PATH + 'collect.mp3');
   hitSound = new Audio(SOUNDS_PATH + 'hit.mp3');
@@ -178,7 +167,7 @@ function initGame() {
   loadLevel(currentLevel);
 }
 
-// ==================== DADOS DA FASE 2 (INSERIDOS AQUI) ====================
+// ==================== DADOS DA FASE 2 ====================
 const levelData = {
   2: {
     player: { x: 150, y: 350 },
@@ -199,11 +188,10 @@ const levelData = {
   }
 };
 
- function loadLevel(level) {
+function loadLevel(level) {
   monsters = []; obstacles = []; fruits = []; imagesLoaded = 0;
   
-  // Se por acaso vier level errado, segura no 2
-  if (!levelData[level]) level = 2;
+   if (!levelData[level]) level = 2;
 
   const data = levelData[level];
   player.x = data.player.x;
@@ -228,83 +216,123 @@ const levelData = {
     fruits.push(fruit);
   });
 
+  // CONFIGURAÇÃO DO LOADING (CORRIGIDO)
   totalImages = 1 + monsters.length + fruits.length;
+  
+  // Listener do Player
   player.image.onload = imageLoaded;
+  player.image.onerror = imageLoaded; // Garante que continua mesmo se erro
+  
+  // Listener dos Monstros
   monsters.forEach(m => { m.image.onload = imageLoaded; m.image.onerror = imageLoaded; });
+  
+  // Listener das Frutas
   fruits.forEach(f => { f.image.onload = imageLoaded; f.image.onerror = imageLoaded; });
+  
   showLoadingScreen();
+
+  // --- CORREÇÃO DO CACHE ---
+  // Define o SRC do player AGORA, para disparar o onload
+  player.image.src = player.image.dataset.src;
+
+  // VERIFICAÇÃO DE SEGURANÇA: Se a imagem já estiver em cache, o onload pode não disparar.
+  // Checamos manualmente:
+  if (player.image.complete) {
+      imageLoaded();
+  }
+
+  // --- CORREÇÃO DE SEGURANÇA FINAL ---
+  // Se por algum motivo o loading travar por 3 segundos, força o início do jogo
+  setTimeout(() => {
+      if (loadingContainer.style.display !== 'none') {
+          console.warn("Loading demorou muito. Forçando início.");
+          hideLoadingScreen();
+          if (!paused && !gameOver) gameLoop();
+      }
+  }, 3000);
 }
 
-// ==================== CONTROLES E TELAS ====================
+// ==================== RESTANTE DAS FUNÇÕES (PADRÃO) ====================
 function togglePause() {
   if (gameOver) return;
   paused = !paused;
   pauseScreen.style.display = paused ? 'flex' : 'none';
 }
 
- function toggleMute() {
+function toggleMute() {
   soundMuted = !soundMuted;
   muteBtn.textContent = soundMuted ? '🔇' : '🔊';
   collectSound.muted = soundMuted;
   hitSound.muted = soundMuted;
 }
 
- function restartGame() {
-  // Reinicia mantendo vidas em 3? Ou como estava?
-   localStorage.setItem("lives", "3");
+function restartGame() {
+  sessionStorage.setItem("lives", "3");
   window.location.reload();
 }
 
- function goToMainMenu() {
-  // Adicionei salvamento aqui tbm pq não custa nada
-  enviarPontuacaoParaBanco(player.score);
-  window.location.href = "../select/select.html";
+async function goToMainMenu() {
+  if (player.score > 0) {
+      await enviarPontuacaoParaBanco(player.score);
+  }
+  
+  alert(
+      `Pontuação final desta partida: ${player.score}\n\n` +
+      `Sua pontuação foi sincronizada com o sistema.\n` +
+      `O progresso desta sessão (fases desbloqueadas) será resetado.`
+  );
+
+  sessionStorage.removeItem("unlockedLevel");
+  sessionStorage.removeItem("lives");
+  sessionStorage.removeItem("checkpoint_fase1");
+  sessionStorage.removeItem("checkpoint_fase2");
+  sessionStorage.removeItem("checkpoint_fase3");
+  sessionStorage.removeItem("checkpoint_fase4");
+
+  window.location.href = "../../QUIZeJOGOS/JOGO/homeJOGO/homeJ.html";
 }
 
-// EM TODOS OS ARQUIVOS (jogo.js, fase2.js, fase3.js, etc...)
 function showLevelSelect() {
-    updateLevelButtons(); // <--- ADICIONE ISSO PARA ATUALIZAR OS CADEADOS
+    updateLevelButtons(); 
     levelSelectScreen.style.display = 'flex';
     paused = true;
 }
 
 function hideLevelSelect() { levelSelectScreen.style.display = 'none'; paused = false; }
 
- function showLoadingScreen() {
+function showLoadingScreen() {
   loadingContainer.style.display = 'flex';
   loadingContainer.style.opacity = '1';
   progressFill.style.width = '0%';
 }
 
- function hideLoadingScreen() {
+function hideLoadingScreen() {
   loadingContainer.style.opacity = '0';
   setTimeout(() => { loadingContainer.style.display = 'none'; }, 500);
 }
 
- function showGameOver() {
+function showGameOver() {
   gameOver = true;
   finalScore.textContent = player.score;
   gameOverScreen.style.display = 'flex';
-  enviarPontuacaoParaBanco(player.score); // Salva ao morrer
+  enviarPontuacaoParaBanco(player.score); 
   if (!soundMuted) GameOverSound.play().catch(e => console.log(e));
 }
 
 function showLevelComplete() {
   levelScore.textContent = player.score;
   levelCompleteScreen.style.display = 'flex';
-  // AQUI a fase 3 não salva direto, ela espera clicar no botão
+  enviarPontuacaoParaBanco(player.score);
 }
 
- function nextLevel() {
+function nextLevel() {
   if (currentLevel < totalLevels) {
-    // Salva Checkpoint e Vidas na SESSÃO
-    sessionStorage.setItem("checkpoint_fase2", player.score);
+     sessionStorage.setItem("checkpoint_fase2", player.score);
     sessionStorage.setItem("lives", player.lives.toString());
     
     enviarPontuacaoParaBanco(player.score); 
 
-    // Desbloqueia Fase 3 na SESSÃO
-    const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
+     const currentUnlocked = parseInt(sessionStorage.getItem("unlockedLevel")) || 1;
     if (currentUnlocked < 3) {
         sessionStorage.setItem("unlockedLevel", "3");
     }
@@ -313,11 +341,14 @@ function showLevelComplete() {
   }
 }
 
-// ==================== ASSET LOADING & LOOP ====================
-function imageLoaded() {
+ function imageLoaded() {
   imagesLoaded++;
+  // Proteção contra contagem maior que o total (pode acontecer com cache)
+  if (imagesLoaded > totalImages) imagesLoaded = totalImages;
+  
   const progress = Math.round((imagesLoaded / totalImages) * 100);
   progressFill.style.width = progress + '%';
+  
   if (imagesLoaded >= totalImages) {
     setTimeout(() => {
       hideLoadingScreen();
@@ -326,14 +357,14 @@ function imageLoaded() {
   }
 }
 
- function isCollidingWithObstacle(x, y, size) {
+function isCollidingWithObstacle(x, y, size) {
   return obstacles.some(obs =>
     x < obs.x + obs.width && x + size > obs.x &&
     y < obs.y + obs.height && y + size > obs.y
   );
 }
 
- function movePlayer() {
+function movePlayer() {
   let nextX = player.x;
   let nextY = player.y;
 
@@ -402,12 +433,12 @@ function drawPlayer() {
   else { ctx.fillStyle = "#3498db"; ctx.fillRect(player.x, player.y, player.size, player.size); }
 }
 
- function drawMonster(monster) {
+function drawMonster(monster) {
   if (monster.image.complete && monster.image.naturalHeight !== 0) ctx.drawImage(monster.image, monster.x, monster.y, monster.size, monster.size);
   else { ctx.fillStyle = "#e74c3c"; ctx.fillRect(monster.x, monster.y, monster.size, monster.size); }
 }
 
- function drawObstacles() {
+function drawObstacles() {
   ctx.fillStyle = "#34495e";
   obstacles.forEach(obs => {
     ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
@@ -416,7 +447,7 @@ function drawPlayer() {
   });
 }
 
- function drawFruits() {
+function drawFruits() {
   fruits.forEach((fruit, index) => {
     if (!fruit.collected) {
       if (fruit.image.complete && fruit.image.naturalHeight !== 0) ctx.drawImage(fruit.image, fruit.x, fruit.y, fruit.size, fruit.size);
@@ -430,7 +461,8 @@ function drawPlayer() {
     }
   });
 }
- function drawHUD() {
+
+function drawHUD() {
   livesCount.textContent = player.lives;
   scoreCount.textContent = player.score;
   ctx.fillStyle = "#ecf0f1";
@@ -439,6 +471,7 @@ function drawPlayer() {
   ctx.fillText(`Pontos: ${player.score}`, 10, 40);
   ctx.fillText(`Fase ${currentLevel}`, canvas.width - 70, 20);
 } 
+
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (!paused && !gameOver) {
@@ -466,15 +499,15 @@ async function enviarPontuacaoParaBanco(pontosFinais) {
           credentials: 'include',
           body: JSON.stringify({ userId: idUsuario, pontos: pontosFinais })
       });
-      
-      // Mantivemos apenas o console.log para você ver no F12 se quiser, 
-      // mas nada vai pular na tela do jogador.
+       
       const data = await response.json();
     if(data.newRecord) {
-          console.log("NOVO RECORDE REGISTRADO!");
+           console.log("NOVO RECORDE REGISTRADO!");
       }
 
   } catch (error) {
       console.error("Erro ao conectar:", error);
   }
 }
+
+window.goToMainMenu = goToMainMenu;
